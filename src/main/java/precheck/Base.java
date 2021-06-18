@@ -45,11 +45,10 @@ public class Base {
 	public static WebDriver startbrowser() throws Exception {
 		log.info("browser launch started....................");
 		Properties browserProperties = new Properties();
-		FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
-		browserProperties.load(file);
+		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
+		browserProperties.load(browserFile);
 		String browsername = browserProperties.getProperty("browser");
-		String url = browserProperties.getProperty("url");
-		System.out.println("url::"+url);
+		//String url = browserProperties.getProperty("url");
 		if (browsername.equals("chrome")) {
 			System.setProperty("webdriver.chrome.driver",
 					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver.exe");
@@ -95,23 +94,42 @@ public class Base {
 		}
 	}
 
+	/**
+	 * This method is to close DB connection and chrome browser
+	 * @throws Exception
+	 */
 	@AfterTest
-	public static void closeDatabaseconnection() throws Exception {
+	public static void closeconnection() throws Exception {
 		driver.close();
 		mysqlConnection.close();
 		log.info("all connection closed....................");
 	}
 
+	/**
+	 * This method is for fetching web element's text
+	 * @param x
+	 * @return
+	 */
 	public static String xtext(String x) {
 		text = driver.findElement(By.xpath(x)).getText();
 		return text;
 	}
-
+	
+	/**
+	 * This method is for fetching List of web element
+	 * @param x
+	 * @return
+	 */
 	public static List<WebElement> xtexts(String x) {
 		texts = driver.findElements(By.xpath(x));
 		return texts;
 	}
 
+	/**
+	 * This method is for fetching List of web element's text
+	 * @param x
+	 * @return
+	 */
 	public List<String> listString() {
 		listOfText = new ArrayList<>();
 		for (int i = 0; i < texts.size(); i++) {
@@ -122,6 +140,12 @@ public class Base {
 		return listOfText;
 	}
 
+	/**
+	 * This method is used for parsing Query to DataBase
+	 * @param query
+	 * @return
+	 * @throws SQLException
+	 */
 	public static ResultSet query(String query) throws SQLException {
 		mysqlStatement = mysqlConnection.createStatement();
 		sourceQuery = mysqlStatement.executeQuery(query);
@@ -129,6 +153,11 @@ public class Base {
 
 	}
 
+	/**
+	 * This method is for Load the Query file
+	 * @return
+	 * @throws IOException
+	 */
 	@BeforeMethod
 	public static Properties loadQueryFile() throws IOException {
 		prop = new Properties();
@@ -139,6 +168,11 @@ public class Base {
 
 	}
 
+	/**
+	 * This method is for Load the Xpath file
+	 * @return
+	 * @throws IOException
+	 */
 	@BeforeMethod
 	public static Properties loadXpathFile() throws IOException {
 		xpathProperties = new Properties();
@@ -149,6 +183,9 @@ public class Base {
 
 	}
 
+	/**
+	 * This method is for Load the log4j(Log) file
+	 */
 	@BeforeSuite
 	public void log4j() {
 		String log4jConfPath = System.getProperty("user.dir") + "//src//main//resources//properties//log4j.properties";
@@ -156,6 +193,11 @@ public class Base {
 
 	}
 
+	/**
+	 * This method is to generate random 'int' number
+	 * @param max
+	 * @return
+	 */
 	public static int generate(int max) {
 		// 1999999999 int max
 		return 1 + (int) (Math.random() * ((max - 1) + 1));

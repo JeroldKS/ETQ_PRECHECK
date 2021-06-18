@@ -2,31 +2,28 @@ package precheckStories;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-
 import precheck.Base;
 
-public class MMP_396 extends Base {
-	static Logger log = Logger.getLogger(MMP_396.class.getName());
+public class MMP_396_MySQLDatabaseCheck extends Base {
+	static Logger log = Logger.getLogger(MMP_396_MySQLDatabaseCheck.class.getName());
 
 	/**
-	 * 
+	 * This method is for DB checks(DB_version,DB_User_count,core_schema_size,non_core_schema_size,utilized_DB_size,engine_version)
 	 * @throws Exception
 	 */
 	@Test(enabled = false)
 	public void tc_04_DBCheck() throws Exception {
 		// DB_checks(DB_version,DB_User_count,core_schema_size,non_core_schema_size,utilized_DB_size,engine_version)
 		log.info("DB check started....................");
-		xpathProperties=loadXpathFile();
+		xpathProperties = loadXpathFile();
 		prop = loadQueryFile();
 		text = xtext(xpathProperties.getProperty("DB_version"));
 		sourceQuery = query(prop.getProperty("DB_version"));
@@ -63,7 +60,7 @@ public class MMP_396 extends Base {
 	}
 
 	/**
-	 * 
+	 * This method is to validate count and list of database users with low level report 
 	 * @throws SQLException
 	 * @throws IOException
 	 */
@@ -71,7 +68,7 @@ public class MMP_396 extends Base {
 	public void tc_05_countListOfDatabaseUsers() throws SQLException, IOException {
 		// count and list of DB user
 		log.info("count and list of Database users started....................");
-		
+
 		List<WebElement> userList = driver.findElements(By.xpath(xpathProperties.getProperty("list_db_user")));
 		List<String> reportUserList = new ArrayList<>();
 		List<String> dbUserList = new ArrayList<>();
@@ -83,18 +80,18 @@ public class MMP_396 extends Base {
 		System.out.println(userList.size());
 		prop = loadQueryFile();
 		sourceQuery = query(prop.getProperty("DB_user"));
-
-		int source_query_size = 0;
 		while (sourceQuery.next()) {
-			source_query_size++;
 			dbUserList.add(sourceQuery.getObject(1).toString());
 		}
-		
+
 		System.out.println(dbUserList);
 		assertEquals(dbUserList, reportUserList);
 
 	}
-
+/**
+ * This method is to validating the report which present all check list
+ * @throws IOException
+ */
 	@Test(enabled = false)
 	public void tc_06_reportCheck() throws IOException {
 		// validating the report which present all check list
@@ -114,63 +111,18 @@ public class MMP_396 extends Base {
 	}
 
 	/**
-	 * 
+	 * This method is to validate core schema index count
 	 * @throws SQLException
 	 * @throws IOException
-	 */
-	@Test(enabled = false)
-	public void TC_03_coreindexCount() throws SQLException, IOException {
-		// core schema index count validation
-		texts = xtexts("//*[contains(text(),'Index Count - Core')]/following::tbody[1]/tr");
-		List<WebElement> dup_texts = texts;
-		List<String> reportCoreSchemaIndexList = new ArrayList<>();
-		List<String> dbCoreSchemaIndexList = new ArrayList<>();
-
-		for (int i = 0; i < dup_texts.size(); i++) {
-			texts = xtexts("//*[contains(text(),'Index Count - Core')]/following::tbody[1]/tr[" + (i + 1) + "]/td");
-			String r_data_combain = "";
-			for (int j = 0; j < texts.size(); j++) {
-				r_data_combain = r_data_combain + texts.get(j).getText() + ".";
-			}
-			System.out.println(r_data_combain);
-			reportCoreSchemaIndexList.add(r_data_combain);
-		}
-		System.out.println(reportCoreSchemaIndexList.size());
-
-		prop = loadQueryFile();
-		sourceQuery = query(prop.getProperty("core_schema_index"));
-		int columnCount = sourceQuery.getMetaData().getColumnCount();
-		System.out.println(columnCount);
-		int table_size = 0;
-
-		while (sourceQuery.next()) {
-			table_size++;
-			String source_data_comain = "";
-			for (int i = 1; i <= columnCount; i++) {
-				source_data_comain = source_data_comain + sourceQuery.getObject(i).toString() + ".";
-			}
-			dbCoreSchemaIndexList.add(source_data_comain);
-		}
-		assertEquals(reportCoreSchemaIndexList.size(), dbCoreSchemaIndexList.size());
-		Collections.sort(reportCoreSchemaIndexList);
-		Collections.sort(dbCoreSchemaIndexList);
-		assertEquals(reportCoreSchemaIndexList, dbCoreSchemaIndexList);
-	}
-
-	/**
-	 * validate_core_schema_index_count
-	 * 
-	 * @throws SQLException
-	 * @throws IOException 
 	 */
 	@Test(enabled = true)
 	public void tc_02_coreSchemaIndexCount() throws SQLException, IOException {
 		log.info("core_schema_index_count_started....................");
-		xpathProperties=loadXpathFile();
+		xpathProperties = loadXpathFile();
 		texts = xtexts(xpathProperties.getProperty("core_body"));
 		List<WebElement> dup_texts = texts;
 		for (int i = 0; i < 10; i++) {
-			int generate = Base.generate( dup_texts.size());
+			int generate = Base.generate(dup_texts.size());
 			System.out.println(generate);
 			texts = xtexts(xpathProperties.getProperty("core_data"));
 			System.out.println(xpathProperties.getProperty("core_data"));
@@ -193,8 +145,7 @@ public class MMP_396 extends Base {
 	}
 
 	/**
-	 * validate_non_core_schema_index_count
-	 * 
+	 * This method is to validate non core schema index count
 	 * @throws SQLException
 	 */
 	@Test(enabled = false)
@@ -203,10 +154,9 @@ public class MMP_396 extends Base {
 		texts = xtexts(xpathProperties.getProperty("non_core_body"));
 		List<WebElement> dup_texts = texts;
 		for (int i = 0; i < 10; i++) {
-			int generate = Base.generate( dup_texts.size());
+			int generate = Base.generate(dup_texts.size());
 			System.out.println(generate);
-			texts = xtexts(
-					xpathProperties.getProperty("non_core_data"));
+			texts = xtexts(xpathProperties.getProperty("non_core_data"));
 			String r_table_name = texts.get(0).getText();
 			String r_index_count = texts.get(1).getText();
 			String r_schema_name = texts.get(2).getText();
@@ -226,11 +176,11 @@ public class MMP_396 extends Base {
 	}
 
 	/**
-	 * 
+	 * This method is to validate meta info check
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	@Test(enabled=false)
+	@Test(enabled = false)
 	public void tc_01_db_meta_info() throws SQLException, IOException {
 		texts = xtexts(xpathProperties.getProperty("mysql_meta_body"));
 		List<WebElement> dup_texts = texts;
@@ -240,7 +190,7 @@ public class MMP_396 extends Base {
 			texts = xtexts(xpathProperties.getProperty("mysql_meta_data"));
 			String r_data_combain = "";
 			System.out.println(xpathProperties.getProperty("mysql_meta_data"));
-			System.out.println( texts.size());
+			System.out.println(texts.size());
 			for (int j = 0; j < texts.size(); j++) {
 				r_data_combain = r_data_combain + texts.get(j).getText() + ".";
 			}
@@ -252,10 +202,8 @@ public class MMP_396 extends Base {
 		sourceQuery = query(prop.getProperty("mysql_db_meta_info"));
 		int columnCount = sourceQuery.getMetaData().getColumnCount();
 		System.out.println(columnCount);
-		int table_size = 0;
 
 		while (sourceQuery.next()) {
-			table_size++;
 			String source_data_comain = "";
 			for (int i = 1; i <= columnCount; i++) {
 				source_data_comain = source_data_comain + sourceQuery.getObject(i).toString() + ".";
@@ -263,13 +211,13 @@ public class MMP_396 extends Base {
 			db_meta_info_index_list.add(source_data_comain);
 		}
 		List<String> dup_list = db_meta_info_index_list;
-		if (r_meta_info_list.size()!= db_meta_info_index_list.size()) {
+		if (r_meta_info_list.size() != db_meta_info_index_list.size()) {
 			dup_list.removeAll(r_meta_info_list);
 			System.err.println(dup_list);
 		}
-		
+
 		assertEquals(r_meta_info_list.size(), db_meta_info_index_list.size());
-		
+
 		assertEquals(r_meta_info_list, db_meta_info_index_list);
 
 	}
