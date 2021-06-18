@@ -172,8 +172,8 @@ public class MMP_396 extends Base {
 		for (int i = 0; i < 10; i++) {
 			int generate = Base.generate( dup_texts.size());
 			System.out.println(generate);
-			texts = xtexts(xpathProperties.getProperty("core_data")+ generate + xpathProperties.getProperty("area"));
-			System.out.println(xpathProperties.getProperty("core_data")+ generate + xpathProperties.getProperty("area"));
+			texts = xtexts(xpathProperties.getProperty("core_data"));
+			System.out.println(xpathProperties.getProperty("core_data"));
 			String r_table_name = texts.get(0).getText();
 			String r_index_count = texts.get(1).getText();
 			String r_schema_name = texts.get(2).getText();

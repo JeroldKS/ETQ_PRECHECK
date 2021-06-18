@@ -52,7 +52,7 @@ public class Base {
 		System.out.println("url::"+url);
 		if (browsername.equals("chrome")) {
 			System.setProperty("webdriver.chrome.driver",
-					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver");
+					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver.exe");
 			driver = new ChromeDriver();
 			
 			log.info("chrome browser launched....................");
