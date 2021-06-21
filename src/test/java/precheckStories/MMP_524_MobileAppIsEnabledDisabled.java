@@ -13,10 +13,10 @@ import precheck.Base;
 
 public class MMP_524_MobileAppIsEnabledDisabled extends Base {
 	static Logger log = Logger.getLogger(MMP_524_MobileAppIsEnabledDisabled.class.getName());
-/**
- * This method is to find mobile app disabled and compare with report
- * @throws SQLException
- */
+	/**
+	 * This method is to find mobile app disabled and compare with report
+	 * @throws SQLException
+	 */
 	@Test
 	public void tc_02_MobileAppDisabled() throws SQLException {
 		log.info("mobile_app_disabled_started....................");
@@ -104,7 +104,37 @@ public class MMP_524_MobileAppIsEnabledDisabled extends Base {
 					"mobile app is now disable, to validate this TC need to enable the mobile app....................");
 
 		}
-
 	}
 
+	/**
+	 * This method is to find the report contains form name or not
+	 * @throws SQLException
+	 */
+	@Test
+	public void tc04isReportContainsFormName() throws SQLException {
+		log.info("Verifying the report contains the form name....................");
+		sourceQuery = query(
+				"SELECT form_name FROM engine.form_settings WHERE MOBILIZED_FORM_ID = 1;");
+		try {
+			List<String> eEnabledFormNamesInDb = new ArrayList<>();
+			List<String> enabledFormNameInReport = new ArrayList<>();
+			while (sourceQuery.next()) {
+				eEnabledFormNamesInDb.add(sourceQuery.getObject(1).toString());
+			}
+			if (eEnabledFormNamesInDb.size()==0) {
+				throw new NullPointerException();
+			}
+			texts = xtexts("//*[contains(text(),'Mobile App')]/../td[3]/ul/li");
+			List<WebElement> dup_texts = texts;
+			for(int i=0; i< dup_texts.size(); i++) {
+				enabledFormNameInReport.add(dup_texts.get(i).getText());
+			}
+			Collections.sort(eEnabledFormNamesInDb);
+			Collections.sort(enabledFormNameInReport);
+			assertEquals(eEnabledFormNamesInDb, enabledFormNameInReport);
+		} catch (Exception e) {
+			log.info("mobile app is now disable, to validate this TC need to enable the mobile app....................");
+
+		}
+	}
 }
