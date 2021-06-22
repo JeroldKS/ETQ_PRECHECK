@@ -23,17 +23,23 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
+
 public class Base {
 	public static Properties loginProperties;
 	public static Connection mysqlConnection;
 	public static WebDriver driver;
 	public static String text;
-	public static List<WebElement> texts;
+	public static List<WebElement> listOfWebElement;
 	public static Statement mysqlStatement;
 	public static ResultSet sourceQuery;
 	public static Properties prop;
 	public static Properties xpathProperties;
 	public static List<String> listOfText;
+	public static Session session;
+	public static ChannelSftp sftpChannel;
 	static Logger log = Logger.getLogger(Base.class.getName());
 
 	/**
@@ -48,27 +54,39 @@ public class Base {
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
 		String browsername = browserProperties.getProperty("browser");
-		//String url = browserProperties.getProperty("url");
 		if (browsername.equals("chrome")) {
 			System.setProperty("webdriver.chrome.driver",
-					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver.exe");
+					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver");
 			driver = new ChromeDriver();
 			
 			log.info("chrome browser launched....................");
-			if (browserProperties.getProperty("url").equals("low")) {
-				driver.get(browserProperties.getProperty("low"));
-			} else {
-				driver.get(browserProperties.getProperty("high"));
-			}
 		} else {
 			System.out.println("Not a chrome browser");
 		}
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-		driver.manage().window().maximize();
 		return driver;
 
 	}
 
+	public static WebDriver loadLowLevelReportInBrowser() throws Exception {
+		Properties browserProperties = new Properties();
+		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
+		browserProperties.load(browserFile);
+		driver.get(browserProperties.getProperty("low"));
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		return driver;
+	}
+	
+	public static WebDriver loadHighLevelReportInBrowser() throws Exception {
+		Properties browserProperties = new Properties();
+		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
+		browserProperties.load(browserFile);
+		driver.get(browserProperties.getProperty("high"));
+		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().window().maximize();
+		return driver;
+	}
+	
 	/**
 	 * The method used to connect DataBase
 	 * @throws Exception
@@ -105,6 +123,28 @@ public class Base {
 		mysqlConnection.close();
 		log.info("all connection closed....................");
 	}
+	
+	/**
+	 * The method used to connect EC2 instance
+	 * @throws Exception
+	 */
+	public static void establishSshConnection() throws Exception {
+		String user = "ec2-user";
+		String host = "54.158.99.31";
+		int port = 22;
+
+		JSch jsch = new JSch();
+
+		session = jsch.getSession(user, host, port);
+		jsch.addIdentity("//home//ubuntu//Downloads//PPkfile.ppk");
+		session.setConfig("StrictHostKeyChecking", "no");
+		System.out.println("Establishing Connection...");
+		session.connect();
+		System.out.println("Connection established.");
+		System.out.println("Crating SFTP Channel.");
+		sftpChannel = (ChannelSftp) session.openChannel("sftp");
+		sftpChannel.connect();
+	}
 
 	/**
 	 * This method is for fetching web element's text
@@ -122,8 +162,8 @@ public class Base {
 	 * @return
 	 */
 	public static List<WebElement> xtexts(String x) {
-		texts = driver.findElements(By.xpath(x));
-		return texts;
+		listOfWebElement = driver.findElements(By.xpath(x));
+		return listOfWebElement;
 	}
 
 	/**
@@ -133,10 +173,10 @@ public class Base {
 	 */
 	public List<String> listString() {
 		listOfText = new ArrayList<>();
-		for (int i = 0; i < texts.size(); i++) {
-			texts.get(i).getText();
+		for (int i = 0; i < listOfWebElement.size(); i++) {
+			listOfWebElement.get(i).getText();
 
-			listOfText.add(texts.get(i).getText());
+			listOfText.add(listOfWebElement.get(i).getText());
 		}
 		return listOfText;
 	}
@@ -179,7 +219,7 @@ public class Base {
 	public static Properties loadXpathFile() throws IOException {
 		xpathProperties = new Properties();
 		FileInputStream xpathFile = new FileInputStream(
-				System.getProperty("user.dir") + "//src//test//resources//xpath.properties");
+				System.getProperty("user.dir") + "//src//test//resources////precheck//xpath//xpath.properties");
 		xpathProperties.load(xpathFile);
 		return xpathProperties;
 

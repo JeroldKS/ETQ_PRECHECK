@@ -14,14 +14,14 @@ import precheck.Base;
 public class MMP378_MySQLStoredProcedure extends Base {
 	@BeforeTest
 	public void loadQueryfile() throws IOException {
-		prop = loadQueryFile("\\src\\test\\resources\\MMP378_MySQLStoredProcedure.properties");
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP378_MySQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
 	}
 
 	@Test
 	public void tc01_ReportHeadingsvalidation() throws IOException {
 		
-		texts = xtexts(xpathProperties.getProperty("heading_list"));
+		listOfWebElement = xtexts(xpathProperties.getProperty("heading_list"));
 		listOfText = listString();
 		System.out.println(listOfText);
 		String[] checkList = { "Schema Name", "Stored Procedure Name", "Stored Procedure definition" };
@@ -33,7 +33,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 
 	@Test
 	public void tc02_CountOfStoredProcedure() throws IOException, SQLException {
-		texts = xtexts(xpathProperties.getProperty("sp_count"));
+		listOfWebElement = xtexts(xpathProperties.getProperty("sp_count"));
 		listOfText = listString();
 		int storedProcedureCount=0;
 		for (int i = 0; i < listOfText.size(); i++) {

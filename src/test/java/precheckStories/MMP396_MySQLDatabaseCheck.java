@@ -15,11 +15,11 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import precheck.Base;
 
-public class MMP_396_MySQLDatabaseCheck extends Base {
-	static Logger log = Logger.getLogger(MMP_396_MySQLDatabaseCheck.class.getName());
+public class MMP396_MySQLDatabaseCheck extends Base {
+	static Logger log = Logger.getLogger(MMP396_MySQLDatabaseCheck.class.getName());
 	@BeforeTest
 	public void loadQueryfile() throws IOException {
-		prop = loadQueryFile("//src//test//resources//MMP_396_query.properties");
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP396_query.properties");
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 	public void tc_06_reportCheck() throws IOException {
 		// validating the report which present all check list
 		log.info("Report check started....................");
-		texts = xtexts(xpathProperties.getProperty("report_validation"));
+		listOfWebElement = xtexts(xpathProperties.getProperty("report_validation"));
 		listOfText = listString();
 		System.out.println(listOfText);
 		String[] checkList = { "Database Checks", "DB Users", "OverallCount", "Index Count - Core",
@@ -123,16 +123,16 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 	public void tc_02_coreSchemaIndexCount() throws SQLException, IOException {
 		log.info("core_schema_index_count_started....................");
 		xpathProperties = loadXpathFile();
-		texts = xtexts(xpathProperties.getProperty("core_body"));
-		List<WebElement> dup_texts = texts;
+		listOfWebElement = xtexts(xpathProperties.getProperty("core_body"));
+		List<WebElement> dup_texts = listOfWebElement;
 		for (int i = 0; i < 10; i++) {
 			int generate = Base.generate(dup_texts.size());
 			System.out.println(generate);
-			texts = xtexts(xpathProperties.getProperty("core_data"));
+			listOfWebElement = xtexts(xpathProperties.getProperty("core_data"));
 			System.out.println(xpathProperties.getProperty("core_data"));
-			String r_table_name = texts.get(0).getText();
-			String r_index_count = texts.get(1).getText();
-			String r_schema_name = texts.get(2).getText();
+			String r_table_name = listOfWebElement.get(0).getText();
+			String r_index_count = listOfWebElement.get(1).getText();
+			String r_schema_name = listOfWebElement.get(2).getText();
 			sourceQuery = query("select count(COLUMN_NAME) FROM INFORMATION_SCHEMA.STATISTICS where TABLE_NAME = '"
 					+ r_table_name + "' and TABLE_SCHEMA = '" + r_schema_name + "'");
 			sourceQuery.next();
@@ -155,15 +155,15 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 	@Test(enabled = false)
 	public void tc_03_non_core_schema_index_count() throws SQLException {
 		log.info("non_core_schema_index_count_started....................");
-		texts = xtexts(xpathProperties.getProperty("non_core_body"));
-		List<WebElement> dup_texts = texts;
+		listOfWebElement = xtexts(xpathProperties.getProperty("non_core_body"));
+		List<WebElement> dup_texts = listOfWebElement;
 		for (int i = 0; i < 10; i++) {
 			int generate = Base.generate(dup_texts.size());
 			System.out.println(generate);
-			texts = xtexts(xpathProperties.getProperty("non_core_data"));
-			String r_table_name = texts.get(0).getText();
-			String r_index_count = texts.get(1).getText();
-			String r_schema_name = texts.get(2).getText();
+			listOfWebElement = xtexts(xpathProperties.getProperty("non_core_data"));
+			String r_table_name = listOfWebElement.get(0).getText();
+			String r_index_count = listOfWebElement.get(1).getText();
+			String r_schema_name = listOfWebElement.get(2).getText();
 			sourceQuery = query("select count(COLUMN_NAME) FROM INFORMATION_SCHEMA.STATISTICS where TABLE_NAME = '"
 					+ r_table_name + "' and TABLE_SCHEMA = '" + r_schema_name + "'");
 			sourceQuery.next();
@@ -186,17 +186,17 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 	 */
 	@Test(enabled = false)
 	public void tc_01_db_meta_info() throws SQLException, IOException {
-		texts = xtexts(xpathProperties.getProperty("mysql_meta_body"));
-		List<WebElement> dup_texts = texts;
+		listOfWebElement = xtexts(xpathProperties.getProperty("mysql_meta_body"));
+		List<WebElement> dup_texts = listOfWebElement;
 		List<String> r_meta_info_list = new ArrayList<>();
 		List<String> db_meta_info_index_list = new ArrayList<>();
 		for (int i = 0; i < dup_texts.size(); i++) {
-			texts = xtexts(xpathProperties.getProperty("mysql_meta_data"));
+			listOfWebElement = xtexts(xpathProperties.getProperty("mysql_meta_data"));
 			String r_data_combain = "";
 			System.out.println(xpathProperties.getProperty("mysql_meta_data"));
-			System.out.println(texts.size());
-			for (int j = 0; j < texts.size(); j++) {
-				r_data_combain = r_data_combain + texts.get(j).getText() + ".";
+			System.out.println(listOfWebElement.size());
+			for (int j = 0; j < listOfWebElement.size(); j++) {
+				r_data_combain = r_data_combain + listOfWebElement.get(j).getText() + ".";
 			}
 			System.out.println(r_data_combain);
 			r_meta_info_list.add(r_data_combain);
