@@ -91,6 +91,7 @@ public class Base {
 			log.info("MYSQL DB connected....................");
 		} else {
 			System.out.println("Not a mysql source db");
+			
 		}
 	}
 
@@ -158,13 +159,14 @@ public class Base {
 	 * @return
 	 * @throws IOException
 	 */
-	@BeforeMethod
-	public static Properties loadQueryFile() throws IOException {
+	//@BeforeMethod
+	public static Properties loadQueryFile(String queryPath) throws IOException {
 		prop = new Properties();
-		FileInputStream queryFile = new FileInputStream(
-				System.getProperty("user.dir") + "//src//test//resources//MMP_396_query.properties");
-		prop.load(queryFile);
+			FileInputStream queryFile = new FileInputStream(
+					System.getProperty("user.dir") + queryPath);
+			prop.load(queryFile);
 		return prop;
+		
 
 	}
 

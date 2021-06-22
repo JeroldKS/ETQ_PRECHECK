@@ -2,6 +2,8 @@ package precheckStories;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,11 +11,16 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import precheck.Base;
 
 public class MMP_396_MySQLDatabaseCheck extends Base {
 	static Logger log = Logger.getLogger(MMP_396_MySQLDatabaseCheck.class.getName());
+	@BeforeTest
+	public void loadQueryfile() throws IOException {
+		prop = loadQueryFile("//src//test//resources//MMP_396_query.properties");
+	}
 
 	/**
 	 * This method is for DB checks(DB_version,DB_User_count,core_schema_size,non_core_schema_size,utilized_DB_size,engine_version)
@@ -24,7 +31,6 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 		// DB_checks(DB_version,DB_User_count,core_schema_size,non_core_schema_size,utilized_DB_size,engine_version)
 		log.info("DB check started....................");
 		xpathProperties = loadXpathFile();
-		prop = loadQueryFile();
 		text = xtext(xpathProperties.getProperty("DB_version"));
 		sourceQuery = query(prop.getProperty("DB_version"));
 		sourceQuery.next();
@@ -78,7 +84,6 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 		}
 		System.out.println(reportUserList);
 		System.out.println(userList.size());
-		prop = loadQueryFile();
 		sourceQuery = query(prop.getProperty("DB_user"));
 		while (sourceQuery.next()) {
 			dbUserList.add(sourceQuery.getObject(1).toString());
@@ -99,7 +104,6 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 		texts = xtexts(xpathProperties.getProperty("report_validation"));
 		listOfText = listString();
 		System.out.println(listOfText);
-		prop = loadQueryFile();
 		String[] checkList = { "Database Checks", "DB Users", "OverallCount", "Index Count - Core",
 				"Index Count - NonCore:" };
 
@@ -115,7 +119,7 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void tc_02_coreSchemaIndexCount() throws SQLException, IOException {
 		log.info("core_schema_index_count_started....................");
 		xpathProperties = loadXpathFile();
@@ -198,7 +202,6 @@ public class MMP_396_MySQLDatabaseCheck extends Base {
 			r_meta_info_list.add(r_data_combain);
 		}
 		System.out.println(r_meta_info_list.size());
-		prop = loadQueryFile();
 		sourceQuery = query(prop.getProperty("mysql_db_meta_info"));
 		int columnCount = sourceQuery.getMetaData().getColumnCount();
 		System.out.println(columnCount);

@@ -11,14 +11,15 @@ import org.testng.annotations.Test;
 
 import precheck.Base;
 
-public class MMP_524_MobileAppIsEnabledDisabled extends Base {
-	static Logger log = Logger.getLogger(MMP_524_MobileAppIsEnabledDisabled.class.getName());
+
+public class MMP524_MobileAppIsEnabledDisabled extends Base {
+	static Logger log = Logger.getLogger(MMP524_MobileAppIsEnabledDisabled.class.getName());
 	/**
 	 * This method is to find mobile app disabled and compare with report
 	 * @throws SQLException
 	 */
 	@Test
-	public void tc_02_MobileAppDisabled() throws SQLException {
+	public void tc_02_IsMobileAppDisabled() throws SQLException {
 		log.info("mobile_app_disabled_started....................");
 		// source_Query = query(prop.getProperty("mysql_db_meta_info"));
 		sourceQuery = query(
@@ -54,10 +55,11 @@ public class MMP_524_MobileAppIsEnabledDisabled extends Base {
 
 	/**
 	 * This method is to find mobile app enabled and compare with report
+	 * 
 	 * @throws SQLException
 	 */
 	@Test
-	public void tc01_MobileAppEnabled() throws SQLException {
+	public void tc01_IsMobileAppEnabled() throws SQLException {
 		log.info("mobile_app_enabled_started....................");
 		// source_Query = query(prop.getProperty("mysql_db_meta_info"));
 		sourceQuery = query("SELECT form_name FROM engine.form_settings WHERE MOBILIZED_FORM_ID = 1;");
