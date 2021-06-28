@@ -3,8 +3,9 @@
 <suite name="Suite">
   <test thread-count="5" name="Test">
     <classes>
-      <class name="precheckStories.MMP_396"/>
-      <class name="precheckStories.NewTest"/>
+      <class name="precheckStories.MMP396_MySQLDatabaseCheck"/>
+      <class name="precheckStories.MMP378_MySQLStoredProcedure"/>
+
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
