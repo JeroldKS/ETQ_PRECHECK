@@ -28,7 +28,5 @@ public class MMP368_DatabaseViews extends Base {
 		int totalQueryFailed = Integer.parseInt(text);
 		assertEquals(totalQueryProcessed, tableQueryCount);
 		assertEquals((totalQueryPassed + totalQueryFailed), tableQueryCount);
-
 	}
-
 }

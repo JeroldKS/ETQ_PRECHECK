@@ -104,7 +104,7 @@ public class Base {
 		if (databaseName.equals("mysql_source_db")) {
 			Class.forName("com.mysql.jdbc.Driver");
 			mysqlConnection = DriverManager.getConnection(
-					"jdbc:mysql://" + loginProperties.getProperty("ip70") + ":" + loginProperties.getProperty("port70") + "/",
+					"jdbc:mysql://" + loginProperties.getProperty("ipForSourceDB") + ":" + loginProperties.getProperty("port70") + "/",
 					loginProperties.getProperty("user70"), loginProperties.getProperty("pass70"));
 			log.info("MYSQL DB connected....................");
 		} else {
@@ -137,6 +137,36 @@ public class Base {
 
 		session = jsch.getSession(user, host, port);
 		jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
+		session.setConfig("StrictHostKeyChecking", "no");
+		System.out.println("Establishing Connection...");
+		session.connect();
+		System.out.println("Connection established.");
+		System.out.println("Crating SFTP Channel.");
+		sftpChannel = (ChannelSftp) session.openChannel("sftp");
+		sftpChannel.connect();
+	}
+	
+	/**
+	 * The method used to connect EC2 instance
+	 * @throws Exception
+	 */
+	public static void establishSshConnectionforSourceDB() throws Exception {
+		loginProperties = new Properties();
+		// fetching a DB name from property file
+		try (FileInputStream credentialsFile = new FileInputStream(
+				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
+			loginProperties.load(credentialsFile);
+		}
+		//String host = "3.231.61.70";
+		//String user = "ec2-user";
+		String host = loginProperties.getProperty("ipForSourceDB");
+		String user = loginProperties.getProperty("userNameForSourceDB");
+		int port = 22;
+
+		JSch jsch = new JSch();
+
+		session = jsch.getSession(user, host, port);
+		jsch.addIdentity("//home//ubuntu//Downloads//PPkfile.ppk");
 		session.setConfig("StrictHostKeyChecking", "no");
 		System.out.println("Establishing Connection...");
 		session.connect();
