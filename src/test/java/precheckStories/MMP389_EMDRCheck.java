@@ -1,6 +1,8 @@
 package precheckStories;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.assertTrue;
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import static org.testng.Assert.assertEquals;
 
 import java.io.BufferedReader;
@@ -10,6 +12,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.jcraft.jsch.ChannelSftp;
@@ -21,10 +24,14 @@ import com.jcraft.jsch.SftpException;
 import precheck.Base;
 
 public class MMP389_EMDRCheck extends Base {
+	@BeforeTest
+	private void open() throws Exception {
+		loadHighLevelReportInBrowser();
+	}
 
 	@Test
 	public static void tc01_isAS2SubmissionEnabled() throws JSchException, SftpException, Exception {
-		loadHighLevelReportInBrowser();
+		
 		establishSshConnection();
 		// run stuff
 		InputStream stream = sftpChannel.get("/home/ec2-user/props/emdr_user_configuration.properties");
@@ -46,7 +53,7 @@ public class MMP389_EMDRCheck extends Base {
 
 	@Test
 	public static void tc02_checkIfEMDREnabled() throws JSchException, SftpException, Exception {
-		loadHighLevelReportInBrowser();
+		
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/props/emdr_user_configuration.properties");
 		try {
@@ -65,19 +72,19 @@ public class MMP389_EMDRCheck extends Base {
 						listOfWebElement = xtexts("//*[contains(text(),'eMDR')]/../td[" + (i + 1) + "]");
 						List<WebElement> listDataList = listOfWebElement;
 						if (i == 0) {
-							assertEquals(listDataList.get(0).getText(), "eMDR");
+							AssertJUnit.assertEquals(listDataList.get(0).getText(), "eMDR");
 						} else if (i == 1 && isAs2SubmissionEnabled.equals("0")) {
-							assertEquals(listDataList.get(0).getText(), "N/A");
+							AssertJUnit.assertEquals(listDataList.get(0).getText(), "N/A");
 						} else if (i == 1 && isAs2SubmissionEnabled.equals("1")) {
-							assertEquals(listDataList.get(0).getText(), "Action needed");
+							AssertJUnit.assertEquals(listDataList.get(0).getText(), "Action needed");
 						} else if (i == 2 && isAs2SubmissionEnabled.equals("0")) {
-							assertEquals(listDataList.get(0).getText(), "N/A");
+							AssertJUnit.assertEquals(listDataList.get(0).getText(), "N/A");
 						} else if (i == 2 && isAs2SubmissionEnabled.equals("1")) {
-							assertEquals(listDataList.get(0).getText(), "eMDR is not supported yet for Migration");
+							AssertJUnit.assertEquals(listDataList.get(0).getText(), "eMDR is not supported yet for Migration");
 						} else if (i == 3 && isAs2SubmissionEnabled.equals("0")) {
-							assertEquals(listDataList.get(0).getText(), "Good to Migrate");
+							AssertJUnit.assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 						} else if (i == 3 && isAs2SubmissionEnabled.equals("1")) {
-							assertEquals(listDataList.get(0).getText(), "Wait until this feature is available");
+							AssertJUnit.assertEquals(listDataList.get(0).getText(), "Wait until this feature is available");
 						}
 					}
 				}

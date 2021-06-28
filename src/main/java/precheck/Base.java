@@ -56,7 +56,7 @@ public class Base {
 		String browsername = browserProperties.getProperty("browser");
 		if (browsername.equals("chrome")) {
 			System.setProperty("webdriver.chrome.driver",
-					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver");
+					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver.exe");
 			driver = new ChromeDriver();
 			
 			log.info("chrome browser launched....................");
@@ -136,7 +136,7 @@ public class Base {
 		JSch jsch = new JSch();
 
 		session = jsch.getSession(user, host, port);
-		jsch.addIdentity("//home//ubuntu//Downloads//PPkfile.ppk");
+		jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
 		session.setConfig("StrictHostKeyChecking", "no");
 		System.out.println("Establishing Connection...");
 		session.connect();

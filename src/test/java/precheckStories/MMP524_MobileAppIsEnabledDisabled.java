@@ -1,5 +1,7 @@
 package precheckStories;
 
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
 import static org.testng.Assert.assertEquals;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,10 +44,10 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 				listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td[" + (i + 1) + "]");
 				List<WebElement> listDataList = listOfWebElement;
 				if (i == 0) {
-					assertEquals(listDataList.get(0).getText(), "Mobile App");
+					AssertJUnit.assertEquals(listDataList.get(0).getText(), "Mobile App");
 				}
 				if (i == 1) {
-					assertEquals(listDataList.get(0).getText(), "Action needed");
+					AssertJUnit.assertEquals(listDataList.get(0).getText(), "Action needed");
 				}
 				if (i == 2) {
 					listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td/ul/li");
@@ -56,10 +58,10 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 					}
 					Collections.sort(dbMobileEnabledList);
 					Collections.sort(reportMobileEnabledList);
-					assertEquals(dbMobileEnabledList, reportMobileEnabledList);
+					AssertJUnit.assertEquals(dbMobileEnabledList, reportMobileEnabledList);
 				}
 				if (i == 3) {
-					assertEquals(listDataList.get(0).getText(), "Wait until this feature is available");
+					AssertJUnit.assertEquals(listDataList.get(0).getText(), "Wait until this feature is available");
 				}
 			}
 
@@ -93,16 +95,16 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 			for (int i = 0; i < listOfTexts.size(); i++) {
 				listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td[" + (i + 1) + "]");
 				if (i == 0) {
-					assertEquals(listOfWebElement.get(0).getText(), "Mobile App");
+					AssertJUnit.assertEquals(listOfWebElement.get(0).getText(), "Mobile App");
 				}
 				if (i == 1) {
-					assertEquals(listOfWebElement.get(0).getText(), "N/A");
+					AssertJUnit.assertEquals(listOfWebElement.get(0).getText(), "N/A");
 				}
 				if (i == 2) {
-					assertEquals(listOfWebElement.get(0).getText(), "N/A");
+					AssertJUnit.assertEquals(listOfWebElement.get(0).getText(), "N/A");
 				}
 				if (i == 3) {
-					assertEquals(listOfWebElement.get(0).getText(), "Good to Migrate");
+					AssertJUnit.assertEquals(listOfWebElement.get(0).getText(), "Good to Migrate");
 				}
 			}
 		}
@@ -136,7 +138,7 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 			}
 			Collections.sort(enabledFormNamesInDb);
 			Collections.sort(enabledFormNameInReport);
-			assertEquals(enabledFormNamesInDb, enabledFormNameInReport);
+			AssertJUnit.assertEquals(enabledFormNamesInDb, enabledFormNameInReport);
 		} catch (Exception e) {
 			log.info("mobile app is now disable, to validate this TC need to enable the mobile app....................");
 
