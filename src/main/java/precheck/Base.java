@@ -229,7 +229,6 @@ public class Base {
 	 * @return
 	 * @throws IOException
 	 */
-	//@BeforeMethod
 	public static Properties loadQueryFile(String queryPath) throws IOException {
 		prop = new Properties();
 			FileInputStream queryFile = new FileInputStream(
