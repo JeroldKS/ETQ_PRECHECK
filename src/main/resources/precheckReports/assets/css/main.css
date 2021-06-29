@@ -1,0 +1,219 @@
+@font-face {
+    font-family: 'Telegraf Regular';
+    src: url('../fonts/Telegraf_Font_Family_\(Fontmirror\)/Telegraf Regular 400.otf');
+}
+
+@font-face {
+    font-family: 'Telegraf UltraBold';
+    src: url('../fonts/Telegraf_Font_Family_\(Fontmirror\)/Telegraf UltraBold 800.otf');
+}
+@font-face {
+    font-family: 'Telegraf UltraLight';
+    src: url('../fonts/Telegraf_Font_Family_\(Fontmirror\)/Telegraf UltraLight 200.otf');
+}
+@font-face {
+    font-family: 'Open Sans SemiBold';
+    src: url('../fonts/open-sans/OpenSans-Semibold.ttf');
+}
+@font-face {
+    font-family: 'Open Sans Italic';
+    src: url('../fonts/open-sans/OpenSans-Italic.ttf');
+}
+@font-face {
+    font-family: 'Open Sans Regular';
+    src: url('../fonts/open-sans/OpenSans-Regular.ttf');
+}
+
+body {
+    background-color: blue;
+}
+header .top-logo{
+    height: 70px;
+    width: auto;
+}
+
+header .logo-right-content label {
+    font-family: Telegraf Regular;
+    font-weight: 900;
+    font-size: 12px;
+    color: #1D001D;
+    width: 100px;
+}
+header .logo-right-content .company-name {
+    font-family: Open Sans SemiBold;
+    font-size: 18px;
+    color: #1D001D;
+}
+header .logo-right-content .report-register-info .report-info-content {
+    font-family: Open Sans SemiBold;
+    font-size: 11px;
+    color: #000000;
+}
+header .logo-right-content .report-register-info {
+    background-color: #EFECE8;
+}
+.report-overview h4 {
+    font-family: Telegraf UltraBold;
+    font-size: 16px;
+    color: #000000;
+}
+.report-overview .report-cards .report-card-1,
+.report-overview .report-cards .report-card-2,
+.report-overview .report-cards .report-card-3 {
+    box-sizing: border-box;
+    background-color: #F3F3F3;
+    font-size: 48px;
+    font-family: Telegraf Regular;
+}
+.report-overview .report-cards .report-card-1 {
+    border: 2px solid #E02020;
+}
+.report-overview .report-cards .report-card-1 p {
+    color: #E02020;
+}
+.report-overview .report-cards .report-card-1 h5 {
+    color: #FFFFFF;
+    background-color: #E02020;
+}
+.report-overview .report-cards .report-card-2,
+.report-overview .report-cards .report-card-3 {
+    border: 2px solid #41273B;
+}
+.report-overview .report-cards .report-card-2 p,
+.report-overview .report-cards .report-card-2 h5 {
+    color: #304363;
+}
+.report-overview .report-cards .report-card-3 p,
+.report-overview .report-cards .report-card-3 h5 {
+    color: #41273B;
+}
+.report-overview .report-cards .report-card-1 h5,
+.report-overview .report-cards .report-card-2 h5,
+.report-overview .report-cards .report-card-3 h5 {
+    font-family: Telegraf UltraLight;
+    font-size: 12px;
+}
+.after-card-section .waiting {
+    border-top: 1px solid #979797;
+    border-bottom: 1px solid #979797;
+}
+.after-card-section .waiting .waiting-1 span,
+.after-card-section .waiting .waiting-2 span {
+    font-size: 18px;
+    font-family: Open Sans SemiBold;
+    color: #000000;
+}
+.after-card-section .waiting .waiting-1 p,
+.after-card-section .waiting .waiting-2 p,
+.warning-resolutions table .f-f-i {
+    color: #000000;
+    font-size: 11px;
+    line-height: 15px;
+    font-family: Open Sans Italic;
+}
+.after-card-section .reconfigure {
+    border-bottom: 1px solid #979797;
+}
+.after-card-section .reconfigure .reconfigure-1 span,
+.after-card-section .reconfigure .reconfigure-2 span {
+    font-size: 18px;
+    font-family: Open Sans SemiBold;
+    color: #000000;
+}
+.after-card-section .reconfigure .reconfigure-1 p,
+.after-card-section .reconfigure .reconfigure-2 p {
+    color: #000000;
+    font-size: 11px;
+    line-height: 15px;
+    font-family: Open Sans Italic;
+}
+.after-card-section .integration {
+    border-bottom: 1px solid #979797;
+}
+.after-card-section .integration .integration-1 span,
+.after-card-section .integration .integration-2 span {
+    font-size: 18px;
+    font-family: Open Sans SemiBold;
+    color: #000000;
+}
+.after-card-section .integration .integration-1 p,
+.after-card-section .integration .integration-2 p {
+    color: #000000;
+    font-size: 11px;
+    line-height: 15px;
+    font-family: Open Sans Italic;
+}
+.after-card-section .etqscript {
+    border-bottom: 1px solid #979797;
+}
+.after-card-section .etqscript .etqscript-1 span,
+.after-card-section .etqscript .etqscript-2 span {
+    font-size: 18px;
+    font-family: Open Sans SemiBold;
+    color: #000000;
+}
+.after-card-section .etqscript .etqscript-1 p,
+.after-card-section .etqscript .etqscript-2 p {
+    color: #000000;
+    font-size: 11px;
+    line-height: 15px;
+    font-family: Open Sans Italic;
+}
+.heading h4 {
+    font-family: Telegraf UltraBold;
+    font-size: 16px;
+    color: #000000;
+}
+table thead tr th {
+    font-family: Telegraf Regular;
+    font-weight: 600;
+    background-color: #41273B;
+    color: #FFFFFF;
+    font-size: 12px;
+}
+.system table thead tr .head-right {
+    border-right: 4px solid white;
+    width: 7%;
+}
+.system table thead tr .head-left {
+    width: 26%;
+}
+table tbody tr td {
+    font-family: Open Sans Regular;
+    background-color: #f8f9fa;
+    color: #000000;
+    font-size: 11px;
+}
+.system table tbody tr {
+    border-top: 5px solid white;
+}
+footer {
+    font-family: Open Sans Regular;
+    color: #000000;
+    font-size: 11px;
+}
+
+/* Warning resolutions table */
+
+.warning-resolutions table thead tr .b-r-w {
+    border-right: 4px solid white;
+}
+table tbody .warning{
+    background-color: #FBE8E8;
+}
+table tbody .resolution{
+    background-color: f8f9fa;
+}
+
+.info-icon{
+    font-size:1.3rem !important;
+    color:red
+}
+.warning-resolutions .table thead th,
+.warning-resolutions .table tbody tr {
+    vertical-align: bottom;
+    border-bottom: 6px solid #ffffff;
+}
+.warning-resolutions .table tbody .bg-light-grey td {
+    background-color: #f6f6f6;
+}

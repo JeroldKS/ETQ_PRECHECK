@@ -1,0 +1,2862 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>etq-report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="bootstrap-4.0.0/bootstrap-4.0.0/dist/css/bootstrap.min.css">
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="bootstrap-4.0.0/bootstrap-4.0.0/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body class="mt-3">
+    <header class="row head-content mr-0">
+        <div class="logo col-md-3 pl-md-5 pl-4">
+            <img src="./assets/images/etq-logo.png" alt="etq-logo"
+                class="img-thumbnail border-0 top-logo pl-md-5 mt-md-3">
+        </div>
+        <div class="logo-right-content col-md-9 pl-md-1 pr-0">
+            <div class="pl-2">
+                <label>Company Name:&nbsp;&nbsp;</label> <span class="company-name"> Bob's Burgers</span>
+            </div>
+            <div class="report-register-info pl-2 pb-md-1">
+                <label class="mb-0">Date/Time Run:&nbsp;&nbsp;</label> <span class="report-info-content"> April 21, 2021
+                    01:12:59</span></br>
+                <label class="mb-0">URL:&nbsp;&nbsp;</label> <span class="report-info-content">
+                    https://etqteams.etqdemo.com/prod/rel</span></br>
+                <label class="mb-0">Environment:&nbsp;&nbsp;</label> <span class="report-info-content">
+                    ETQ_Migration_1eust</span></br>
+            </div>
+        </div>
+
+    </header>
+    <section class="report-overview container pt-3">
+        <h4 class="report-heading text-center">Report Overview</h4>
+        <div class="row report-cards">
+            <div class="col-md-4 report-card pr-md-2">
+                <div class="report-card-1 text-center">
+                    <p class="m-0 py-4">54</p>
+                    <h5 class="mb-0 py-3">Needs Action!</h5>
+                </div>
+            </div>
+            <div class="col-md-4 report-card pr-md-2 pt-md-0 pt-2">
+                <div class="report-card-2 text-center">
+                    <p class="m-0 py-4">123</p>
+                    <h5 class="mb-0 py-3">No Action Needed</h5>
+                </div>
+            </div>
+            <div class="col-md-4 report-card pt-md-0 pt-2">
+                <div class="report-card-3 text-center">
+                    <p class="m-0 py-4">457</p>
+                    <h5 class="mb-0 py-3">Warnings</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="after-card-section container pt-3">
+        <div class="row waiting mx-0 pt-3 px-3">
+            <div class="col-md-3 waiting-1 pr-md-0">
+                <span>14</span>
+                <div class="pr-5 mr-md-5">
+                    <p class="pr-5">waiting for feature availabability</p>
+                </div>
+            </div>
+            <div class="offset-md-1 col-md-3 waiting-2 pl-md-5">
+                <span>50</span>
+                <div class="pr-5">
+                    <p class="pr-5">waiting for feature availabability</p>
+                </div>
+            </div>
+        </div>
+        <div class="row reconfigure mx-0 pt-3 px-3">
+            <div class="col-md-3 reconfigure-1 pr-md-0">
+                <span>22</span>
+                <div class="pr-5 mr-md-5">
+                    <p class="pr-5">Reconfigure authentication</p>
+                </div>
+            </div>
+            <div class="offset-md-1 col-md-3 reconfigure-2 pl-md-5">
+                <span>50</span>
+                <div class="pr-5">
+                    <p class="pr-5">Reconfigure authentication</p>
+                </div>
+            </div>
+        </div>
+        <div class="row integration mx-0 pt-3 px-3">
+            <div class="col-md-3 integration-1 pr-md-0">
+                <span>8</span>
+                <div class="pr-5 mr-md-5">
+                    <p class="pr-5">Reconfigure integration</p>
+                </div>
+            </div>
+            <div class="offset-md-1 col-md-3 integration-2 pl-md-5">
+                <span>20</span>
+                <div class="pr-5">
+                    <p class="pr-5">Reconfigure integration</p>
+                </div>
+            </div>
+        </div>
+        <div class="row etqscript mx-0 pt-3 px-3">
+            <div class="col-md-3 etqscript-1 pr-md-0">
+                <span>10</span>
+                <div class="pr-5 mr-md-5">
+                    <p class="pr-5">Reconfigure ETQScript</p>
+                </div>
+            </div>
+            <div class="offset-md-1 col-md-3 etqscript-2 pl-md-5">
+                <span>3</span>
+                <div class="pr-5">
+                    <p class="pr-5">Reconfigure ETQScript</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="system pt-3">
+        <div class="pr-md-5 mr-md-5 heading pt-2 pb-2">
+            <h4 class="report-heading text-center pr-md-5 mr-md-5">System Information</h4>
+        </div>
+        <div class="table-responsive-sm">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th class="head-right pl-md-2 pl-1 pt-1">Item</th>
+                        <th class="head-left pl-md-3 pl-1 pt-1">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      
+                    <tr>
+                        <td class="py-1 pl-md-2 pl-1">OS</td>
+                        <td class="pl-md-3 pl-1">"Amazon Linux 2"</td>
+                    </tr>
+                      
+                    <tr>
+                        <td class="py-1 pl-md-2 pl-1">Kernel Version</td>
+                        <td class="pl-md-3 pl-1">4.14.231-173.361.amzn2.x86_64 #1 SMP Mon Apr 26 20:57:08 UTC 2021</td>
+                    </tr>
+                      
+                    <tr>
+                        <td class="py-1 pl-md-2 pl-1">User ID</td>
+                        <td class="pl-md-3 pl-1">uid=0(root) gid=0(root) groups=0(root)</td>
+                    </tr>
+                      
+                    <tr>
+                        <td class="py-1 pl-md-2 pl-1">User has Sudo Privileges</td>
+                        <td class="pl-md-3 pl-1">Successful</td>
+                    </tr>
+                      
+                    <tr>
+                        <td class="py-1 pl-md-2 pl-1">memory</td>
+                        <td class="pl-md-3 pl-1">3.81 GB</td>
+                    </tr>
+                      
+                    <tr>
+                        <td class="py-1 pl-md-2 pl-1">CPU Core Count</td>
+                        <td class="pl-md-3 pl-1">2</td>
+                    </tr>
+                      
+
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center pr-md-5">Custom Data</h4>
+        </div>
+
+        <div>
+            
+            <table class="table table-responsive-sm">
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Item</th>
+                        <th width="20%" class="p-2 b-r-w">Warning</th>
+                        <th width="20%" class="p-2 b-r-w">Message</th>
+                        <th width="20%" class="p-2 b-r-w">Notes</th>
+                    </tr>
+                </thead>
+                  
+                    <tr>
+                        <td class=" p-2">Custom Applications</td>
+                        <td class=" p-2 f-f-i">Not All applications match OOB</td>
+                        
+                        <td class=" p-2 f-f-i">
+                            list of Custom Applications :
+                            <ul>
+                                
+                                <li>DELEGATION</li>
+                                
+                                <li>DEVIATION</li>
+                                
+                                <li>DOCARC</li>
+                                
+                                <li>DOCWORK</li>
+                                
+                                <li>EMERGENCY</li>
+                                
+                                <li>EMERGENCYARC</li>
+                                
+                                <li>ENGINE</li>
+                                
+                                <li>ERM</li>
+                                
+                                <li>ETQ_AUDITS</li>
+                                
+                                <li>ETQ_CALC_ENGINE</li>
+                                
+                                <li>ETQ_EMISSION_INV</li>
+                                
+                                <li>ETQ_PERMIT_CONTROL</li>
+                                
+                                <li>ETQ_PERMIT_CONTROL_ARCHIVE</li>
+                                
+                                <li>ETQ_SUSTAINABILITY</li>
+                                
+                                <li>ETQ_TASK_MANAGEMENT</li>
+                                
+                                <li>EVALIDATOR</li>
+                                
+                                <li>JSAARC</li>
+                                
+                                <li>LOOKUPS</li>
+                                
+                                <li>MATRET</li>
+                                
+                                <li>MEETINGS</li>
+                                
+                                <li>MONITORING</li>
+                                
+                                <li>MONITORINGARC</li>
+                                
+                                <li>MSDS</li>
+                                
+                                <li>MSDSARC</li>
+                                
+                                <li>NCMR</li>
+                                
+                                <li>PDM</li>
+                                
+                                <li>PDMARC</li>
+                                
+                                <li>PPAP</li>
+                                
+                                <li>PROJECT</li>
+                                
+                                <li>QUALRECS</li>
+                                
+                                <li>QUALRECSARC</li>
+                                
+                                <li>RATING</li>
+                                
+                                <li>RECEIVING</li>
+                                
+                                <li>REGULATORY</li>
+                                
+                                <li>REGULATORYARC</li>
+                                
+                                <li>REPORTING</li>
+                                
+                                <li>RISK</li>
+                                
+                                <li>RISKARC</li>
+                                
+                                <li>SUPPLIER</li>
+                                
+                                <li>SUPPLIERARC</li>
+                                
+                                <li>TARGET_DATACENTER</li>
+                                
+                                <li>TARGET_ENGINE</li>
+                                
+                                <li>TARGET_LOOKUPS</li>
+                                
+                                <li>TRAINING</li>
+                                
+                                <li>VACATION1</li>
+                                
+                                <li>VACATION2</li>
+                                
+                                <li>VACATION3</li>
+                                
+                                <li>VACATION4</li>
+                                
+                                <li>VACATION5</li>
+                                
+                                <li>VACATION6</li>
+                                
+                                <li>VACATION7</li>
+                                
+                                <li>VACATION8</li>
+                                
+                                <li>VALIDATION</li>
+                                
+                                <li>VALIDATIONARC</li>
+                                
+                            </ul>
+
+                        </td>
+                        
+                        <td class=" p-2 f-f-i">List of Custom applications</td>
+                    </tr>
+                       
+                <tbody>
+                    <tr>
+                        <td class=" p-2">Java Search SQL</td>
+                        <td class=" p-2 f-f-i"></td>
+                        <td class=" p-2 f-f-i"></td>
+                        <td class=" p-2 f-f-i"></td>
+                    </tr>
+                       
+                    <tr>
+                        <td class=" p-2">External Database Profiles</td>
+                        <td class=" p-2 f-f-i">An external database profile in the administration center</td>
+                        
+                        <td class=" p-2 f-f-i">
+                            list of External Database Profiles :
+                            <ul>
+                                
+                                <li>ENGINE</li>
+                                
+                            </ul>
+
+                        </td>
+                        
+                        <td class=" p-2 f-f-i">List of the database profiles in the administration center</td>
+                    </tr>
+                      
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center pr-md-5">Feature Unavailable</h4>
+        </div>
+
+        <div>
+            <table class="table table-responsive-sm">
+                
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Item</th>
+                        <th width="20%" class="p-2 b-r-w">Actions</th>
+                        <th width="20%" class="p-2 b-r-w">Message</th>
+                        <th width="40%" class="p-2 b-r-w">Resolution</th>
+                    </tr>
+                </thead>
+                  
+                    
+                    <tr>
+                        <td class=" p-2 warning f-f-i">eMDR</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon'></i>Action needed
+                        </td>
+                        <td class=" p-2 warning f-f-i">eMDR is not supported yet for Migration</td>
+                        <td class=" p-2 warning f-f-i">Wait until this feature is available</td>
+                    </tr>
+                        
+                    
+                    <tr>
+                        <td class=" p-2 warning">Mobile App</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon pr-md-1'></i>Action needed
+                        </td>
+                        <td class=" p-2 warning f-f-i">
+                            <ul>
+                                list of Mobile App
+                                
+                                <li>
+                                    ASPECTS_ASPECT_DOCUMENT
+                                </li>
+                                
+                            </ul>
+                        <td class=" p-2 warning f-f-i">Wait until this feature is available</td>
+                    </tr>
+                       
+            </table>
+        </div>
+    </section>
+
+
+    </section>
+    <section class="warning-resolutions pt-3">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">Warnings</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+                
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Item</th>
+                        <th width="40%" class="p-2 b-r-w">Message</th>
+                        <th width="40%" class="p-2 b-r-w">Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Employee Training</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr>
+                        <td class=" p-2 warning">EtQDevelopment Environment</td>
+                        <td class=" p-2 warning f-f-i">ETQ Development Environment  is enabled</td>
+                        <td class=" p-2 warning f-f-i">Property is enabled but not supported on NXG</td>
+                    </tr>
+                       
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    </section>
+    <section class="warning-resolutions pt-3">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">Incompatible Authentication</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+                
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Item</th>
+                        <th width="40%" class="p-2 b-r-w">Actions</th>
+                        <th width="40%" class="p-2 b-r-w">Error</th>
+                        <th width="40%" class="p-2 b-r-w">Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      
+                    <tr>
+                        <td class=" p-2 warning">LDAP Authentication</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon'></i>Enabled
+                        </td>
+                        <td class=" p-2 warning f-f-i">This authentication is not supported in NXG</td>
+                        <td class=" p-2 warning f-f-i">Reconfigure the authentication to the supported option</td>
+                    </tr>
+                        
+                    <tr>
+                        <td class=" p-2 warning">SSO Authentication</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon'></i>Action required
+                        </td>
+                        <td class=" p-2 warning f-f-i">This authentication is not supported in NXG</td>
+                        <td class=" p-2 warning f-f-i">Reconfigure the authentication to the a supported option</td>
+                    </tr>
+                        
+                    <tr>
+                        <td class=" p-2 warning">Kerberos SSO</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon'></i>Action required
+                        </td>
+                        <td class=" p-2 warning f-f-i">This authentication is not supported in NXG</td>
+                        <td class=" p-2 warning f-f-i">Reconfigure the authentication to the a supported option</td>
+                    </tr>
+                       
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">Incompatible Integration</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+                
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Item</th>
+                        <th width="20%" class="p-2 b-r-w">Actions</th>
+                        <th width="20%" class="p-2 b-r-w">Error</th>
+                        <th width="40%" class="p-2 b-r-w">Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Sharepoint Connection Profile</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr>
+                        <td class=" p-2 warning">WS Restful Connection Profile</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon'></i>Action Required
+                        </td>
+                        <td class=" p-2 warning f-f-i">
+                            <p>This authentication is not supported in NXG</p>
+                            <ul>
+                                
+                                <li>ETQ_GET_ATTACHMENT_FROM_TRAQPATH</li>
+                                
+                                <li>ETQ_ASSIGN_DOCUMENT_TO_TRAQPATH_USER</li>
+                                
+                                <li>ETQ_TRAQPATH_KEY</li>
+                                
+                                <li>ETQ_REASSIGN_DOCUMENT_TO_TRAQPATH_USER</li>
+                                
+                                <li>ETQ_GET_DOCUMENT_FROM_TRAQPATH</li>
+                                
+                                <li>ETQ_UPDATE_DOCUMENT_IN_TRAQPATH</li>
+                                
+                                <li>ETQ_DELETE_DOCUMENT_FROM_TRAQPATH</li>
+                                
+                                <li>ETQ_REGSCAN_WEB_SERVICE</li>
+                                
+                            </ul>
+
+                        </td>
+                        <td class=" p-2 warning f-f-i">Reconfigure the connection profile to the use REST Web Services instead</td>
+                    </tr>
+                        
+                    <tr>
+                        <td class=" p-2 warning">WS Restful Operation Connection Profile</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon'></i>Action Required
+                        </td>
+                        <td class=" p-2 warning f-f-i">
+                            <p>This authentication is not supported in NXG</p>
+                            <ul>
+                                
+                                <li>get attachment</li>
+                                
+                                <li>Assign Document to Traqapth</li>
+                                
+                                <li>createWorkGroup</li>
+                                
+                                <li>validateWorkGroupByKey</li>
+                                
+                                <li>Reassign Document to Traqapth</li>
+                                
+                                <li>get document</li>
+                                
+                                <li>Update document in traqpath</li>
+                                
+                                <li>Delete document</li>
+                                
+                                <li>DownloadChanges</li>
+                                
+                                <li>MarkFeedAsRead</li>
+                                
+                            </ul>
+
+                        </td>
+                        <td class=" p-2 warning f-f-i">Reconfigure the connection profile to the use REST Web Services instead</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Database Connection Profile</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">WS Access Connection Profile</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">SOAP Connection Profile</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                       
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">ETQ Script Problems</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+                
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Item</th>
+                        <th width="20%" class="p-2 b-r-w">Actions</th>
+                        <th width="20%" class="p-2 b-r-w">Error</th>
+                        <th width="40%" class="p-2 b-r-w">Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Keyword Ids in ETQ script</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                      
+
+                      
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Java Classes in ETQ script</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                     
+                    
+
+                      
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">SQL Lookups Reference</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                    
+                        
+                    
+
+                    
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">SQL Problems</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+                
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Item</th>
+                        <th width="20%" class="p-2 b-r-w">Actions</th>
+                        <th width="20%" class="p-2 b-r-w">Error</th>
+                        <th width="40%" class="p-2 b-r-w">Resolution</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      
+                    <tr>
+                        <td class=" p-2 warning">Incompatible SQL Statements</td>
+                        <td class=" p-2 warning f-f-i">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <i class='fas fa-exclamation-circle info-icon'></i>Action Required
+                        </td>
+                        <td class=" p-2 warning f-f-i">See associated appendix for failures</td>
+                        <td class=" p-2 warning f-f-i">Update the incompatible SQL statements</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Java Search SQL</td>
+                        <td class="p-2 f-f-i">No Action required</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Incompatible Database Views</td>
+                        <td class="p-2 f-f-i">No Action required</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Incompatible Stored Procedures</td>
+                        <td class="p-2 f-f-i">No Action required</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Incompatible Data Types</td>
+                        <td class="p-2 f-f-i">No Action required</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Number of Indexes(64)</td>
+                        <td class="p-2 f-f-i">No Action required</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                        
+                    <tr class="bg-light-grey">
+                    <tr class="bg-light-grey">
+                        <td class="p-2">Encrypted Database Objects</td>
+                        <td class="p-2 f-f-i">No Action required</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">Good to Migrate</td>
+                    </tr>
+                       
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">APPENDIX: Incompatible SQL statements</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Setting Name</th>
+                        <th width="20%" class="p-2 b-r-w">SQL</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                     
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.SUBFORM_SETTINGS.LOOKUP_QUERY.12</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+CUSTOMER_PROFILE.CUSTOMER_PROFILE_ID,
+CUSTOMER_PROFILE.CUSTOMER_NAME ETQ_NCMR_CUSTOMERINFO_NAME,
+CUSTOMER_PROFILE.TELEPHONE_NUMBER ETQ_NCMR_CUSTOMERINFO_PHONE_NO,
+CONTACTS.CONTACT_E_MAIL ETQ_NCMR_CUSTOMERINFO_EMAIL,
+CASE
+WHEN ((CUSTOMER_PROFILE.ADDRESS_ONE IS NOT NULL) AND (CUSTOMER_PROFILE.ADDRESS_TWO IS NOT NULL)) THEN
+     (CONCAT('Address 1:' , IFNULL(CHAR(13 USING ASCII), '') , IFNULL(CUSTOMER_PROFILE.ADDRESS_ONE, '') , IFNULL(CHAR(10 USING ASCII), '') , IFNULL(CHAR(13 USING ASCII), '') ,  'Address 2:', IFNULL(CHAR(13 USING ASCII), '') , IFNULL(CUSTOMER_PROFILE.ADDRESS_TWO, '')))
+WHEN ((CUSTOMER_PROFILE.ADDRESS_ONE IS NULL) AND (CUSTOMER_PROFILE.ADDRESS_TWO IS NOT NULL)) THEN
+     (CONCAT('Address 2:' , IFNULL(CHAR(13 USING ASCII), '') , IFNULL(CUSTOMER_PROFILE.ADDRESS_TWO, '')))
+WHEN ((CUSTOMER_PROFILE.ADDRESS_ONE IS NOT NULL) AND (CUSTOMER_PROFILE.ADDRESS_TWO IS NULL)) THEN
+     (CONCAT('Address 1:' , IFNULL(CHAR(13 USING ASCII), '') , IFNULL(CUSTOMER_PROFILE.ADDRESS_ONE, '')))
+WHEN ((CUSTOMER_PROFILE.ADDRESS_ONE IS NULL) AND (CUSTOMER_PROFILE.ADDRESS_TWO IS NULL)) THEN ''
+END ETQ_NCMR_CUSTOMERINFO_ADDRESS,
+CONTACTS.CONTACT_NAME ETQ_NCMR_CUSTOMERCONTACT_NAME
+FROM
+CUSTOMERS.CUSTOMER_PROFILE CUSTOMER_PROFILE
+LEFT JOIN CUSTOMERS.CUSTOMER_CONTACTS CONTACTS ON (CUSTOMER_PROFILE.CUSTOMER_PROFILE_ID = CONTACTS.CUSTOMER_PROFILE_ID)
+WHERE
+CONTACTS.CUSTOMER_CONTACTS_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "(" "("
+    at line 8, column 13.
+
+Was expecting one of:
+
+    "&"
+    "&&"
+    ")"
+    "::"
+    "<<"
+    ">>"
+    "AND"
+    "COLLATE"
+    "OR"
+    "["
+    "^"
+    "|"
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "(" "("
+    at line 8, column 13.
+
+Was expecting one of:
+
+    "&"
+    "&&"
+    ")"
+    "::"
+    "<<"
+    ">>"
+    "AND"
+    "COLLATE"
+    "OR"
+    "["
+    "^"
+    "|"
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.AndExpression(CCJSqlParser.java:8458)
+	at net.sf.jsqlparser.parser.CCJSqlParser.OrExpression(CCJSqlParser.java:8400)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Expression(CCJSqlParser.java:8371)
+	at net.sf.jsqlparser.parser.CCJSqlParser.WhenThenSearchCondition(CCJSqlParser.java:12276)
+	at net.sf.jsqlparser.parser.CCJSqlParser.CaseWhenExpression(CCJSqlParser.java:12085)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PrimaryExpression(CCJSqlParser.java:10770)
+	at net.sf.jsqlparser.parser.CCJSqlParser.BitwiseXor(CCJSqlParser.java:10671)
+	at net.sf.jsqlparser.parser.CCJSqlParser.MultiplicativeExpression(CCJSqlParser.java:10624)
+	at net.sf.jsqlparser.parser.CCJSqlParser.AdditiveExpression(CCJSqlParser.java:10587)
+	at net.sf.jsqlparser.parser.CCJSqlParser.BitwiseAndOr(CCJSqlParser.java:10533)
+	at net.sf.jsqlparser.parser.CCJSqlParser.ConcatExpression(CCJSqlParser.java:10509)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SimpleExpression(CCJSqlParser.java:10495)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SQLCondition(CCJSqlParser.java:9195)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Condition(CCJSqlParser.java:8697)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectExpressionItem(CCJSqlParser.java:4798)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectItem(CCJSqlParser.java:5033)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectItemsList(CCJSqlParser.java:4789)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4273)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.LINK_DESCRIPTION_SQL.3</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+(DISPLAY_NAME+' ('+APPLICATION_NAME+')') OPEN_DESCRIPTION
+FROM
+?.APPLICATION_SETTINGS APPLICATION_SETTINGS
+WHERE
+APPLICATION_SETTINGS.APPLICATION_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 4, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 4, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.LINK_DESCRIPTION_SQL.4</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+(CONCAT(IFNULL(DISPLAY_NAME, ''),' (',IFNULL(COLUMN_NAME, ''),')')) OPEN_DESCRIPTION
+FROM
+?.COLUMN_SETTINGS COLUMN_SETTINGS
+WHERE
+COLUMN_SETTINGS.COLUMN_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 4, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 4, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.LINK_DESCRIPTION_SQL.5</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+DATASOURCE_ID,
+CONCAT(IFNULL(DISPLAY_NAME, '') , ' (' ,IFNULL(DATASOURCE_NAME, '') , ')') OPEN_DESCRIPTION
+FROM
+?.DATASOURCE_SETTINGS
+WHERE
+DATASOURCE_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.LINK_DESCRIPTION_SQL.6</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT (CONCAT(IFNULL(DISPLAY_NAME, '') , ' (',IFNULL(FORM_NAME, ''),')')) OPEN_DESCRIPTION FROM ?.FORM_SETTINGS FORM_SETTINGS WHERE FORM_SETTINGS.FORM_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 1, column 98.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 1, column 98.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.TRAINING_REQUIREMENT_DESC.16</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+(CONCAT(IFNULL(IFNULL(WF.DISPLAY_NAME,''), '') , IFNULL(IFNULL(Concat(' # ' , IFNULL(DOCUMENT_TABLE.ETQ$NUMBER, '')),''), '')  , IFNULL(IFNULL(CONCAT(' ETQ$REV. ' , IFNULL(DOCUMENT_TABLE.ETQ$REVISION, '')),''), ''))) REQUIRMENT_DESCRIPTION
+
+FROM
+?.CORRACT_DOCUMENT DOCUMENT_TABLE
+LEFT JOIN ENGINE.PHASE_SETTINGS PHASE ON (DOCUMENT_TABLE.ETQ$CURRENT_PHASE = PHASE.PHASE_ID)
+LEFT JOIN ENGINE.WF_SETTINGS WF ON (PHASE.WORKFLOW_ID = WF.WORKFLOW_ID)
+
+WHERE
+DOCUMENT_TABLE.CORRACT_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.TRAINING_REQUIREMENT_DESC.17</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+(CONCAT(IFNULL(IFNULL(WF.DISPLAY_NAME,''), '') , IFNULL(IFNULL(Concat(' # ' , IFNULL(DOCUMENT_TABLE.ETQ$NUMBER, '')),''), '')  , IFNULL(IFNULL(CONCAT(' ETQ$REV. ' , IFNULL(DOCUMENT_TABLE.ETQ$REVISION, '')),''), ''))) REQUIRMENT_DESCRIPTION
+
+FROM
+?.NCMR_DOCUMENT DOCUMENT_TABLE
+LEFT JOIN ENGINE.PHASE_SETTINGS PHASE ON (DOCUMENT_TABLE.ETQ$CURRENT_PHASE = PHASE.PHASE_ID)
+LEFT JOIN ENGINE.WF_SETTINGS WF ON (PHASE.WORKFLOW_ID = WF.WORKFLOW_ID)
+
+WHERE
+DOCUMENT_TABLE.NCMR_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.TRAINING_REQUIREMENT_DESC.25</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+(CONCAT(IFNULL(IFNULL(DOCUMENT_TABLE.DOCUMENT_SUBJECT,''), '') , ', ' , IFNULL(IFNULL(WF.DISPLAY_NAME,''), '') , IFNULL(IFNULL(Concat(' # ' , IFNULL(DOCUMENT_TABLE.ETQ$NUMBER, '')),''), '')  , IFNULL(IFNULL(CONCAT(' ETQ$REV. ' , IFNULL(DOCUMENT_TABLE.ETQ$REVISION, '')),''), ''))) REQUIRMENT_DESCRIPTION
+
+FROM
+?.DEVIATION_DOCUMENT DOCUMENT_TABLE
+LEFT JOIN ENGINE.PHASE_SETTINGS PHASE ON (DOCUMENT_TABLE.ETQ$CURRENT_PHASE = PHASE.PHASE_ID)
+LEFT JOIN ENGINE.WF_SETTINGS WF ON (PHASE.WORKFLOW_ID = WF.WORKFLOW_ID)
+
+WHERE
+DOCUMENT_TABLE.DEVIATION_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                    <tr class="bg-light-grey">
+                        <td class="p-2">ENGINE.FORM_SETTINGS.TRAINING_REQUIREMENT_DESC.33</td>
+                        <td class="p-2 f-f-i">Exception in thread "main" java.lang.RuntimeException: Unable to parse SQL statement: SELECT
+(CONCAT(IFNULL(IFNULL(WF.DISPLAY_NAME,''), '') , IFNULL(IFNULL(Concat(' # ' , IFNULL(DOCUMENT_TABLE.ETQ$NUMBER, '')),''), '')  , IFNULL(IFNULL(CONCAT(' ETQ$REV. ' , IFNULL(DOCUMENT_TABLE.ETQ$REVISION, '')),''), ''))) REQUIRMENT_DESCRIPTION
+
+FROM
+?.CHANGE_DOCUMENT DOCUMENT_TABLE
+LEFT JOIN ENGINE.PHASE_SETTINGS PHASE ON (DOCUMENT_TABLE.ETQ$CURRENT_PHASE = PHASE.PHASE_ID)
+LEFT JOIN ENGINE.WF_SETTINGS WF ON (PHASE.WORKFLOW_ID = WF.WORKFLOW_ID)
+
+WHERE
+DOCUMENT_TABLE.CHANGE_ID = ? 
+
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:160)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:125)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.main(MultitenantSQLParser.java:113)
+Caused by: net.sf.jsqlparser.JSQLParserException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:165)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:59)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parse(CCJSqlParserUtil.java:37)
+	at com.etq.mt.sqlparser.MultitenantSQLParser.parseAndPatch(MultitenantSQLParser.java:158)
+	... 2 more
+Caused by: net.sf.jsqlparser.parser.ParseException: Encountered unexpected token: "?" "?"
+    at line 5, column 1.
+
+Was expecting one of:
+
+    "("
+    "ACTION"
+    "ANY"
+    "BYTE"
+    "CASCADE"
+    "CAST"
+    "CHANGE"
+    "CHAR"
+    "CHARACTER"
+    "COLUMN"
+    "COLUMNS"
+    "COMMENT"
+    "COMMIT"
+    "CREATE"
+    "CYCLE"
+    "DESC"
+    "DESCRIBE"
+    "DISABLE"
+    "DIV"
+    "DO"
+    "DOUBLE"
+    "DUPLICATE"
+    "ENABLE"
+    "END"
+    "EXCLUDE"
+    "EXTRACT"
+    "FALSE"
+    "FIRST"
+    "FN"
+    "FOLLOWING"
+    "FORMAT"
+    "GROUP"
+    "IF"
+    "INDEX"
+    "INSERT"
+    "INTERVAL"
+    "ISNULL"
+    "KEY"
+    "LAST"
+    "LATERAL"
+    "LEFT"
+    "LIMIT"
+    "MATERIALIZED"
+    "NEXTVAL"
+    "NO"
+    "NOLOCK"
+    "NULLS"
+    "OF"
+    "OFFSET"
+    "ON"
+    "OPEN"
+    "OPTIMIZE"
+    "ORDER"
+    "OVER"
+    "PARTITION"
+    "PATH"
+    "PERCENT"
+    "PRECISION"
+    "PRIMARY"
+    "PRIOR"
+    "PROCEDURE"
+    "PUBLIC"
+    "RANGE"
+    "READ"
+    "REPLACE"
+    "RIGHT"
+    "ROW"
+    "ROWS"
+    "SCHEMA"
+    "SEPARATOR"
+    "SEQUENCE"
+    "SESSION"
+    "SET"
+    "SIBLINGS"
+    "SIZE"
+    "START"
+    "TABLE"
+    "TABLES"
+    "TEMP"
+    "TEMPORARY"
+    "TO"
+    "TOP"
+    "TRUE"
+    "TRUNCATE"
+    "TYPE"
+    "UNSIGNED"
+    "VALIDATE"
+    "VALUE"
+    "VALUES"
+    "VIEW"
+    "XML"
+    "ZONE"
+    "{"
+    <K_DATETIMELITERAL>
+    <K_DATE_LITERAL>
+    <S_IDENTIFIER>
+    <S_QUOTED_IDENTIFIER>
+
+	at net.sf.jsqlparser.parser.CCJSqlParser.generateParseException(CCJSqlParser.java:26538)
+	at net.sf.jsqlparser.parser.CCJSqlParser.jj_consume_token(CCJSqlParser.java:26377)
+	at net.sf.jsqlparser.parser.CCJSqlParser.FromItem(CCJSqlParser.java:6542)
+	at net.sf.jsqlparser.parser.CCJSqlParser.PlainSelect(CCJSqlParser.java:4287)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SetOperationList(CCJSqlParser.java:4496)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SelectBody(CCJSqlParser.java:4163)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Select(CCJSqlParser.java:4158)
+	at net.sf.jsqlparser.parser.CCJSqlParser.SingleStatement(CCJSqlParser.java:130)
+	at net.sf.jsqlparser.parser.CCJSqlParser.Statement(CCJSqlParser.java:81)
+	at net.sf.jsqlparser.parser.CCJSqlParserUtil.parseStatement(CCJSqlParserUtil.java:163)
+	... 5 more
+</td>
+                    </tr>
+                      
+                </tbody>
+            </table>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">APPENDIX: Incompatible Database Views</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Schema Name</th>
+                        <th width="20%" class="p-2 b-r-w">Database Views</th>
+                    </tr>
+                </thead>
+                
+                    <tr class="bg-light-grey">
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+    </section>
+
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">APPENDIX: Incompatible Data Types</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Schema</th>
+                        <th width="20%" class="p-2 b-r-w">Table</th>
+                        <th width="20%" class="p-2 b-r-w">Column</th>
+                        <th width="20%" class="p-2 b-r-w">Data Type</th>
+                    </tr>
+                </thead>
+                
+                    <tr class="bg-light-grey">
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">APPENDIX: Number of Indexes (64)</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Schema</th>
+                        <th width="20%" class="p-2 b-r-w">Table</th>
+                    </tr>
+                </thead>
+                
+                    <tr class="bg-light-grey">
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+    </section>
+
+    <section class="warning-resolutions">
+        <div class="heading pt-2 pb-2">
+            <h4 class="report-heading text-center">APPENDIX: Java Search SQL</h4>
+        </div>
+        <div>
+            <table class="table table-responsive-sm">
+
+                <thead>
+                    <tr>
+                        <th width="20%" class="p-2 b-r-w">Schema Name</th>
+                        <th width="20%" class="p-2 b-r-w">Database Views</th>
+                    </tr>
+                </thead>
+                
+                    <tr class="bg-light-grey">
+                        <td class="p-2 f-f-i">N/A</td>
+                        <td class="p-2 f-f-i">N/A</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+    </section>
+
+
+    <!-- <footer class="pl-md-3 pl-2 pt-2">page 1 of 6</footer> -->
+
+</html>

@@ -20,7 +20,7 @@ import precheck.Base;
 public class MMP385_LinuxInfraCheck extends Base {
 	static Logger log = Logger.getLogger(MMP524_MobileAppIsEnabledDisabled.class.getName());
 
-	@Test(enabled=false)
+	@Test
 	public static void tc01_verifyInfraChecks() throws JSchException, SftpException, Exception {
 		loadLowLevelReportInBrowser();
 		establishSshConnectionforSourceDB();

@@ -71,7 +71,7 @@ public class Base {
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
-		driver.get(browserProperties.getProperty("low"));
+		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("low"));
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
@@ -81,7 +81,7 @@ public class Base {
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
-		driver.get(browserProperties.getProperty("high"));
+		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("high"));
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
