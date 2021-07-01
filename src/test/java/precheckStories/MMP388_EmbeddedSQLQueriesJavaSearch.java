@@ -15,6 +15,10 @@ import precheck.Base;
 public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 	static Logger log = Logger.getLogger(MMP388_EmbeddedSQLQueriesJavaSearch.class.getName());
 
+	/**
+	 * This method is to identify report query have 3 or more UNION keyword
+	 * @throws Exception
+	 */
 	@Test
 	public void tc02_IsIdentifyReportQueryHave3OrMoreUNIONKeyword() throws Exception {
 		log.info(
@@ -40,6 +44,10 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 		log.info("tc07 Report Query Path validation ended......................");
 	}
 
+	/**
+	 * This method is to identified report query captured in format
+	 * @throws Exception
+	 */
 	@Test
 	public void tc03_IdentifiedReportQueryCapturedInFormat() throws Exception {
 		log.info(
@@ -72,6 +80,10 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 		log.info("tc03_Identified Report Query Captured In Format validation ended...................................");
 	}
 
+	/**
+	 * This method is to validate report and source query count same
+	 * @throws Exception
+	 */
 	@Test
 	public void tc05_IsReportAndSourceQueryCountSame() throws Exception {
 		log.info(
@@ -112,6 +124,10 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 				"tc05 Report and Source Query Count Have 3 Or More UNION Keyword Comparision ended......................................");
 	}
 
+	/**
+	 * This method is to validate Report and Source Query are same
+	 * @throws Exception
+	 */
 	@Test
 	public void tc06_ReportAndSourceQueryAreSame() throws Exception {
 		log.info("tc06 Repor and Source Query are same validation started......................");
@@ -153,6 +169,10 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 		log.info("tc06 Repor and Source Query are same validation ended......................");
 	}
 
+	/**
+	 * This method is to validate Report Query path is valid
+	 * @throws Exception
+	 */
 	@Test
 	public void tc07_IsReportQueryPathValid() throws Exception {
 		log.info("tc07 Report Query Path validation started......................");
@@ -182,4 +202,50 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 		}
 		log.info("tc07 Report Query Path validation ended......................");
 	}
+	
+	/**
+	 * This method is to validate Report Query associated with settings name path
+	 * @throws Exception
+	 */
+	@Test
+	public void tc08_IsReportQueryAssociatedWithSettingsNamePath() throws Exception {
+		log.info(
+				"tc08 Report Query associated With Settings Name Path validation Started...................................");
+		loadHighLevelReportInBrowser();
+		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
+				+ "//src//test//resources//precheck//BusinessRules//MMP388_EmbeddedSQLQueriesJavaSearch.json");
+		JSONParser jsonParser = new JSONParser();
+		Object parse = jsonParser.parse(jsonfile);
+		JSONArray jsonArray = (JSONArray) parse;
+		xpathProperties = loadXpathFile();
+		listOfWebElement = xtexts(xpathProperties.getProperty("keywordOwnerFormat"));
+		listOfText = listString();
+		for (int i = 0; i < listOfText.size(); i++) {
+			String[] keywordOwnerSplit = listOfText.get(i).split("[.]");
+			for (int j = 0; j < jsonArray.size(); j++) {
+				Object jsonobject = jsonArray.get(j);
+				JSONObject parseStep1 = (JSONObject) jsonobject;
+				if ((parseStep1.get("schema").toString().equalsIgnoreCase(keywordOwnerSplit[0]))
+						&& (parseStep1.get("table").toString().equalsIgnoreCase(keywordOwnerSplit[1]))
+						&& (parseStep1.get("field").toString().equalsIgnoreCase(keywordOwnerSplit[2]))) {
+					sourceQuery = query("select " + keywordOwnerSplit[2] + " from " + keywordOwnerSplit[0] + "."
+							+ keywordOwnerSplit[1] + " where " + keywordOwnerSplit[2] + " is not null and "
+							+ parseStep1.get("id") + " = '" + keywordOwnerSplit[3] + "'");
+					text = xtext("//*[contains(text(),'APPENDIX: Java Search SQL')]/following::tbody[1]/tr["+ (i+1) +"]/td[2]");
+					sourceQuery.next();
+					String perCellData = sourceQuery.getObject(1).toString();
+					String replaceAllLine = perCellData.replaceAll("[\t\n]+", " ");
+					String replaceAllSpace = replaceAllLine.replaceAll("\\s{2,}", " ").trim();
+					String javaSqlQuery = replaceAllSpace;
+					Assert.assertEquals(javaSqlQuery,text );
+
+				}
+			}
+		}
+		log.info("tc08 Report Query associated With Settings Name Path validation ended...................................");	
+
+	}	
+	
+	
+	
 }
