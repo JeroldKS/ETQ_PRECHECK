@@ -37,7 +37,6 @@ public class MMP387_IntegrationCheck extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -45,12 +44,12 @@ public class MMP387_IntegrationCheck extends Base{
 				propsFilePath = propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				boolean flag = false;
+				String ssoStatus = "SSO Disabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ssoEnabled") && !line.contains("#")) {
 						String ssoEnabled = line.split("=")[1];
 						if(ssoEnabled.trim().equals("1")) {
-							flag = true;
+							ssoStatus = "SSO Enabled";
 							listOfWebElement = xtexts("//*[contains(text(),'SSO Authentication')]/../td");
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -64,11 +63,10 @@ public class MMP387_IntegrationCheck extends Base{
 									assertEquals(listDataList.get(0).getText(), "Reconfigure the authentication to the a supported option");
 								}
 							}
-							break;
 						}
 					}
 				}
-				assertTrue(flag == true);
+				assertEquals(ssoStatus, "SSO Enabled");
 			}
 			log.info("TC 01 Checking if SSO enabled ended..............");
 		} catch (IOException io) {
@@ -90,7 +88,6 @@ public class MMP387_IntegrationCheck extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -98,12 +95,12 @@ public class MMP387_IntegrationCheck extends Base{
 				propsFilePath = propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				boolean flag = false;
+				String ssoStatus = "SSO Enabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ssoEnabled") && !line.contains("#")) {
 						String ssoEnabled = line.split("=")[1];
 						if(ssoEnabled.trim().equals("0")) {
-							flag = true;
+							ssoStatus = "SSO Disabled";
 							listOfWebElement = xtexts("//*[contains(text(),'SSO Authentication')]/../td");
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -117,11 +114,10 @@ public class MMP387_IntegrationCheck extends Base{
 									assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 								}
 							}
-							break;
 						}
 					}
 				}
-				assertTrue(flag == true);
+				assertEquals(ssoStatus, "SSO Disabled");
 			}
 			log.info("TC 02 Checking if SSO disabled ended..............");
 		} catch (IOException io) {
@@ -143,7 +139,6 @@ public class MMP387_IntegrationCheck extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -183,7 +178,6 @@ public class MMP387_IntegrationCheck extends Base{
 								assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 							}
 						}
-						break;
 					}
 				}
 			}
@@ -480,7 +474,6 @@ public class MMP387_IntegrationCheck extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -488,12 +481,12 @@ public class MMP387_IntegrationCheck extends Base{
 				propsFilePath = propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				boolean flag = false;
+				String ldapAvailability = "LDAP Availability Disabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ldapUnavailable") && !line.contains("#")) {
 						String ldabUnavailable = line.split("=")[1];
 						if(ldabUnavailable.trim().equals("0")) {
-							flag = true;
+							ldapAvailability = "LDAP Availability Enabled";
 							listOfWebElement = xtexts("//*[contains(text(),'LDAP Authentication')]/../td");
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -507,11 +500,10 @@ public class MMP387_IntegrationCheck extends Base{
 									assertEquals(listDataList.get(0).getText(), "Reconfigure the authentication to the supported option");
 								}
 							}
-							break;
 						}
 					}
 				}
-				assertTrue(flag == true);
+				assertEquals(ldapAvailability, "LDAP Availability Enabled");
 			}
 			log.info("TC 09 Checking if ldapUnavailable is enabled  ended..............");
 		} catch (IOException io) {
@@ -533,7 +525,6 @@ public class MMP387_IntegrationCheck extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -541,12 +532,12 @@ public class MMP387_IntegrationCheck extends Base{
 				propsFilePath = propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				boolean flag = false;
+				String ldapAvailability = "LDAP Availability Enabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ldapUnavailable") && !line.contains("#")) {
 						String ldabUnavailable = line.split("=")[1];
 						if(ldabUnavailable.trim().equals("1")) {
-							flag = true;
+							ldapAvailability = "LDAP Availability Disabled";
 							listOfWebElement = xtexts("//*[contains(text(),'LDAP Authentication')]/../td");
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -560,11 +551,10 @@ public class MMP387_IntegrationCheck extends Base{
 									assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 								}
 							}
-							break;
 						}
 					}
 				}
-				assertTrue(flag == true);
+				assertEquals(ldapAvailability, "LDAP Availability Disabled");
 			}
 			log.info("TC 10 Checking if ldapUnavailable is disabled ended..............");
 		} catch (IOException io) {

@@ -37,7 +37,6 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -45,13 +44,13 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 				propsFilePath = propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				String isEtQDevelopmentEnvironmentAvailable = "isEtQDevelopmentEnvironment not availabe";
+				String isEtQDevelopmentEnvironmentAvailable = "isEtQDevelopmentEnvironment not available";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("isEtQDevelopmentEnvironment") && !line.contains("#")) {
-						isEtQDevelopmentEnvironmentAvailable = "isEtQDevelopmentEnvironment availabe";
+						isEtQDevelopmentEnvironmentAvailable = "isEtQDevelopmentEnvironment available";
 					}
 				}
-				assertEquals(isEtQDevelopmentEnvironmentAvailable, "isEtQDevelopmentEnvironment availabe");
+				assertEquals(isEtQDevelopmentEnvironmentAvailable, "isEtQDevelopmentEnvironment available");
 			}
 			log.info("TC 01 Checking if the isEtQDevelopmentEnvironment is available ended..............");
 		} catch (IOException io) {
@@ -73,7 +72,6 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -96,7 +94,6 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 									assertEquals(listDataList.get(0).getText(), "Property is enabled but not supported on NXG");
 								} 
 							}
-							break;
 						}
 					}
 				}
@@ -121,7 +118,6 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("props_file_path") && !line.contains("#")) {
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
-					break;
 				}
 			}
 			establishSshConnection();
@@ -144,12 +140,59 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 									assertEquals(listDataList.get(0).getText(), "Good to migrate");
 								} 
 							}
-							break;
 						}
 					}
 				}
 			}
-			log.info("TC 02 Checking if isEtQDevelopmentEnvironment Disabled ended..............");
+			log.info("TC 03 Checking if isEtQDevelopmentEnvironment Disabled ended..............");
+		} catch (IOException io) {
+			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
+			io.getMessage();
+		}
+	}
+	
+	@Test
+	public static void tc04_checkForisEtQDevelopmentEnvironmenUnavailable() throws JSchException, SftpException, Exception {
+		log.info("TC 04 Checking if isEtQDevelopmentEnvironment Unavailable started..............");
+		loadHighLevelReportInBrowser();
+		establishSshConnection();
+		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+			String propsFilePath = null;
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (line.contains("props_file_path") && !line.contains("#")) {
+					propsFilePath = line.split("=")[1].replaceAll("\"", "");
+				}
+			}
+			establishSshConnection();
+			if(null != propsFilePath) {
+				propsFilePath = propsFilePath + "/config.properties";
+				stream = sftpChannel.get(propsFilePath);
+				br = new BufferedReader(new InputStreamReader(stream));
+				String isEtQDevelopmentEnvironment = "isEtQDevelopmentEnvironment Unavailable";
+				while ((line = br.readLine()) != null) {
+					if (line.contains("isEtQDevelopmentEnvironment") && !line.contains("#")) {
+						isEtQDevelopmentEnvironment = "isEtQDevelopmentEnvironment Available";
+					}
+				}
+				assertEquals(isEtQDevelopmentEnvironment, "isEtQDevelopmentEnvironment Unavailable");
+				if(isEtQDevelopmentEnvironment == "isEtQDevelopmentEnvironment Unavailable") {
+					listOfWebElement = xtexts("//*[contains(text(),'EtQDevelopment Environment')]/../td");
+					List<WebElement> listOfWebElementCopy = listOfWebElement;
+					for (int i = 0; i < listOfWebElementCopy.size(); i++) {
+						listOfWebElement = xtexts("//*[contains(text(),'EtQDevelopment Environment')]/../td[" + (i + 1) + "]");
+						List<WebElement> listDataList = listOfWebElement;
+						if (i == 1) {
+							assertEquals(listDataList.get(0).getText(), "N/A");
+						} else if (i == 2) {
+							assertEquals(listDataList.get(0).getText(), "Review prior to migration, variable “isEtQDevelopmentEnvironment” is unavailable");
+						} 
+					}
+				}
+			}
+			log.info("TC 04 Checking if isEtQDevelopmentEnvironment Unavailable ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();

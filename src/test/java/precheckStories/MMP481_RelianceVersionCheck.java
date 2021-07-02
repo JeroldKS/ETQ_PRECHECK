@@ -39,7 +39,7 @@ public class MMP481_RelianceVersionCheck  extends Base{
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
 		
-	    Channel channel = session.openChannel("shell");
+	    Channel channel = session.openChannel("exec");
  		String commandForuserId = "sudo test -w /home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml && echo 'Editable' || echo 'Not Editable'";
  		((ChannelExec) channel).setCommand(commandForuserId);
  		InputStream inputStream = channel.getInputStream();
@@ -65,7 +65,6 @@ public class MMP481_RelianceVersionCheck  extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("reliance_version") && !line.contains("#")) {
 					relianceVersioninProperty = line.split("=")[1].replaceAll("\"", "").trim();
-					break;
 				}
 			}
 			establishSshConnection();
@@ -104,14 +103,12 @@ public class MMP481_RelianceVersionCheck  extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("reliance_version") && !line.contains("#")) {
 					relianceVersioninProperty = line.split("=")[1].replaceAll("\"", "").trim();
-					break;
 				}
 			}
 			establishSshConnection();
 			stream = sftpChannel.get("/home/ec2-user/precheck/const/common_constants.py");
 			br = new BufferedReader(new InputStreamReader(stream));
 			while ((line = br.readLine()) != null) {
-
 				if (line.contains("RELIANCE_VERSIONS") && !line.contains("#")) {
 					String relianceVersionInConstFile = line.split("=")[1].replaceAll("\'", "").replaceAll("[\\[\\]]", "");
 					String[] relianceVersionArray = relianceVersionInConstFile.split(",");
@@ -123,7 +120,6 @@ public class MMP481_RelianceVersionCheck  extends Base{
 					text = xtext("//*[contains(text(),'Reliance Version')]/../../tr[4]/td");
 					assertEquals(relianceVersioninProperty, text);
 				}
-			
 			}
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());

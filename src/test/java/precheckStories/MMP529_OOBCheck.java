@@ -32,16 +32,16 @@ public class MMP529_OOBCheck extends Base{
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
-			boolean flag = false;
+			String oobDesignList = "OOB Design Name List Not Available";
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (line.contains("OOB_APPLICATION_SETTINGS_NAME") && !line.contains("#")
 						&& line.contains("=") && line.contains("(")) {
-					flag = true;
+					oobDesignList = "OOB Design Name List Available";
 				}
 			}
-			Assert.assertTrue(flag == true);
+			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -55,13 +55,14 @@ public class MMP529_OOBCheck extends Base{
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP529_query.properties");
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
-			boolean flag = false;
+			String oobDesignList = "OOB Design Name List Not Available";
 			List<String> unmatchedDesignListInDB = new ArrayList<>();
 			List<String> unmatchedDesignListInReport = new ArrayList<>();
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (line.contains("OOB_APPLICATION_SETTINGS_NAME") && !line.contains("#")) {
+					oobDesignList = "OOB Design Name List Available";
 					String designList = line.split("=")[1];
 					if(!line.endsWith(")")) {
 						designList = designList + br.readLine();
@@ -78,10 +79,9 @@ public class MMP529_OOBCheck extends Base{
 					Collections.sort(unmatchedDesignListInDB);
 					Collections.sort(unmatchedDesignListInReport);
 					assertEquals(unmatchedDesignListInDB, unmatchedDesignListInReport);
-					flag = true;
 				}
 			}
-			Assert.assertTrue(flag == true);
+			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -95,13 +95,14 @@ public class MMP529_OOBCheck extends Base{
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP529_query.properties");
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
-			boolean flag = false;
+			String oobDesignList = "OOB Design Name List Not Available";
 			List<String> matchedDesignListInDB = new ArrayList<>();
 			List<String> matchedDesignListInReport = new ArrayList<>();
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (line.contains("OOB_APPLICATION_SETTINGS_NAME") && !line.contains("#")) {
+					oobDesignList = "OOB Design Name List Available";
 					String designList = line.split("=")[1];
 					if(!line.endsWith(")")) {
 						designList = designList + br.readLine();
@@ -118,10 +119,9 @@ public class MMP529_OOBCheck extends Base{
 					Collections.sort(matchedDesignListInDB);
 					Collections.sort(matchedDesignListInReport);
 					Assert.assertNotEquals(matchedDesignListInDB, matchedDesignListInReport);
-					flag = true;
 				}
 			}
-			assertTrue(flag == true);
+			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -135,13 +135,14 @@ public class MMP529_OOBCheck extends Base{
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP529_query.properties");
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
-			boolean flag = false;
+			String oobDesignList = "OOB Design Name List Not Available";
 			List<String> matchedDesignListInDB = new ArrayList<>();
 			List<String> matchedDesignListInReport = new ArrayList<>();
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String line;
 			while ((line = br.readLine()) != null) {
 				if (line.contains("OOB_APPLICATION_SETTINGS_NAME") && !line.contains("#")) {
+					oobDesignList = "OOB Design Name List Available";
 					String designList = line.split("=")[1];
 					if(!line.endsWith(")")) {
 						designList = designList + br.readLine();
@@ -158,10 +159,9 @@ public class MMP529_OOBCheck extends Base{
 					Collections.sort(matchedDesignListInDB);
 					Collections.sort(matchedDesignListInReport);
 					assertNotEquals(matchedDesignListInDB, matchedDesignListInReport);
-					flag = true;
 				}
 			}
-			assertTrue(flag == true);
+			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
