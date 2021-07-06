@@ -23,8 +23,15 @@ public class MMP528_JavaClassesInETQScript extends Base{
 	
 	static Logger log = Logger.getLogger(MMP528_JavaClassesInETQScript.class.getName());
   
+	/**
+	 * Checking whether the listed import keywords available in common constants
+	 * @throws JSchException
+	 * @throws SftpException
+	 * @throws Exception
+	 */
 	@Test
-	public static void tc01_checkForisEtQDevelopmentEnvironmentAvailable() throws JSchException, SftpException, Exception {
+	public static void tc01_checkKeywordsAvailable() throws JSchException, SftpException, Exception {
+		log.info("TC 01 Checking if the keywords available in Property file. Started....");
 		loadHighLevelReportInBrowser();
 		establishSshConnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP529_query.properties");
@@ -49,10 +56,10 @@ public class MMP528_JavaClassesInETQScript extends Base{
 				}
 			}
 			Assert.assertEquals(keywordsAvailability, "Java Keywords Available");
+			log.info("TC 01 Checking if the keywords available in Property file. Ended....");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
 		}
-	
 	}
 }
