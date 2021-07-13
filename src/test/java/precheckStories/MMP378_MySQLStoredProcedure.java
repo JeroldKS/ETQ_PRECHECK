@@ -1,19 +1,11 @@
 package precheckStories;
 
 import org.testng.annotations.Test;
-import org.testng.AssertJUnit;
-import static org.testng.Assert.*;
-
-import java.io.IOException;
-import java.sql.SQLException;
+import org.testng.Assert;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-
 import precheck.Base;
 
 public class MMP378_MySQLStoredProcedure extends Base {
@@ -33,7 +25,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 		System.out.println(listOfText);
 		String[] checkList = { "Schema Name", "Stored Procedure Name", "Stored Procedure definition" };
 		for (int i = 0; i < checkList.length; i++) {
-			AssertJUnit.assertTrue(listOfText.contains(checkList[i]));
+			Assert.assertTrue(listOfText.contains(checkList[i]));
 		}
 
 	}
@@ -56,8 +48,8 @@ public class MMP378_MySQLStoredProcedure extends Base {
 		}
 		listOfWebElement = xtexts(xpathProperties.getProperty("sp_list"));
 		listOfText = listString();
-		AssertJUnit.assertEquals(listOfText.size(), storedProcedureCount);
-		assertNotNull(storedProcedureCount);
+		Assert.assertEquals(listOfText.size(), storedProcedureCount);
+		Assert.assertNotNull(storedProcedureCount);
 	}
 /**
  * This method is to validating the report is generated StoredProcedure
@@ -76,7 +68,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 				for (int j = 0; j < listOfWebElement.size(); j++) {
 					text = xtext("//*[contains(text(),'Stored Procedures')]/following::tbody[1]/tr[" + (i + 1) + "]/td["
 							+ (j + 1) + "]");
-					assertNotNull(text);
+					Assert.assertNotNull(text);
 				}
 			}
 		} catch (Exception getcatch) {
@@ -124,8 +116,8 @@ public class MMP378_MySQLStoredProcedure extends Base {
 		}
 		Collections.sort(reportSPList);
 		Collections.sort(dbSPlList);
-		AssertJUnit.assertEquals(reportSPList.size(), dbSPlList.size());
-		AssertJUnit.assertEquals(reportSPList, dbSPlList);
+		Assert.assertEquals(reportSPList.size(), dbSPlList.size());
+		Assert.assertEquals(reportSPList, dbSPlList);
 
 	}catch (Exception getcatch) {
 		System.out.println("No SP found in DataBase OR Query format invalid in SP :: " + getcatch.getMessage());
@@ -153,7 +145,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 		sourceQuery.next();
 		String dbSPCount = sourceQuery.getObject(1).toString();
 		int dataBaseCount = Integer.parseInt(dbSPCount);
-		AssertJUnit.assertEquals(storedProcedureCount, dataBaseCount);
+		Assert.assertEquals(storedProcedureCount, dataBaseCount);
 	}
 
 }

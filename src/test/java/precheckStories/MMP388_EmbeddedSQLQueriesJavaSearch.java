@@ -165,7 +165,7 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 		listOfText = listString();
 		Collections.sort(sourceQueryList);
 		Collections.sort(listOfText);
-		Assert.assertEquals(sourceQueryList.get(1), listOfText.get(1));
+		Assert.assertEquals(sourceQueryList, listOfText);
 		log.info("tc06 Repor and Source Query are same validation ended......................");
 	}
 

@@ -29,7 +29,7 @@ import com.jcraft.jsch.Session;
 
 public class Base {
 	public static Properties loginProperties;
-	public static Connection mysqlConnection;
+	public static Connection dbConnection;
 	public static WebDriver driver;
 	public static String text;
 	public static List<WebElement> listOfWebElement;
@@ -71,7 +71,7 @@ public class Base {
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
-		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("low"));
+		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("ms_low"));
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
@@ -81,7 +81,7 @@ public class Base {
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
-		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("high"));
+		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("ms_high"));
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
@@ -91,8 +91,7 @@ public class Base {
 	 * The method used to connect DataBase
 	 * @throws Exception
 	 */
-	@BeforeTest
-	public static void establishDatabaseconnection() throws Exception {
+	public static void establishDatabaseconnection(String dbType) throws Exception {
 		log.info("db connection started....................");
 		loginProperties = new Properties();
 		// fetching a DB name from property file
@@ -100,15 +99,19 @@ public class Base {
 				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
 			loginProperties.load(credentialsFile);
 		}
-		String databaseName = loginProperties.getProperty("DB_name");
-		if (databaseName.equals("mysql_source_db")) {
+		//String databaseName = loginProperties.getProperty("DB_name");
+		if (dbType.equals("mysqlSource")) {
 			Class.forName("com.mysql.jdbc.Driver");
-			mysqlConnection = DriverManager.getConnection(
+			dbConnection = DriverManager.getConnection(
 					"jdbc:mysql://" + loginProperties.getProperty("ipForSourceDB") + ":" + loginProperties.getProperty("port70") + "/",
 					loginProperties.getProperty("user70"), loginProperties.getProperty("pass70"));
 			log.info("MYSQL DB connected....................");
-		} else {
-			System.out.println("Not a mysql source db");
+		} else if (dbType.equals("mssqlSource")) {
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			dbConnection = DriverManager.getConnection(
+					loginProperties.getProperty("msip266"),
+					loginProperties.getProperty("msuser266"), loginProperties.getProperty("mspass266"));
+			log.info("MYSQL DB connected....................");
 			
 		}
 	}
@@ -120,7 +123,7 @@ public class Base {
 	@AfterTest
 	public static void closeconnection() throws Exception {
 		driver.close();
-		mysqlConnection.close();
+		//dbConnection.close();
 		log.info("all connection closed....................");
 	}
 	
@@ -141,7 +144,7 @@ public class Base {
 		System.out.println("Establishing Connection...");
 		session.connect();
 		System.out.println("Connection established.");
-		System.out.println("Crating SFTP Channel.");
+		System.out.println("Creating SFTP Channel.");
 		sftpChannel = (ChannelSftp) session.openChannel("sftp");
 		sftpChannel.connect();
 	}
@@ -157,8 +160,6 @@ public class Base {
 				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
 			loginProperties.load(credentialsFile);
 		}
-		//String host = "3.231.61.70";
-		//String user = "ec2-user";
 		String host = loginProperties.getProperty("ipForSourceDB");
 		String user = loginProperties.getProperty("userNameForSourceDB");
 		int port = 22;
@@ -171,7 +172,27 @@ public class Base {
 		System.out.println("Establishing Connection...");
 		session.connect();
 		System.out.println("Connection established.");
-		System.out.println("Crating SFTP Channel.");
+		System.out.println("Creating SFTP Channel.");
+		sftpChannel = (ChannelSftp) session.openChannel("sftp");
+		sftpChannel.connect();
+	}
+	
+	public static void establishWindowsSshConnection() throws Exception {
+		loginProperties = new Properties();
+		// fetching a DB name from property file
+		try (FileInputStream credentialsFile = new FileInputStream(
+				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
+			loginProperties.load(credentialsFile);
+		}
+		//int port = 22;
+		JSch jsch = new JSch();
+		session = jsch.getSession(loginProperties.getProperty("userNameForSourceDB"), loginProperties.getProperty("ipForSourceDB"));
+		jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
+		session.setConfig("StrictHostKeyChecking", "no");
+		System.out.println("Establishing Connection...");
+		session.connect();
+		System.out.println("Connection established.");
+		System.out.println("Creating SFTP Channel.");
 		sftpChannel = (ChannelSftp) session.openChannel("sftp");
 		sftpChannel.connect();
 	}
@@ -205,7 +226,6 @@ public class Base {
 		listOfText = new ArrayList<>();
 		for (int i = 0; i < listOfWebElement.size(); i++) {
 			listOfWebElement.get(i).getText();
-
 			listOfText.add(listOfWebElement.get(i).getText());
 		}
 		return listOfText;
@@ -218,7 +238,7 @@ public class Base {
 	 * @throws SQLException
 	 */
 	public static ResultSet query(String query) throws SQLException {
-		mysqlStatement = mysqlConnection.createStatement();
+		mysqlStatement = dbConnection.createStatement();
 		sourceQuery = mysqlStatement.executeQuery(query);
 		return sourceQuery;
 
