@@ -33,15 +33,23 @@ public class MMP359_PythonScriptCode extends Base {
 	 */
 	@Test
 	public void tc01_fetchCountOfString() throws SQLException, Exception {
-		log.info("TC 01 Fetching Count of 'getValue(\"Description\")' String. Started....");
+		log.info("TC 01 Fetching Count of 'getValue(Description)' String. Started....");
 		loadHighLevelReportInBrowser();
 		establishSshConnection();
+		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String webAppPath = null;
+		String line;
+		while ((line = br.readLine()) != null) {
+			if (line.contains("web_app_file_path") && !line.contains("#")) {
+				webAppPath = line.split("=")[1].replaceAll("\"", "");
+			}
+		}
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
 	    Channel channel = session.openChannel("exec");
-	    // Get User ID
- 		String commandForuserId = "grep -Rw /home/ec2-user/webapps/Tomcat/ -e 'getValue(\"Description\")' --include=*.py";
- 		((ChannelExec) channel).setCommand(commandForuserId);
+	    String commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
+ 		((ChannelExec) channel).setCommand(commandtoFetchFilesContainsKeyword);
  		InputStream inputStream = channel.getInputStream();
  		channel.connect();
  		try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
@@ -59,7 +67,7 @@ public class MMP359_PythonScriptCode extends Base {
 	 */
 	@Test
 	public void tc02_checkPrecheckReportCapturesKeyword() throws SQLException, Exception {
-		log.info("TC 02 Checking whether the Precheck Report captures Python files contain 'getValue(\"Description\")' String. Started....");
+		log.info("TC 02 Checking whether the Precheck Report captures Python files contain 'getValue(Description)' String. Started....");
 		loadHighLevelReportInBrowser();
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
@@ -110,7 +118,7 @@ public class MMP359_PythonScriptCode extends Base {
 			keywordOccuranceMapInReport.put(fileName, count);
 		}
 		Assert.assertEquals(keywordOccuranceMapInReport, keywordOccuranceMapInInstance);
- 		log.info("TC 02 Checking whether the Precheck Report captures Python files contain 'getValue(\"Description\")' String. Ended....");
+ 		log.info("TC 02 Checking whether the Precheck Report captures Python files contain 'getValue(Description)' String. Ended....");
 	}
 	
 	/**
@@ -120,7 +128,7 @@ public class MMP359_PythonScriptCode extends Base {
 	 */
 	@Test
 	public void tc03_checkPrecheckReportNotCapturesTxtFile() throws SQLException, Exception {
-		log.info("TC 03 Checking whether the Precheck Report not captures .txt files contain 'getValue(\"Description\")' String. Started....");
+		log.info("TC 03 Checking whether the Precheck Report not captures .txt files contain 'getValue(Description)' String. Started....");
 		loadHighLevelReportInBrowser();
  		listOfWebElement = xtexts("//*[contains(text(),'Keyword Ids in ETQ script')]/../td[3]/table/tbody/tr");
 	 	List<WebElement> listOfWebElementCopy = listOfWebElement;
@@ -131,6 +139,6 @@ public class MMP359_PythonScriptCode extends Base {
 			String isReportContainsTxtFile = fileName.contains(".txt") ? "Report contains .txt file" : "Report should not contains .txt file";
 			Assert.assertEquals(isReportContainsTxtFile, "Report should not contains .txt file");
 		}
-		log.info("TC 03 Checking whether the Precheck Report not captures .txt files contain 'getValue(\"Description\")' String. Ended....");
+		log.info("TC 03 Checking whether the Precheck Report not captures .txt files contain 'getValue(Description)' String. Ended....");
 	}
 }

@@ -71,7 +71,7 @@ public class Base {
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
-		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("ms_low"));
+		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("low"));
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
@@ -81,7 +81,7 @@ public class Base {
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
-		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("ms_high"));
+		driver.get("file://" + System.getProperty("user.dir") + browserProperties.getProperty("high"));
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		return driver;
@@ -103,7 +103,7 @@ public class Base {
 		if (dbType.equals("mysqlSource")) {
 			Class.forName("com.mysql.jdbc.Driver");
 			dbConnection = DriverManager.getConnection(
-					"jdbc:mysql://" + loginProperties.getProperty("ipForSourceDB") + ":" + loginProperties.getProperty("port70") + "/",
+					"jdbc:mysql://" + loginProperties.getProperty("ipForMysqlSourceDB") + ":" + loginProperties.getProperty("port70") + "/",
 					loginProperties.getProperty("user70"), loginProperties.getProperty("pass70"));
 			log.info("MYSQL DB connected....................");
 		} else if (dbType.equals("mssqlSource")) {
@@ -113,6 +113,12 @@ public class Base {
 					loginProperties.getProperty("msuser266"), loginProperties.getProperty("mspass266"));
 			log.info("MYSQL DB connected....................");
 			
+		} else if (dbType.equals("oracleSource")) {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			dbConnection = DriverManager.getConnection("jdbc:oracle:thin:@"+loginProperties.getProperty("ipForWindowsOracleSource")+":"
+					+loginProperties.getProperty("portNoForWindowsOracleSource")+"/"+loginProperties.getProperty("serviceNameForWindowsOracleSource"),
+			loginProperties.getProperty("userForWindowsOracleSource"), loginProperties.getProperty("passwordForWindowsOracleSource"));
+			log.info("Oracle DB connected....................");
 		}
 	}
 
@@ -160,7 +166,7 @@ public class Base {
 				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
 			loginProperties.load(credentialsFile);
 		}
-		String host = loginProperties.getProperty("ipForSourceDB");
+		String host = loginProperties.getProperty("ipForMysqlSourceDB");
 		String user = loginProperties.getProperty("userNameForSourceDB");
 		int port = 22;
 
