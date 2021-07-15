@@ -37,7 +37,7 @@ public class MMP351_OracleDatabaseCheck extends Base {
 			}
 			reportMetaInfoList.add(reportCombinedData);
 		}
-		sourceQuery = query(prop.getProperty("mysql_db_meta_info"));
+		sourceQuery = query(prop.getProperty("oracle_db_meta_info"));
 		int columnCount = sourceQuery.getMetaData().getColumnCount();
 		while (sourceQuery.next()) {
 			String sourceCombainedData = "";

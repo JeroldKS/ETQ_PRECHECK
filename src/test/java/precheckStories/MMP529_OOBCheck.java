@@ -52,6 +52,7 @@ public class MMP529_OOBCheck extends Base{
 	public static void tc02_checkforUnmatchedDataCaptured() throws JSchException, SftpException, Exception {
 		loadHighLevelReportInBrowser();
 		establishSshConnection();
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP529_query.properties");
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
@@ -64,8 +65,10 @@ public class MMP529_OOBCheck extends Base{
 				if (line.contains("OOB_APPLICATION_SETTINGS_NAME") && !line.contains("#")) {
 					oobDesignList = "OOB Design Name List Available";
 					String designList = line.split("=")[1];
-					if(!line.endsWith(")")) {
-						designList = designList + br.readLine();
+					while (!line.endsWith(")")) {
+						line=br.readLine();
+						designList=designList+line;
+						
 					}
 					sourceQuery = query(prop.getProperty("application_settings_unmatched_data")+" "+designList);
 					while (sourceQuery.next()) {
@@ -82,6 +85,7 @@ public class MMP529_OOBCheck extends Base{
 				}
 			}
 			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
+			dbConnection.close();
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -92,6 +96,7 @@ public class MMP529_OOBCheck extends Base{
 	public static void tc03_checkforMatchedDataNotCaptured() throws JSchException, SftpException, Exception {
 		loadHighLevelReportInBrowser();
 		establishSshConnection();
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP529_query.properties");
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
@@ -104,8 +109,10 @@ public class MMP529_OOBCheck extends Base{
 				if (line.contains("OOB_APPLICATION_SETTINGS_NAME") && !line.contains("#")) {
 					oobDesignList = "OOB Design Name List Available";
 					String designList = line.split("=")[1];
-					if(!line.endsWith(")")) {
-						designList = designList + br.readLine();
+					while (!line.endsWith(")")) {
+						line=br.readLine();
+						designList=designList+line;
+						
 					}
 					sourceQuery = query(prop.getProperty("application_settings_matched_data")+" "+designList);
 					while (sourceQuery.next()) {
@@ -122,6 +129,7 @@ public class MMP529_OOBCheck extends Base{
 				}
 			}
 			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
+			dbConnection.close();
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -132,6 +140,7 @@ public class MMP529_OOBCheck extends Base{
 	public static void tc04_checkforCaseSensitive() throws JSchException, SftpException, Exception {
 		loadHighLevelReportInBrowser();
 		establishSshConnection();
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP529_query.properties");
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
@@ -144,8 +153,10 @@ public class MMP529_OOBCheck extends Base{
 				if (line.contains("OOB_APPLICATION_SETTINGS_NAME") && !line.contains("#")) {
 					oobDesignList = "OOB Design Name List Available";
 					String designList = line.split("=")[1];
-					if(!line.endsWith(")")) {
-						designList = designList + br.readLine();
+					while (!line.endsWith(")")) {
+						line=br.readLine();
+						designList=designList+line;
+						
 					}
 					sourceQuery = query(prop.getProperty("application_settings_matched_data")+" "+designList);
 					while (sourceQuery.next()) {
@@ -162,6 +173,7 @@ public class MMP529_OOBCheck extends Base{
 				}
 			}
 			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
+			dbConnection.close();
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
