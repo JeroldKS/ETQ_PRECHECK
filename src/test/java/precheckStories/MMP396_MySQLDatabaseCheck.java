@@ -20,6 +20,7 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 	@Test
 	public void tc01_DBMetaInfo() throws Exception {
 		log.info("TC 01 DB Meta Info validation started....................");
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP396_query.properties");
 		xpathProperties = loadXpathFile();
 		loadLowLevelReportInBrowser();
@@ -32,7 +33,6 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 			String reportCombinedData = "";
 			for (int j = 0; j < listOfWebElement.size(); j++) {
 				reportCombinedData = reportCombinedData + listOfWebElement.get(j).getText() + ".";
-				
 			}
 			reportMetaInfoList.add(reportCombinedData);
 		}
@@ -66,12 +66,13 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 	@Test
 	public void tc02_NonCoreSchemaIndexCount() throws Exception {
 		log.info("TC 02 Non Core Schema Index Count Started....................");
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP396_query.properties");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		listOfWebElement = xtexts(xpathProperties.getProperty("non_core_body"));
 		List<WebElement> listOfWebElementCopy = listOfWebElement;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			int generate = Base.generate(listOfWebElementCopy.size());
 			listOfWebElement = xtexts("//*[contains(text(),'Index Count - NonCore:')]/following::tbody[1]/tr[" + generate + "]/td");
 			String reportTableName = listOfWebElement.get(0).getText();
@@ -86,7 +87,6 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 							+ "' and TABLE_SCHEMA = '" + reportSchemaName + "'");
 		}
 		log.info("TC 02 Non Core Schema Index Count Ended....................");
-
 	}
 	
 	/**
@@ -97,11 +97,12 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 	public void tc03_CoreSchemaIndexCount() throws Exception {
 		log.info("TC 03 Core Schema Index Count Started....................");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP396_query.properties");
+		establishDatabaseconnection("mysqlSource");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		listOfWebElement = xtexts(xpathProperties.getProperty("core_body"));
 		List<WebElement> dup_texts = listOfWebElement;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 5; i++) {
 			int generate = Base.generate(dup_texts.size());
 			listOfWebElement = xtexts("//*[contains(text(),'Index Count - Core')]/following::tbody[1]/tr[" + generate + "]/td");
 			String reportTableName = listOfWebElement.get(0).getText();
@@ -116,7 +117,6 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 							+ "' and TABLE_SCHEMA = '" + reportSchemaName + "'");
 		}
 		log.info("TC 03 Core Schema Index Count Ended....................");
-
 	}
 
 	/**
@@ -128,6 +128,7 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 	@Test
 	public void tc04_DBCheck() throws Exception {
 		log.info("TC 04 DB check started....................");
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP396_query.properties");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
@@ -142,15 +143,15 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 		text = xtext(xpathProperties.getProperty("core_schema_size"));
 		sourceQuery = query(prop.getProperty("core_schema_size"));
 		sourceQuery.next();
-		Assert.assertEquals(sourceQuery.getObject(1).toString() + "GB", text);
+		Assert.assertEquals(sourceQuery.getObject(1).toString() + " GB", text);
 		text = xtext(xpathProperties.getProperty("non_core_schema_size"));
 		sourceQuery = query(prop.getProperty("non_core_schema_size"));
 		sourceQuery.next();
-		Assert.assertEquals(sourceQuery.getObject(1).toString() + "GB", text);
+		Assert.assertEquals(sourceQuery.getObject(1).toString() + " GB", text);
 		text = xtext(xpathProperties.getProperty("utilized_DB_size"));
 		sourceQuery = query(prop.getProperty("utilized_DB_size"));
 		sourceQuery.next();
-		Assert.assertEquals(sourceQuery.getObject(1).toString() + "GB", text);
+		Assert.assertEquals(sourceQuery.getObject(1).toString() + " GB", text);
 		text = xtext(xpathProperties.getProperty("engine_version"));
 		sourceQuery = query(prop.getProperty("engine_version"));
 		/*while (sourceQuery.next()) {
@@ -169,6 +170,7 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 	@Test
 	public void tc05_CountOfDatabaseUsers() throws Exception {
 		log.info("TC 05 count and list of Database users started....................");
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP396_query.properties");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
@@ -192,8 +194,9 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 	 * @throws Exception 
 	 */
 	@Test
-	public void tc_06_ReportCheck() throws Exception {
+	public void tc06_ReportCheck() throws Exception {
 		log.info("TC 06 Report check started....................");
+		establishDatabaseconnection("mysqlSource");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP396_query.properties");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
@@ -202,7 +205,7 @@ public class MMP396_MySQLDatabaseCheck extends Base {
 		String[] checkList = { "Database Checks", "DB Users", "OverallCount", "Index Count - Core",
 				"Index Count - NonCore:" };
 		for (int i = 0; i < checkList.length; i++) {
-			Assert.assertTrue(listOfText.contains(checkList[i]));
+			Assert.assertTrue(listOfText.contains(checkList[i]),checkList[i]+" is not captured in low level report");
 		}
 		log.info("TC 06 Report check ended....................");
 	}

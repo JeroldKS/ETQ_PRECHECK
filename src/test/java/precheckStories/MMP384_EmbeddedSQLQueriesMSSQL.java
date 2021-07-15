@@ -2,61 +2,48 @@ package precheckStories;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+
 import java.io.FileReader;
 
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.openqa.selenium.NoSuchElementException;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import precheck.Base;
 
-public class MMP383_EmbeddedSQLQueries extends Base {
-	
-	/**
-	 * This method is Able To Fetch Source Embedded Queries
-	 * @throws Exception
-	 */
+public class MMP384_EmbeddedSQLQueriesMSSQL extends Base {
+	static Logger log = Logger.getLogger(MMP384_EmbeddedSQLQueriesMSSQL.class.getName());
+
 	@Test
 	public void tc01_IsAbleToFetchSourceEmbeddedQueries() throws Exception {
-		establishDatabaseconnection("mysqlSource");
+		establishDatabaseconnection("mssqlSource");
 		loadHighLevelReportInBrowser();
 		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
-				+ "//src//test//resources//precheck//BusinessRules//MMP383_EmbeddedSQLQueries.json");
+				+ "//src//test//resources//precheck//BusinessRules//MMP384_EmbeddedSQLQueriesMSSQL.json");
 		JSONParser jsonParser = new JSONParser();
 		Object parse = jsonParser.parse(jsonfile);
 		JSONArray jsonArray = (JSONArray) parse;
-		System.out.println(jsonArray.size());
 		for (int i = 0; i < jsonArray.size(); i++) {
 			Object object = jsonArray.get(i);
-			System.out.println(object.toString());
 			JSONObject parseStep1 = (JSONObject) object;
-			System.out.println(parseStep1.get("schema"));
-			System.out.println(parseStep1.get("table"));
-			System.out.println(parseStep1.get("field"));
-			System.out.println("select count(" + parseStep1.get("field") + ") from " + parseStep1.get("schema") + "."
+			sourceQuery = query("select " + parseStep1.get("field") + "" + " from " + parseStep1.get("schema") + "."
 					+ parseStep1.get("table") + " where " + parseStep1.get("field") + " is not null");
-			sourceQuery = query("select count(" + parseStep1.get("field") + ")" + " from " + parseStep1.get("schema")
-					+ "." + parseStep1.get("table") + " where " + parseStep1.get("field") + " is not null");
-
-			while (sourceQuery.next()) {
-				System.out.println(sourceQuery.getObject(1).toString());
-			}
-			assertNotNull(sourceQuery.next());
+			Assert.assertNotNull(sourceQuery.next());
 		}
+
 	}
 
-	/**
-	 * This method is to validating the Total Queries Count Matches with Sum Of Passed And Failed Query
-	 * @throws Exception
-	 */
 	@Test
 	public void tc06_IsTotalQueriesCountMatchesSumOfPassedAndFailedQuery() throws Exception {
 		establishDatabaseconnection("mysqlSource");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
-				+ "//src//test//resources//precheck//BusinessRules//MMP383_EmbeddedSQLQueries.json");
+				+ "//src//test//resources//precheck//BusinessRules//MMP384_EmbeddedSQLQueriesMSSQL.json");
 		JSONParser jsonParser = new JSONParser();
 		Object parse = jsonParser.parse(jsonfile);
 		JSONArray jsonArray = (JSONArray) parse;
@@ -64,37 +51,37 @@ public class MMP383_EmbeddedSQLQueries extends Base {
 		for (int i = 0; i < jsonArray.size(); i++) {
 			Object object = jsonArray.get(i);
 			JSONObject parseStep1 = (JSONObject) object;
-			sourceQuery = query("select count(" + parseStep1.get("field") + ")" + " from " + parseStep1.get("schema")
-					+ "." + parseStep1.get("table") + " where " + parseStep1.get("field") + " is not null");
+			sourceQuery = query("select count(*)" + " from " + parseStep1.get("schema") + "." + parseStep1.get("table")
+					+ " where " + parseStep1.get("field") + " is not null");
 			while (sourceQuery.next()) {
 				String QueryCount = sourceQuery.getObject(1).toString();
 				int tableQueryCount = Integer.parseInt(QueryCount);
 				embeddQueryCount = embeddQueryCount + tableQueryCount;
 			}
 		}
-		System.out.println(embeddQueryCount);
-		text = xtext(xpathProperties.getProperty("totalQueryProcessed"));
+		text = xtext(xpathProperties.getProperty("totalQueryProcessedCount"));
 		int totalQueryProcessed = Integer.parseInt(text);
-		text = xtext(xpathProperties.getProperty("totalQueryPassed"));
+		text = xtext(xpathProperties.getProperty("QueryPassedCount"));
 		int totalQueryPassed = Integer.parseInt(text);
-		text = xtext(xpathProperties.getProperty("totalQueryFailed"));
+		text = xtext(xpathProperties.getProperty("QueryFailedCount"));
 		int totalQueryFailed = Integer.parseInt(text);
 		assertEquals(totalQueryProcessed, embeddQueryCount);
 		assertEquals((totalQueryPassed + totalQueryFailed), embeddQueryCount);
+
 	}
 
-	/**
-	 * This method is to validating the Report Captured Over-all Process Duration
-	 * @throws Exception
-	 */
 	@Test
 	public void tc07_IsReportCaptureOverallProcessDuration() throws Exception {
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
-		text = xtext(xpathProperties.getProperty("processedDuration"));
-		Double processedDuration = new Double(text);
-		assertNotNull(processedDuration);
-		
+		try {
+			text = xtext(xpathProperties.getProperty("processedDuration"));
+			Double processedDuration = new Double(text);
+			assertNotNull(processedDuration);
+		} catch (NoSuchElementException e) {
+			log.error("Exception occured during reading the precheck low level report gue to "+e.getMessage());
+
+		}
 
 	}
 
