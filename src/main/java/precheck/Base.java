@@ -40,6 +40,7 @@ public class Base {
 	public static List<String> listOfText;
 	public static Session session;
 	public static ChannelSftp sftpChannel;
+	public static Session jschSession = null;
 	static Logger log = Logger.getLogger(Base.class.getName());
 
 	/**
@@ -190,17 +191,15 @@ public class Base {
 				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
 			loginProperties.load(credentialsFile);
 		}
-		//int port = 22;
+		int port = 22;
 		JSch jsch = new JSch();
-		session = jsch.getSession(loginProperties.getProperty("userNameForSourceDB"), loginProperties.getProperty("ipForSourceDB"));
-		jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
-		session.setConfig("StrictHostKeyChecking", "no");
-		System.out.println("Establishing Connection...");
-		session.connect();
-		System.out.println("Connection established.");
-		System.out.println("Creating SFTP Channel.");
-		sftpChannel = (ChannelSftp) session.openChannel("sftp");
-		sftpChannel.connect();
+		jschSession = jsch.getSession(loginProperties.getProperty("windowsuser266"),
+				loginProperties.getProperty("windowsip266"), port);
+		jschSession.setPassword(loginProperties.getProperty("windowspass266"));
+		java.util.Properties config = new java.util.Properties();
+		config.put("StrictHostKeyChecking", "no");
+		jschSession.setConfig(config);
+		jschSession.connect();
 	}
 
 	/**

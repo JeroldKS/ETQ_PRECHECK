@@ -5,90 +5,129 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.log4j.Logger;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
 
 import precheck.Base;
 
 public class MMP512_WindowsInfrastructureChecks extends Base {
-	public static ChannelExec channel;
-	public static ChannelExec channelExec;
-	private static final String REMOTE_HOST = "34.226.94.226";
-    private static final String USERNAME = "etqadmin";
-    private static final String PASSWORD = "KO^ElnWy7CFpi#";
-    private static final int REMOTE_PORT = 22;
-    //private static final int SESSION_TIMEOUT = 10000;
-    //private static final int CHANNEL_TIMEOUT = 10000;
-	
-    @Test
-	public static void tc01_IsPerformWindowsInfrastructureChecks() throws Exception {
-		//establishWindowsSshConnection();
-		
+	static Logger log = Logger.getLogger(MMP512_WindowsInfrastructureChecks.class.getName());
+
+	@Test
+	public static void tc01_IsWindowsInfrastructureChecksMatchesReport() throws Exception {
+		establishWindowsSshConnection();
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
-		 Session jschSession = null;
-		 JSch jsch = new JSch();
-		 jschSession = jsch.getSession(USERNAME, REMOTE_HOST,REMOTE_PORT);
-		 jschSession.setPassword(PASSWORD);
-         java.util.Properties config = new java.util.Properties();
-         config.put("StrictHostKeyChecking", "no");
-         jschSession.setConfig(config);
-         jschSession.connect();
-         System.out.println("session connected");
-         ChannelExec channelExec = (ChannelExec) jschSession.openChannel("exec");
-         // run a shell script
-         channelExec.setCommand( "powershell.exe  (Get-WmiObject -class Win32_OperatingSystem).Caption" );
-         // display errors to System.err
-         channelExec.setErrStream(System.err);
-         InputStream in = channelExec.getInputStream();
-         channelExec.connect();
-         try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
- 			commandOutput = lines.collect(Collectors.joining(newLine));
- 			System.out.println("OUTPUT : "+commandOutput.toString());
- 		}
-         
-         channelExec = (ChannelExec) jschSession.openChannel("exec");
-         channelExec.setCommand( "powershell.exe  \"(Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).sum /1gb | % {write-output $_'GB'}\"" );
-         channelExec.setErrStream(System.err);
-         in = channelExec.getInputStream();
-         channelExec.connect();
-         try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
- 			commandOutput = lines.collect(Collectors.joining(newLine));
- 			System.out.println("OUTPUT : "+commandOutput.toString());
- 		}
-         
-         channelExec = (ChannelExec) jschSession.openChannel("exec");
-         channelExec.setCommand( "powershell.exe  \"Get-WmiObject -class Win32_processor | select NumberOfCores | ConvertTo-Json\"" );
-         channelExec.setErrStream(System.err);
-         in = channelExec.getInputStream();
-         channelExec.connect();
-         try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
- 			commandOutput = lines.collect(Collectors.joining(newLine));
- 			System.out.println("OUTPUT : "+commandOutput.toString());
- 		}
-		 
-        channelExec = (ChannelExec) jschSession.openChannel("exec");
-        channelExec.setCommand( "powershell.exe  [System.Security.Principal.WindowsIdentity]::GetCurrent().Name" );
-        channelExec.setErrStream(System.err);
-        in = channelExec.getInputStream();
-        channelExec.connect();
-        try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
+		ChannelExec channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec.setCommand("powershell.exe  (Get-WmiObject -class Win32_OperatingSystem).Caption");
+		channelExec.setErrStream(System.err);
+		InputStream in = channelExec.getInputStream();
+		channelExec.connect();
+		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
 			commandOutput = lines.collect(Collectors.joining(newLine));
-			System.out.println("OUTPUT : "+commandOutput.toString());
+			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
-        
-        channelExec = (ChannelExec) jschSession.openChannel("exec");
-        channelExec.setCommand( "powershell.exe  \"([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)\"" );
-        channelExec.setErrStream(System.err);
-        in = channelExec.getInputStream();
-        channelExec.connect();
-        try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
-			commandOutput = lines.collect(Collectors.joining(newLine));
-			System.out.println("OUTPUT : "+commandOutput.toString());
-		}
-		  
 
+		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec.setCommand(
+				"powershell.exe  \"(Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).sum /1gb | % {write-output $_'GB'}\"");
+		channelExec.setErrStream(System.err);
+		in = channelExec.getInputStream();
+		channelExec.connect();
+		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
+			commandOutput = lines.collect(Collectors.joining(newLine));
+			System.out.println("OUTPUT : " + commandOutput.toString());
+		}
+
+		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec.setCommand(
+				"powershell.exe  \"Get-WmiObject -class Win32_processor | select NumberOfCores | ConvertTo-Json\"");
+		channelExec.setErrStream(System.err);
+		in = channelExec.getInputStream();
+		channelExec.connect();
+		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
+			commandOutput = lines.collect(Collectors.joining(newLine));
+			System.out.println("OUTPUT : " + commandOutput.toString());
+		}
+
+		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec.setCommand("powershell.exe  [System.Security.Principal.WindowsIdentity]::GetCurrent().Name");
+		channelExec.setErrStream(System.err);
+		in = channelExec.getInputStream();
+		channelExec.connect();
+		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
+			commandOutput = lines.collect(Collectors.joining(newLine));
+			System.out.println("OUTPUT : " + commandOutput.toString());
+		}
+
+		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec.setCommand(
+				"powershell.exe  \"([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)\"");
+		channelExec.setErrStream(System.err);
+		in = channelExec.getInputStream();
+		channelExec.connect();
+		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
+			commandOutput = lines.collect(Collectors.joining(newLine));
+			System.out.println("OUTPUT : " + commandOutput.toString());
+		}
+	}
+
+	@Test
+	public void tc02_IsReportCaptureInfraCheck() throws Exception {
+		loadLowLevelReportInBrowser();
+		xpathProperties = loadXpathFile();
+		listOfWebElement = xtexts(xpathProperties.getProperty("infraCheckList"));
+		listOfText = listString();
+		System.out.println(listOfText);
+		String[] checkList = { "OS", "Kernel Version", "User ID", "User has Sudo Privileges", "memory",
+				"CPU Core Count" };
+		for (int i = 0; i < checkList.length; i++) {
+			Assert.assertTrue(listOfText.contains(checkList[i]), checkList[i] + " : Expected is not capture");
+		}
+
+	}
+
+	@Test
+	public void tc03_IsReportCaptureIfUserPrivilegesFalse() throws Exception {
+		establishWindowsSshConnection();
+		String newLine = System.getProperty("line.separator");
+		String commandOutput = null;
+		ChannelExec channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec.setCommand("powershell.exe  (Get-WmiObject -class Win32_OperatingSystem).Caption");
+		channelExec.setErrStream(System.err);
+		InputStream in = channelExec.getInputStream();
+		channelExec.connect();
+
+		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec.setCommand(
+				"powershell.exe  \"([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)\"");
+		channelExec.setErrStream(System.err);
+		in = channelExec.getInputStream();
+		channelExec.connect();
+		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
+			commandOutput = lines.collect(Collectors.joining(newLine));
+		}
+		if (commandOutput.toString() == "False") {
+			loadLowLevelReportInBrowser();
+			xpathProperties = loadXpathFile();
+			listOfWebElement = xtexts(xpathProperties.getProperty("infraCheckList"));
+			listOfText = listString();
+			int validateCount = 0;
+			for (int i = 0; i < listOfText.size(); i++) {
+				if (listOfText.get(i).equalsIgnoreCase("User has Sudo Privileges")) {
+					validateCount++;
+					text = xtext("//*[contains(text(),'Source Infrastructure Details')]/following::tbody[1]/tr["
+							+ (i + 2) + "]/td[3]");
+					Assert.assertEquals(text, "Failed");
+				}
+			}
+			if (validateCount == 0) {
+				Assert.assertTrue(false, "User Privileges not validated");
+			}
+		} else {
+			log.info("For negative scenario, In this case need to fail the admin privileges");
+		}
 	}
 }
