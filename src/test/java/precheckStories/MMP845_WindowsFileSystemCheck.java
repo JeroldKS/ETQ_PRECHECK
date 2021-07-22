@@ -25,11 +25,7 @@ import com.jcraft.jsch.ChannelSftp;
 import precheck.Base;
 
 public class MMP845_WindowsFileSystemCheck extends Base {
-	static Logger log = Logger.getLogger(MMP386_LinuxFileSystemCheck.class.getName());
-	/*
-	 * tc01_VerifyOverallFileSystemSize 
-	 * tc02_verifySizeandNumberOfFolders
-	 */
+	static Logger log = Logger.getLogger(MMP845_WindowsFileSystemCheck.class.getName());
 
 	@Test
 	public void tc03_verifyIgnoredFiles() throws Exception {
@@ -175,7 +171,6 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 		}
 
 	}
-	// tc06_verifyApplicationLog
 
 	@Test
 	public void tc07_ReportCheck() throws Exception {

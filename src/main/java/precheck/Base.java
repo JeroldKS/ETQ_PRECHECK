@@ -106,7 +106,13 @@ public class Base {
 			dbConnection = DriverManager.getConnection(
 					"jdbc:mysql://" + loginProperties.getProperty("ipForMysqlSourceDB") + ":" + loginProperties.getProperty("port70") + "/",
 					loginProperties.getProperty("user70"), loginProperties.getProperty("pass70"));
-			log.info("MYSQL DB connected....................");
+			log.info("Source MYSQL DB connected....................");
+		}else if (dbType.equals("mysqltarget")) {
+			Class.forName("com.mysql.jdbc.Driver");
+			dbConnection = DriverManager.getConnection(
+					"jdbc:mysql://" + loginProperties.getProperty("ipForMysqlTargetDB") + ":" + loginProperties.getProperty("portForTargetDB") + "/",
+					loginProperties.getProperty("userNameForTargetDB"), loginProperties.getProperty("passwordForTargetDB"));
+			log.info("Target MYSQL DB connected....................");
 		} else if (dbType.equals("mssqlSource")) {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			dbConnection = DriverManager.getConnection(
