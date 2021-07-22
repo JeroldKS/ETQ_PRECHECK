@@ -34,8 +34,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public static void tc02_verifyFileSystemSize() throws JSchException, SftpException, Exception {
-		log.info("TC 02 Verify the overall file system size. Started.............");
+	public static void tc01_verifyFileSystemSize() throws JSchException, SftpException, Exception {
+		log.info("TC 01 Verify the overall file system size. Started.............");
 		loadLowLevelReportInBrowser();
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
@@ -46,9 +46,10 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 			while ((line = br.readLine()) != null) {
 				if (line.contains("mount_path") && !line.contains("#")) {
 					mountPath = line.split("=")[1].replaceAll("\"", "");
+					break;
 				}
 			}
-			if(null != mountPath) {
+			if(null != mountPath  && !mountPath.isEmpty()) {
 				String newLine = System.getProperty("line.separator");
 				String commandOutput = null;
 			    Channel channel = session.openChannel("exec");
@@ -76,8 +77,10 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 						Assert.assertEquals(listDataList.get(0).getText(), availableSize);
 					}
 				}
+			} else {
+				Assert.assertEquals("mount_path not available", "mount_path available");
 			}
-			log.info("TC 02 Verify the overall file system size. Ended.............");
+			log.info("TC 01 Verify the overall file system size. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -91,8 +94,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public static void tc03_verifySizeandNumberOfFolders() throws JSchException, SftpException, Exception {
-		log.info("TC 03 Verify the size and Number of the file system Directories are captured in report. started..............");
+	public static void tc02_verifySizeandNumberOfFolders() throws JSchException, SftpException, Exception {
+		log.info("TC 02 Verify the size and Number of the file system Directories are captured in report. started..............");
 		loadLowLevelReportInBrowser();
 		establishSshConnection();
 		try {
@@ -187,7 +190,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 			Assert.assertEquals(objectCountListInFile,objectCountListInReport);
 			Assert.assertEquals(folderSizeListInFile.size(),folderSizeListInReport.size());
 			Assert.assertEquals(folderSizeListInFile,folderSizeListInReport);
-			log.info("TC 03 Verify the size and Number of the file system Directories are captured in report. Ended..............");
+			log.info("TC 02 Verify the size and Number of the file system Directories are captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -201,8 +204,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public static void tc04_verifyIgnoredFiles() throws JSchException, SftpException, Exception {
-		log.info("TC 04 Verify the ignored files are captured in Report. Started.............");
+	public static void tc03_verifyIgnoredFiles() throws JSchException, SftpException, Exception {
+		log.info("TC 03 Verify the ignored files are captured in Report. Started.............");
 		loadLowLevelReportInBrowser();
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/fs_constants.py");
@@ -226,7 +229,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 			Collections.sort(excluedFoldersListInFile);
 			Assert.assertEquals(excluedFoldersListInReport.size(), excluedFoldersListInFile.size());
 			Assert.assertEquals(excluedFoldersListInReport, excluedFoldersListInFile);
-			log.info("TC 04 Verify the ignored files are captured in Report. Ended.............");
+			log.info("TC 03 Verify the ignored files are captured in Report. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -240,8 +243,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public static void tc05_verifyAttachementRoot() throws JSchException, SftpException, Exception {
-		log.info("TC 05 Verify attachment root path is captured in report. started..............");
+	public static void tc04_verifyAttachementRoot() throws JSchException, SftpException, Exception {
+		log.info("TC 04 Verify attachment root path is captured in report. started..............");
 		loadLowLevelReportInBrowser();
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
@@ -313,7 +316,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				}
 				Assert.assertEquals(attachmentRootAvailability, "Attachment Root Available");
 			}
-			log.info("TC 01 Checking if SSO enabled ended..............");
+			log.info("TC 04 Verify attachment root path is captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -327,8 +330,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public static void tc07_verifyApplicationLog() throws JSchException, SftpException, Exception {
-		log.info("TC 05 Verify attachment root path is captured in report. started..............");
+	public static void tc06_verifyApplicationLog() throws JSchException, SftpException, Exception {
+		log.info("TC 06 Verify Application Log captured in report. started..............");
 		loadLowLevelReportInBrowser();
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
@@ -386,7 +389,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				}
 				Assert.assertEquals(logDirectoryAvailability, "Log Directory Available");
 			}
-			log.info("TC 01 Checking if SSO enabled ended..............");
+			log.info("TC 06 Verify Application Log captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -398,8 +401,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public void tc08_ReportCheck() throws Exception {
-		log.info("TC 08 Report check started....................");
+	public void tc07_ReportCheck() throws Exception {
+		log.info("TC 07 Report check started....................");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		String[] checkList = { "Filesystem Details", "Folders Details", "Excluded Folder Details", 
@@ -408,7 +411,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 			String web = driver.getPageSource().contains(checkList[i]) ? checkList[i]+" Available" : checkList[i]+" Not Available";
 			Assert.assertEquals(web, checkList[i]+" Available");
 		}
-		log.info("TC 08 Report check ended....................");
+		log.info("TC 07 Report check ended....................");
 	}
 	
 	/**
@@ -418,8 +421,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public static void tc10_verifyIfWrongPathsGiven() throws JSchException, SftpException, Exception {
-		log.info("TC 10 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
+	public static void tc09_verifyIfWrongPathsGiven() throws JSchException, SftpException, Exception {
+		log.info("TC 09 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
 		loadLowLevelReportInBrowser();
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
@@ -483,7 +486,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 		} else {
 	 			Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
 	 		}
-			log.info("TC 10 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
+			log.info("TC 09 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
@@ -497,8 +500,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 * @throws Exception
 	 */
 	@Test
-	public static void tc11_verifyIfNoPathGiven() throws JSchException, SftpException, Exception {
-		log.info("TC 11 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
+	public static void tc10_verifyIfNoPathGiven() throws JSchException, SftpException, Exception {
+		log.info("TC 10 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
 		loadLowLevelReportInBrowser();
 		establishSshConnection();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
@@ -540,7 +543,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 		} else {
 	 			Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
 	 		}
-			log.info("TC 11 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
+			log.info("TC 10 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
