@@ -174,7 +174,7 @@ public class Base {
 		JSch jsch = new JSch();
 
 		session = jsch.getSession(user, host, port);
-		jsch.addIdentity("//home//ubuntu//Downloads//PPkfile.ppk");
+		jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
 		session.setConfig("StrictHostKeyChecking", "no");
 		System.out.println("Establishing Connection...");
 		session.connect();
