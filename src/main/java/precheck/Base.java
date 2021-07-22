@@ -184,6 +184,19 @@ public class Base {
 		sftpChannel.connect();
 	}
 	
+	/**
+	 * The method used to connect Destination Database
+	 * @throws Exception
+	 */
+	public static String establishDestinationDatabaseconnection(String host, String user, String password, String port) throws Exception {
+		log.info("Destination DB connection started....................");
+		Class.forName("com.mysql.jdbc.Driver");
+		dbConnection = DriverManager.getConnection(
+				"jdbc:mysql://" + host + ":" + port + "/", user , password);
+		log.info("MYSQL Destination DB connected....................");
+		return "Connection Success";
+	}
+	
 	public static void establishWindowsSshConnection() throws Exception {
 		loginProperties = new Properties();
 		// fetching a DB name from property file

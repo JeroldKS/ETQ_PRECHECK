@@ -24,7 +24,7 @@ import precheck.Base;
 
 public class MMP529_OOBCheck extends Base{
 	
-	static Logger log = Logger.getLogger(MMP396_MySQLDatabaseCheck.class.getName());
+	static Logger log = Logger.getLogger(MMP529_OOBCheck.class.getName());
 	
 	@Test
 	public static void tc01_checkIfOOBDesignListPresent() throws JSchException, SftpException, Exception {
