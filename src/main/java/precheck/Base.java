@@ -37,10 +37,12 @@ public class Base {
 	public static ResultSet sourceQuery;
 	public static Properties prop;
 	public static Properties xpathProperties;
+	public static Properties fileProperties = new Properties();;
 	public static List<String> listOfText;
 	public static Session session;
 	public static ChannelSftp sftpChannel;
-	public static Session jschSession = null;
+	public static String osUserInput;
+	public static String databaseUserInput;
 	static Logger log = Logger.getLogger(Base.class.getName());
 
 	/**
@@ -56,13 +58,20 @@ public class Base {
 		browserProperties.load(browserFile);
 		String browsername = browserProperties.getProperty("browser");
 		if (browsername.equals("chrome")) {
-			System.setProperty("webdriver.chrome.driver",
-					System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver.exe");
-			driver = new ChromeDriver();
-			
+			if(System.getProperty("os.name").equalsIgnoreCase("Linux")) {
+				System.setProperty("webdriver.chrome.driver",
+						System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver");
+				driver = new ChromeDriver();
+			} else if(System.getProperty("os.name").contains("Windows")){
+				System.setProperty("webdriver.chrome.driver",
+						System.getProperty("user.dir") + "//src//main//resources//driver//chromedriver.exe");
+				driver = new ChromeDriver();
+			} else {
+				log.error("This Programme will only run in windows/linux");
+			}
 			log.info("chrome browser launched....................");
 		} else {
-			System.out.println("Not a chrome browser");
+			log.info("Not a chrome browser");
 		}
 		return driver;
 
@@ -92,7 +101,7 @@ public class Base {
 	 * The method used to connect DataBase
 	 * @throws Exception
 	 */
-	public static void establishDatabaseconnection(String dbType) throws Exception {
+	public static void establishDatabaseconnection() throws Exception {
 		log.info("db connection started....................");
 		loginProperties = new Properties();
 		// fetching a DB name from property file
@@ -100,27 +109,31 @@ public class Base {
 				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
 			loginProperties.load(credentialsFile);
 		}
-		//String databaseName = loginProperties.getProperty("DB_name");
-		if (dbType.equals("mysqlSource")) {
+		try (FileInputStream filePaths = new FileInputStream(
+				System.getProperty("user.dir") + "//src//main//resources//properties//file.properties")) {
+			fileProperties.load(filePaths);
+		}
+		databaseUserInput = fileProperties.getProperty("database");
+		if (databaseUserInput.equals("mysqlSource")) {
 			Class.forName("com.mysql.jdbc.Driver");
 			dbConnection = DriverManager.getConnection(
-					"jdbc:mysql://" + loginProperties.getProperty("ipForMysqlSourceDB") + ":" + loginProperties.getProperty("port70") + "/",
-					loginProperties.getProperty("user70"), loginProperties.getProperty("pass70"));
+					"jdbc:mysql://" + loginProperties.getProperty("ipForMysqlSourceDB") + ":" + loginProperties.getProperty("portForMysqlSourceDB") + "/",
+					loginProperties.getProperty("userNameForMysqlSourceDB"), loginProperties.getProperty("passwordForMysqlSourceDB"));
 			log.info("Source MYSQL DB connected....................");
-		}else if (dbType.equals("mysqltarget")) {
+		}else if (databaseUserInput.equals("mysqltarget")) {
 			Class.forName("com.mysql.jdbc.Driver");
 			dbConnection = DriverManager.getConnection(
 					"jdbc:mysql://" + loginProperties.getProperty("ipForMysqlTargetDB") + ":" + loginProperties.getProperty("portForTargetDB") + "/",
 					loginProperties.getProperty("userNameForTargetDB"), loginProperties.getProperty("passwordForTargetDB"));
 			log.info("Target MYSQL DB connected....................");
-		} else if (dbType.equals("mssqlSource")) {
+		} else if (databaseUserInput.equals("mssqlSource")) {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			dbConnection = DriverManager.getConnection(
-					loginProperties.getProperty("msip266"),
-					loginProperties.getProperty("msuser266"), loginProperties.getProperty("mspass266"));
+					loginProperties.getProperty("ipForMssqlSourceDB"),
+					loginProperties.getProperty("userNameForMssqlSourceDB"), loginProperties.getProperty("passwordForMssqlSourceDB"));
 			log.info("MYSQL DB connected....................");
 			
-		} else if (dbType.equals("oracleSource")) {
+		} else if (databaseUserInput.equals("oracleSource")) {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			dbConnection = DriverManager.getConnection("jdbc:oracle:thin:@"+loginProperties.getProperty("ipForWindowsOracleSource")+":"
 					+loginProperties.getProperty("portNoForWindowsOracleSource")+"/"+loginProperties.getProperty("serviceNameForWindowsOracleSource"),
@@ -136,7 +149,6 @@ public class Base {
 	@AfterTest
 	public static void closeconnection() throws Exception {
 		driver.close();
-		//dbConnection.close();
 		log.info("all connection closed....................");
 	}
 	
@@ -144,22 +156,35 @@ public class Base {
 	 * The method used to connect EC2 instance
 	 * @throws Exception
 	 */
-	public static void establishSshConnection() throws Exception {
-		String user = "ec2-user";
-		String host = "54.158.99.31";
+	public static void establishSshConnectionForSourceInstance() throws Exception {
+		loginProperties = new Properties();
+		try (FileInputStream credentialsFile = new FileInputStream(
+				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
+			loginProperties.load(credentialsFile);
+		}
 		int port = 22;
-
 		JSch jsch = new JSch();
-
-		session = jsch.getSession(user, host, port);
-		jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
+		try (FileInputStream filePaths = new FileInputStream(
+				System.getProperty("user.dir") + "//src//main//resources//properties//file.properties")) {
+			fileProperties.load(filePaths);
+		}
+		osUserInput = fileProperties.getProperty("os");
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			session = jsch.getSession(loginProperties.getProperty("userNameForPrecheckLinux"),
+					loginProperties.getProperty("ipForPrecheckLinux"), port);
+			jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
+			log.info("Linux session connected");
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			session = jsch.getSession(loginProperties.getProperty("userNameForWindowsMssqlSource"),
+					loginProperties.getProperty("ipForWindowsMssqlSource"), port);
+			session.setPassword(loginProperties.getProperty("passwordForWindowsMssqlSource"));
+			log.info("Windows session connected");
+		}
 		session.setConfig("StrictHostKeyChecking", "no");
-		System.out.println("Establishing Connection...");
 		session.connect();
-		System.out.println("Connection established.");
-		System.out.println("Creating SFTP Channel.");
 		sftpChannel = (ChannelSftp) session.openChannel("sftp");
 		sftpChannel.connect();
+		log.info("SFTP channel connected");
 	}
 	
 	/**
@@ -174,7 +199,7 @@ public class Base {
 			loginProperties.load(credentialsFile);
 		}
 		String host = loginProperties.getProperty("ipForMysqlSourceDB");
-		String user = loginProperties.getProperty("userNameForSourceDB");
+		String user = loginProperties.getProperty("userNameForMysqlSourceDBInstance");
 		int port = 22;
 
 		JSch jsch = new JSch();
@@ -182,10 +207,7 @@ public class Base {
 		session = jsch.getSession(user, host, port);
 		jsch.addIdentity(System.getProperty("user.dir")+"//src//main//resources//properties//ETQTesting.ppk");
 		session.setConfig("StrictHostKeyChecking", "no");
-		System.out.println("Establishing Connection...");
 		session.connect();
-		System.out.println("Connection established.");
-		System.out.println("Creating SFTP Channel.");
 		sftpChannel = (ChannelSftp) session.openChannel("sftp");
 		sftpChannel.connect();
 	}
@@ -203,24 +225,6 @@ public class Base {
 		return "Connection Success";
 	}
 	
-	public static void establishWindowsSshConnection() throws Exception {
-		loginProperties = new Properties();
-		// fetching a DB name from property file
-		try (FileInputStream credentialsFile = new FileInputStream(
-				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
-			loginProperties.load(credentialsFile);
-		}
-		int port = 22;
-		JSch jsch = new JSch();
-		jschSession = jsch.getSession(loginProperties.getProperty("windowsuser266"),
-				loginProperties.getProperty("windowsip266"), port);
-		jschSession.setPassword(loginProperties.getProperty("windowspass266"));
-		java.util.Properties config = new java.util.Properties();
-		config.put("StrictHostKeyChecking", "no");
-		jschSession.setConfig(config);
-		jschSession.connect();
-	}
-
 	/**
 	 * This method is for fetching web element's text
 	 * @param x
