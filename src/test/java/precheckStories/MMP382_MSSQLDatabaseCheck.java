@@ -14,13 +14,17 @@ import precheck.Base;
 
 public class MMP382_MSSQLDatabaseCheck extends Base {
 
-	static Logger log = Logger.getLogger(MMP396_MySQLDatabaseCheck.class.getName());
+	static Logger log = Logger.getLogger(MMP382_MSSQLDatabaseCheck.class.getName());
 
+	/**
+	 * To verify DB Meta Information validation
+	 * @throws Exception
+	 */
 	@Test
 	public void tc01_IsDatabaseMetaInformationIncludesAllDetails() throws Exception {
 		log.info("TC 01 DB Meta Info validation started....................");
-		establishDatabaseconnection("mssqlSource");
-		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
+		establishDatabaseconnection();
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQLDatabaseCheck.properties");
 		ArrayList<String> checkList = new ArrayList<>();
 		ArrayList<String> sourecColumnName = new ArrayList<>();
 		String[] checkListArray = new String[] { "schema_name", "table_count", "column_count", "view_count",
@@ -40,9 +44,15 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 		Assert.assertTrue(sourecColumnName.containsAll(checkList), copyCheckList + " = This column is not reported");
 	}
 
+	/**
+	 * To verify Mssql data types fetched are supports or unsupports for Mysql
+	 * @throws Exception
+	 */
 	@Test
 	public void tc02_IsMssqlDataTypesFetchedAreSupportedOrUnsupportedForMysql() throws Exception {
-		establishDatabaseconnection("mssqlSource");
+		log.info(
+				"TC 02 Mssql data types fetched are supported or unsupported for Mysql validation started....................");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
@@ -70,12 +80,19 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 			dbDataTypes.removeAll(supportedDataTypesList);
 			log.info("While migration need to convert the following datatypes = " + dbDataTypes);
 		}
+		log.info(
+				"TC 02 Mssql data types fetched are supported or unsupported for Mysql validation ended....................");
 	}
 
+	/**
+	 * To verify Indexes created in Mssql is less than 64
+	 * @throws Exception
+	 */
 	@Test
 	public void tc03_IsIndexesCreatedInMssqlIsLessThan64() throws Exception {
-		establishDatabaseconnection("mssqlSource");
-		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
+		log.info("TC 03 Indexes created in Mssql is less than 64 validation started....................");
+		establishDatabaseconnection();
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQLDatabaseCheck.properties");
 		sourceQuery = query(prop.getProperty("indexCount"));
 		ArrayList<String> identifiers = new ArrayList<>();
 		while (sourceQuery.next()) {
@@ -91,14 +108,20 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 			log.info("Index created in MSSQL is less than 64 :: Good to Migrate");
 		}
 		Assert.assertEquals(identifiers.size(), 0, "Row count of index created in MSSQL is grater than 64 : ");
+		log.info("TC 03 Indexes created in Mssql is less than 64 validation ended....................");
 	}
 
+	/**
+	 * to verify Indexes created in Mssql is greater than 64
+	 * @throws Exception
+	 */
 	@Test
 	public void tc04_IsIndexCountGreaterThan64() throws Exception {
-		establishDatabaseconnection("mssqlSource");
+		log.info("TC 04 Indexes created in Mssql is greater than 64 validation started....................");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
-		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQLDatabaseCheck.properties");
 		sourceQuery = query(prop.getProperty("indexCount"));
 		ArrayList<String> indexCount = new ArrayList<>();
 		ArrayList<String> reportIndex = new ArrayList<>();
@@ -133,12 +156,18 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 		} else {
 			log.info("In this case for negative scenario any index created in MSSQL is should be grater than 64");
 		}
+		log.info("TC 04 Indexes created in Mssql is greater than 64 validation ended....................");
 	}
 
+	/**
+	 * To verify Identifiers created in Mssql is less than 64
+	 * @throws Exception
+	 */
 	@Test
 	public void tc05_IsIdentifiersCreatedInMssqlIsLessThan64() throws Exception {
-		establishDatabaseconnection("mssqlSource");
-		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
+		log.info("TC 05 Identifiers created in Mssql is less than 64 validation started....................");
+		establishDatabaseconnection();
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQLDatabaseCheck.properties");
 		sourceQuery = query(prop.getProperty("identifiers"));
 		ArrayList<String> identifiers = new ArrayList<>();
 		while (sourceQuery.next()) {
@@ -154,14 +183,20 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 			log.info("Identifiers created in MSSQL is less than 64 :: Good to Migrate");
 		}
 		Assert.assertEquals(identifiers.size(), 0, "Row count of identifiers created in MSSQL is grater than 64 : ");
+		log.info("TC 05 Identifiers created in Mssql is less than 64 validation ended....................");
 	}
 
+	/**
+	 * To verify Maximum identifiers are listed greater than 64
+	 * @throws Exception
+	 */
 	@Test
 	public void tc06_IsMaximumIdentifiersAreListedGreaterThan64() throws Exception {
-		establishDatabaseconnection("mssqlSource");
+		log.info("TC 06 Maximum identifiers are listed greater than 64 validation started....................");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
-		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQLDatabaseCheck.properties");
 		sourceQuery = query(prop.getProperty("identifiers"));
 		ArrayList<String> identifiers = new ArrayList<>();
 		ArrayList<String> reportIdentifiers = new ArrayList<>();
@@ -195,7 +230,7 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 				identifiers.add(nullIdentifiers);
 			}
 		}
-		if (identifiers.size()  != 0) {
+		if (identifiers.size() != 0) {
 			Assert.assertNotEquals(identifiers.size(), 0,
 					"Row count of identifiers created in MSSQL is grater than 64 : ");
 			List<WebElement> reportIdentifiersRow = xtexts(xpathProperties.getProperty("reportIdentifiersrow"));
@@ -205,7 +240,7 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 				listOfText = listString();
 				String combainIdentifiersColumn = "";
 				for (int j = 0; j < listOfText.size(); j++) {
-					if (listOfText.size()-1 != j) {
+					if (listOfText.size() - 1 != j) {
 						combainIdentifiersColumn = combainIdentifiersColumn + listOfText.get(j) + ".";
 					} else {
 						combainIdentifiersColumn = combainIdentifiersColumn + listOfText.get(j);
@@ -222,14 +257,20 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 		} else {
 			log.info("In this case for negative scenario any identifiers created in MSSQL is should be grater than 64");
 		}
+		log.info("TC 06 Maximum identifiers are listed greater than 64 validation ended....................");
 	}
 
+	/**
+	 * To verify DataBase check
+	 * @throws Exception
+	 */
 	@Test
 	public void tc07_DataBaseChecks() throws Exception {
-		establishDatabaseconnection("mssqlSource");
+		log.info("TC 07 DataBase check validation started....................");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
-		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQLDatabaseCheck.properties");
 		// Total utilized size of the database
 		sourceQuery = query(prop.getProperty("dbUtilizedSize"));
 		sourceQuery.next();
@@ -272,15 +313,20 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 		}
 		text = xtext(xpathProperties.getProperty("privilegeValidation"));
 		Assert.assertEquals(text.trim(), privilegeValidation, "Database user has not have admin privilege : ");
+		log.info("TC 07 DataBase check validation ended....................");
 	}
 
+	/**
+	 * To verify Report captured all checks
+	 * @throws Exception
+	 */
 	@Test
 	public void tc08_IsReportCapturedAllChecks() throws Exception {
+		log.info("TC 08 Report captured all checks validation started....................");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		listOfWebElement = xtexts(xpathProperties.getProperty("reportCapturedAllChecks"));
 		listOfText = listString();
-		System.out.println(listOfText);
 		String[] reportCapturedAllChecks = { "DB Meta Information", "Datatypes Present in Current DB",
 				"Index Information (>64)", "DB Maximum Identifiers (>64)", "DB Materialized views(Only Oracle)",
 				"DB Package List(Only Oracle)", "Database Checks" };
@@ -301,7 +347,7 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 
 			}
 		}
-
+		log.info("TC 08 Report captured all checks validation ended....................");
 	}
 
 }

@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import precheck.Base;
 
 public class MMP381_OracleDatabaseViews extends Base {
-	static Logger log = Logger.getLogger(MMP381_MSSQLDatabaseViews.class.getName());
+	static Logger log = Logger.getLogger(MMP381_OracleDatabaseViews.class.getName());
 
 	/**
 	 * This method is to validating the total number of custom views, total number
@@ -22,7 +22,7 @@ public class MMP381_OracleDatabaseViews extends Base {
 		log.info(
 				"TC_07 Total views and passed failed views captured in report and count matches with source validation started....................");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP381_OracleDatabaseViews.properties");
 		xpathProperties = loadXpathFile();
 		sourceQuery = query(prop.getProperty("viewsCount"));

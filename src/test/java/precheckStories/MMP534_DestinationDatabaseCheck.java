@@ -12,13 +12,17 @@ import precheck.Base;
 public class MMP534_DestinationDatabaseCheck extends Base {
 	static Logger log = Logger.getLogger(MMP534_DestinationDatabaseCheck.class.getName());
 
+	/**
+	 * To verify ENV-id not present in core schema table record in destination
+	 * @throws Exception
+	 */
 	@Test
 	public void tc03_IsENVIDNotPresentInCoreSchemaTableRecordInDestination() throws Exception {
 		log.info("tc03 ENV-id not present in core schema table record in destination vaidation started...............");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		text = xtext(xpathProperties.getProperty("envID"));
-		establishDatabaseconnection("mysqltarget");
+		establishDatabaseconnection();
 		prop = loadQueryFile("\\src\\test\\resources\\precheck\\queries\\MMP534_DestinationDatabaseCheck.properties");
 		sourceQuery = query("select schema_name from information_schema.schemata where schema_name like '%_" + text
 				+ "' order by schema_name");
@@ -32,13 +36,17 @@ public class MMP534_DestinationDatabaseCheck extends Base {
 		log.info("tc03 ENV-id not present in core schema table record in destination vaidation ended.................");
 	}
 
+	/**
+	 * To verify source environment non-core schemas not present in destination
+	 * @throws Exception
+	 */
 	@Test
 	public void tc04_SourceEnvironmentNonCoreSchemasNotPresentInDestination() throws Exception {
 		log.info("tc04 source environment non-core schemas not present in destination vaidation started...............");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		text = xtext(xpathProperties.getProperty("envID"));
-		establishDatabaseconnection("mysqltarget");
+		establishDatabaseconnection();
 		prop = loadQueryFile("\\src\\test\\resources\\precheck\\queries\\MMP534_DestinationDatabaseCheck.properties");
 		sourceQuery = query(prop.getProperty("nonCoreDestnationFetch"));
 		ResultSet nonCoreDestnationFetch = sourceQuery;

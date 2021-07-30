@@ -22,12 +22,19 @@ public class MMP844_CustomApplicationCheckExclusionList extends Base {
 	@Test
 	public void tc01_IsCoreSchemasExcludedInCustomData() throws Exception {
 		loadHighLevelReportInBrowser();
-		establishDatabaseconnection("mysqlSource");
-		establishSshConnection();
+		establishDatabaseconnection();
+		establishSshConnectionForSourceInstance();
 		prop = loadQueryFile(
 				"//src//test//resources//precheck//queries//MMP844_CustomApplicationCheckExclusionList.properties");
-		InputStream stream = sftpChannel
-				.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
+		InputStream stream = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel
+					.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel
+			.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/const/common_constants.py");
+		}
+		
 
 		String oobDesignList = "OOB Design Name List Not Available";
 		List<String> unmatchedDesignListInDB = new ArrayList<>();

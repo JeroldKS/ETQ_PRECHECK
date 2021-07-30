@@ -1,8 +1,5 @@
 package precheckStories;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -14,20 +11,19 @@ public class MMP391_ETQPythonScriptSQLQueries extends Base {
 
 	/**
 	 * This method is to validate the list have id and description column name
-	 * 
-	 * @throws SQLException
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	@Test
-	public void tc01_IsListHaveIdAndDescriptionColumnName() throws SQLException, IOException {
+	public void tc01_IsListHaveIdAndDescriptionColumnName() throws Exception {
 		log.info("tc01_Is List Have Id And Description ColumnName started....................");
+		establishDatabaseconnection();
 		prop = loadQueryFile("\\src\\test\\resources\\precheck\\queries\\MMP391_ETQPythonScriptSQLQueries.properties");
 		sourceQuery = query(prop.getProperty("idAndDescriptionList"));
 		while (sourceQuery.next()) {
-			Assert.assertNotNull(sourceQuery.getObject(2).toString(),
-					"ID is null for = " + sourceQuery.getObject(1).toString());
-			Assert.assertNotNull(sourceQuery.getObject(3).toString(),
-					"Description is null for = " + sourceQuery.getObject(1).toString());
+			Assert.assertNotNull(String.valueOf(sourceQuery.getObject(2)),
+					"ID is null for = " + String.valueOf(sourceQuery.getObject(1)));
+			Assert.assertNotNull(String.valueOf(sourceQuery.getObject(3)),
+					"Description is null for = " + String.valueOf(sourceQuery.getObject(1)));
 		}
 		log.info("tc01_Is List Have Id And Description ColumnName ended....................");
 	}

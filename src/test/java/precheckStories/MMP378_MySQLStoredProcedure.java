@@ -21,7 +21,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 	@Test
 	public void tc01_ReportHeadingsvalidation() throws Exception {
 		log.info("TC 01 Report Headings validation started....................");
-		establishDatabaseconnection("mysqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP378_MySQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -43,7 +43,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 	@Test
 	public void tc02_IsReportCaptureStoredProcedureCountMatchesSource() throws Exception {
 		log.info("TC 02 Report capture stored procedure count matches with Source validation started....................");
-		establishDatabaseconnection("mysqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP378_MySQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -72,7 +72,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 	@Test
 	public void tc03_IsReportGenerateExpectedStoredProcedureFormat() throws Exception {
 		log.info("TC 03 Report generate expected stored procedure format validation started....................");
-		establishDatabaseconnection("mysqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP378_MySQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -102,7 +102,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 	@Test
 	public void tc04_IsReportStoredProcedureMatchesSource() throws Exception {
 		log.info("TC 04 Report stored procedure matches source validation started....................");
-		establishDatabaseconnection("mysqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP378_MySQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -135,7 +135,6 @@ public class MMP378_MySQLStoredProcedure extends Base {
 			List<String> dbStoredProcedur = dbSPlList;
 			if (reportSPList.size() != dbSPlList.size()) {
 				dbStoredProcedur.removeAll(reportSPList);
-				System.err.println(dbStoredProcedur);
 			}
 			Collections.sort(reportSPList);
 			Collections.sort(dbSPlList);
@@ -156,7 +155,7 @@ public class MMP378_MySQLStoredProcedure extends Base {
 	@Test
 	public void tc06_IsReportCaptureStoredProcedureCount() throws Exception {
 		log.info("TC 06 Report capture stored procedure count validation started....................");
-		establishDatabaseconnection("mysqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP378_MySQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();

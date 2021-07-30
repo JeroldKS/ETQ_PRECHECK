@@ -22,7 +22,7 @@ public class MMP379_LinuxMSSQLStoredProcedure extends Base{
 	@Test
 	public void tc01_ReportHeadingsvalidation() throws Exception {
 		log.info("TC 01 Report Headings validation started....................");
-		establishDatabaseconnection("mssqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP379_LinuxMSSQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -44,7 +44,7 @@ public class MMP379_LinuxMSSQLStoredProcedure extends Base{
 	@Test
 	public void tc02_IsReportCaptureStoredProcedureCountMatchesSource() throws Exception {
 		log.info("TC 02 Report capture stored procedure count matches with Source validation started....................");
-		establishDatabaseconnection("mssqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP379_LinuxMSSQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -76,7 +76,7 @@ public class MMP379_LinuxMSSQLStoredProcedure extends Base{
 	@Test
 	public void tc03_IsReportGenerateExpectedStoredProcedureFormat() throws Exception {
 		log.info("TC 03 Report generate expected stored procedure format validation started....................");
-		establishDatabaseconnection("mssqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP379_LinuxMSSQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -92,7 +92,7 @@ public class MMP379_LinuxMSSQLStoredProcedure extends Base{
 				}
 			}
 		} catch (Exception getcatch) {
-			System.out.println("No SP found in DataBase :: " + getcatch.getMessage());
+			log.error("No SP found in DataBase :: " + getcatch.getMessage());
 		}
 		log.info("TC 03 Report generate expected stored procedure format validation ended....................");
 	}
@@ -106,7 +106,7 @@ public class MMP379_LinuxMSSQLStoredProcedure extends Base{
 	@Test
 	public void tc04_IsReportStoredProcedureMatchesSource() throws Exception {
 		log.info("TC 04 Report stored procedure matches source validation started....................");
-		establishDatabaseconnection("mssqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP379_LinuxMSSQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();
@@ -139,17 +139,13 @@ public class MMP379_LinuxMSSQLStoredProcedure extends Base{
 			List<String> dbStoredProcedur = dbSPlList;
 			if (reportSPList.size() != dbSPlList.size()) {
 				dbStoredProcedur.removeAll(reportSPList);
-				System.err.println(dbStoredProcedur);
 			}
 			Collections.sort(reportSPList);
 			Collections.sort(dbSPlList);
 			Assert.assertEquals(reportSPList.size(), dbSPlList.size());
 			Assert.assertEquals(reportSPList, dbSPlList);
-			System.out.println("reportSPList = "+reportSPList);
-			System.out.println("dbSPlList = "+dbSPlList);
-
 		} catch (Exception getcatch) {
-			System.out.println("No SP found in DataBase OR Query format invalid in SP :: " + getcatch.getMessage());
+			log.error("No SP found in DataBase OR Query format invalid in SP :: " + getcatch.getMessage());
 		}
 		log.info("TC 04 Report stored procedure matches source validation ended....................");
 	}
@@ -162,7 +158,7 @@ public class MMP379_LinuxMSSQLStoredProcedure extends Base{
 	@Test
 	public void tc06_IsReportCaptureStoredProcedureCount() throws Exception {
 		log.info("TC 06 Report capture stored procedure count validation started....................");
-		establishDatabaseconnection("mssqlSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP379_LinuxMSSQLStoredProcedure.properties");
 		xpathProperties = loadXpathFile();

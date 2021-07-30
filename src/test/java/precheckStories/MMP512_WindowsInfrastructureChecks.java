@@ -15,12 +15,17 @@ import precheck.Base;
 public class MMP512_WindowsInfrastructureChecks extends Base {
 	static Logger log = Logger.getLogger(MMP512_WindowsInfrastructureChecks.class.getName());
 
+	/**
+	 * To verify Windows infrastructure checks matches report
+	 * @throws Exception
+	 */
 	@Test
 	public static void tc01_IsWindowsInfrastructureChecksMatchesReport() throws Exception {
-		establishWindowsSshConnection();
+		log.info("TC_01 Windows infrastructure checks matches report validation started..............");
+		establishSshConnectionForSourceInstance();
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
-		ChannelExec channelExec = (ChannelExec) jschSession.openChannel("exec");
+		ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand("powershell.exe  (Get-WmiObject -class Win32_OperatingSystem).Caption");
 		channelExec.setErrStream(System.err);
 		InputStream in = channelExec.getInputStream();
@@ -30,7 +35,7 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
 
-		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand(
 				"powershell.exe  \"(Get-CimInstance Win32_PhysicalMemory | Measure-Object -Property capacity -Sum).sum /1gb | % {write-output $_'GB'}\"");
 		channelExec.setErrStream(System.err);
@@ -41,7 +46,7 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
 
-		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand(
 				"powershell.exe  \"Get-WmiObject -class Win32_processor | select NumberOfCores | ConvertTo-Json\"");
 		channelExec.setErrStream(System.err);
@@ -52,7 +57,7 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
 
-		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand("powershell.exe  [System.Security.Principal.WindowsIdentity]::GetCurrent().Name");
 		channelExec.setErrStream(System.err);
 		in = channelExec.getInputStream();
@@ -62,7 +67,7 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
 
-		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand(
 				"powershell.exe  \"([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)\"");
 		channelExec.setErrStream(System.err);
@@ -72,10 +77,16 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 			commandOutput = lines.collect(Collectors.joining(newLine));
 			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
+		log.info("TC_01 Windows infrastructure checks matches report validation ended..............");
 	}
 
+	/**
+	 * To verify Report capture infra check
+	 * @throws Exception
+	 */
 	@Test
 	public void tc02_IsReportCaptureInfraCheck() throws Exception {
+		log.info("TC_02 Report capture infra check validation started..............");
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		listOfWebElement = xtexts(xpathProperties.getProperty("infraCheckList"));
@@ -86,21 +97,26 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		for (int i = 0; i < checkList.length; i++) {
 			Assert.assertTrue(listOfText.contains(checkList[i]), checkList[i] + " : Expected is not capture");
 		}
-
+		log.info("TC_02 Report capture infra check validation ended..............");
 	}
 
+	/**
+	 * To verify Report capture if user privileges false
+	 * @throws Exception
+	 */
 	@Test
 	public void tc03_IsReportCaptureIfUserPrivilegesFalse() throws Exception {
-		establishWindowsSshConnection();
+		log.info("TC_03 Report capture if user privileges false validation started..............");
+		establishSshConnectionForSourceInstance();
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
-		ChannelExec channelExec = (ChannelExec) jschSession.openChannel("exec");
+		ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand("powershell.exe  (Get-WmiObject -class Win32_OperatingSystem).Caption");
 		channelExec.setErrStream(System.err);
 		InputStream in = channelExec.getInputStream();
 		channelExec.connect();
 
-		channelExec = (ChannelExec) jschSession.openChannel("exec");
+		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand(
 				"powershell.exe  \"([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)\"");
 		channelExec.setErrStream(System.err);
@@ -129,5 +145,6 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		} else {
 			log.info("For negative scenario, In this case need to fail the admin privileges");
 		}
+		log.info("TC_03 Report capture if user privileges false validation ended..............");
 	}
 }

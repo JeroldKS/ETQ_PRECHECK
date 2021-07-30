@@ -17,6 +17,7 @@ public class MMP368_DatabaseViews extends Base {
 	public void tc06_IsTotalViewsAndPassedFailedViewsCapturedInReportAndCountMatchesWithSource() throws Exception {
 		log.info("TC 06 Total views and passed failed views captured in report and count matches with source validation started....................");
 		loadLowLevelReportInBrowser();
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP368_DatabaseViews.properties");
 		xpathProperties = loadXpathFile();
 		int tableQueryCount = 0;

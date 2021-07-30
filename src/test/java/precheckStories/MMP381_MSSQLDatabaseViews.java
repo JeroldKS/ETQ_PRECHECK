@@ -21,7 +21,7 @@ public class MMP381_MSSQLDatabaseViews extends Base {
 	public void tc07_IsTotalViewsAndPassedFailedViewsCapturedInReportAndCountMatchesWithSource() throws Exception {
 		log.info("TC_07 Total views and passed failed views captured in report and count matches with source validation started....................");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("mssqlSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP381_MSSQLDatabaseViews.properties");
 		xpathProperties = loadXpathFile();
 		sourceQuery = query(prop.getProperty("viewsCount"));
