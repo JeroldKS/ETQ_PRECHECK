@@ -20,7 +20,6 @@ import org.testng.annotations.Test;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 
@@ -39,11 +38,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	public static void tc01_verifyFileSystemSize() throws JSchException, SftpException, Exception {
 		log.info("TC 01 Verify the overall file system size. Started.............");
 		loadLowLevelReportInBrowser();
-		establishWindowsSshConnection();
-		sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-		sftpChannel.connect();
-		InputStream stream = sftpChannel
-				.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String mountPath = null;
@@ -59,7 +55,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 				mountPath = mountPathFromFile.replaceAll("\\\\", "/");
 				String newLine = System.getProperty("line.separator");
 				String rootFileSystem = null;
-				Channel channel = jschSession.openChannel("exec");
+				Channel channel = session.openChannel("exec");
 				String commandtofindFileSystemSize = "powershell.exe \"Get-ChildItem " + mountPath
 						+ " -Recurse | Measure-Object -Property Length -sum\"";
 				((ChannelExec) channel).setCommand(commandtofindFileSystemSize);
@@ -93,7 +89,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 					directorySize = String.format("%.2f", tb) + " TB";
 				}
 				String isFileAvailable = directorySize.length() != 0 ? "True" : "False";
-				listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td");
+				listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
 				List<WebElement> listOfWebElementCopy = listOfWebElement;
 				for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 					listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td[" + (i + 1) + "]");
@@ -109,6 +105,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			} else {
 				Assert.assertEquals("mount_path not available", "mount_path available");
 			}
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 01 Verify the overall file system size. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -126,11 +124,9 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	public static void tc02_verifySizeandNumberOfFolders() throws JSchException, SftpException, Exception {
 		log.info("TC 02 Verify the size and Number of the file system Directories are captured in report. started..............");
 		loadLowLevelReportInBrowser();
-		establishWindowsSshConnection();
+		establishSshConnectionForSourceInstance();
 		try {
-			sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-			sftpChannel.connect();
-			InputStream stream = sftpChannel.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/const/fs_constants.py");
+			InputStream stream = sftpChannel.get(fileProperties.getProperty("fs_constants_windows"));
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String excludedFoldersinFile = null;
 			String output;
@@ -142,10 +138,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 				}
 			}
 			List<String> excluedFoldersListInFile = Arrays.asList(excludedFoldersinFile.split(","));
-			establishWindowsSshConnection();
-			sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-			sftpChannel.connect();
-			stream = sftpChannel.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/Property.toml");
+			//establishSshConnectionForSourceInstance();
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
 			br = new BufferedReader(new InputStreamReader(stream));
 			String webResourcePath = null;
 			String line;
@@ -156,7 +150,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			}
 			String newLine = System.getProperty("line.separator");
 			String folders = null;
-			Channel channel = jschSession.openChannel("exec");
+			Channel channel = session.openChannel("exec");
 			String commandtoListFolders = "powershell.exe \"Get-ChildItem " + webResourcePath
 					+ " -Directory | Select FullName \"";
 			((ChannelExec) channel).setCommand(commandtoListFolders);
@@ -178,7 +172,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	 		List<String> objectCountListInFile = new ArrayList<String>();
 	 		List<String> folderSizeListInFile = new ArrayList<String>();
 	 		for(String folderName : folderNameList) {
-		 		channel = jschSession.openChannel("exec");
+		 		channel = session.openChannel("exec");
 		 		String commandtofindFileSystemSize = "powershell.exe \"Get-ChildItem " + webResourcePath + "\\" 
 						+ folderName + " -Recurse | Measure-Object -Property Length -sum\"";
 		 		((ChannelExec) channel).setCommand(commandtofindFileSystemSize);
@@ -188,58 +182,61 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 		 			output = lines.collect(Collectors.joining(newLine));
 		 		}
 		 		channel.disconnect();
-		 		String DirectorySize = "";
-				double kb = 0;
-				double mb = 0;
-				double gb = 0;
-				double tb = 0;
-				String countOfObject = output.trim().split("\n")[0].trim().split(":")[1].trim();
-				String DirectorySizeInByte = output.trim().split("\n")[2].trim().split(":")[1].trim();
-				//DirectorySize = String.format("", Integer.valueOf(DirectorySizeInByte)) + "B";
-				DirectorySize = Integer.valueOf(DirectorySizeInByte) + "B";
-				if (Double.parseDouble(DirectorySizeInByte) >= 1024) {
-					kb = Double.parseDouble(DirectorySizeInByte) / 1024;
-					DirectorySize = String.format("%.2f", kb) + " KB";
+		 		if(null != output && output != "") {
+			 		String directorySize = "";
+					double kb = 0;
+					double mb = 0;
+					double gb = 0;
+					double tb = 0;
+					String countOfObject = output.trim().split("\n")[0].trim().split(":")[1].trim();
+					String DirectorySizeInByte = output.trim().split("\n")[2].trim().split(":")[1].trim();
+					directorySize = Integer.valueOf(DirectorySizeInByte) + "B";
+					if (Double.parseDouble(DirectorySizeInByte) >= 1024) {
+						kb = Double.parseDouble(DirectorySizeInByte) / 1024;
+						directorySize = String.format("%.2f", kb) + " KB";
+					}
+					if (kb >= 1024) {
+						mb = kb / 1024;
+						directorySize = String.format("%.2f", mb) + " MB";
+					}
+					if (mb >= 1024) {
+						gb = mb / 1024;
+						directorySize = String.format("%.2f", gb) + " GB";
+					}
+					if (gb >= 1024) {
+						tb = gb / 1024;
+						directorySize = String.format("%.2f", tb) + " TB";
+					}
+					folderSizeListInFile.add(directorySize);
+					objectCountListInFile.add(countOfObject);
+		 		}
+		 		List<String> folderNameListInReport = new ArrayList<String>();
+		 		List<String> objectCountListInReport = new ArrayList<String>();
+		 		List<String> folderSizeListInReport = new ArrayList<String>();
+		 		listOfWebElement = xtexts(xpathProperties.getProperty("folder_details"));
+				List<WebElement> listOfFolderName = listOfWebElement;
+				for (int i = 0; i < listOfFolderName.size(); i++) {
+					folderNameListInReport.add(listOfFolderName.get(i).getText());
 				}
-				if (kb >= 1024) {
-					mb = kb / 1024;
-					DirectorySize = String.format("%.2f", mb) + " MB";
+				listOfWebElement = xtexts(xpathProperties.getProperty("count_of_objects"));
+				List<WebElement> listOfObjectCount = listOfWebElement;
+				for (int i = 0; i < listOfObjectCount.size(); i++) {
+					objectCountListInReport.add(listOfObjectCount.get(i).getText());
 				}
-				if (mb >= 1024) {
-					gb = mb / 1024;
-					DirectorySize = String.format("%.2f", gb) + " GB";
+				listOfWebElement = xtexts(xpathProperties.getProperty("folder_size"));
+				List<WebElement> listOfFolderSize = listOfWebElement;
+				for (int i = 0; i < listOfFolderSize.size(); i++) {
+					folderSizeListInReport.add(listOfFolderSize.get(i).getText());
 				}
-				if (gb >= 1024) {
-					tb = gb / 1024;
-					DirectorySize = String.format("%.2f", tb) + " TB";
-				}
-				folderSizeListInFile.add(DirectorySize);
-				objectCountListInFile.add(countOfObject);
-	 		}
-	 		List<String> folderNameListInReport = new ArrayList<String>();
-	 		List<String> objectCountListInReport = new ArrayList<String>();
-	 		List<String> folderSizeListInReport = new ArrayList<String>();
-	 		listOfWebElement = xtexts("//*[contains(text(),'Folders Details')]/following::table[1]/tbody[1]/tr/td[1]");
-			List<WebElement> listOfFolderName = listOfWebElement;
-			for (int i = 0; i < listOfFolderName.size(); i++) {
-				folderNameListInReport.add(listOfFolderName.get(i).getText());
+				Assert.assertEquals(folderNameListInReport.size(),folderNameList.size());
+				Assert.assertEquals(folderNameListInReport,folderNameList);
+				Assert.assertEquals(objectCountListInFile.size(),objectCountListInReport.size());
+				Assert.assertEquals(objectCountListInFile,objectCountListInReport);
+				Assert.assertEquals(folderSizeListInFile.size(),folderSizeListInReport.size());
+				Assert.assertEquals(folderSizeListInFile,folderSizeListInReport);
+				sftpChannel.disconnect();
+		 		session.disconnect();
 			}
-			listOfWebElement = xtexts("//*[contains(text(),'Folders Details')]/following::table[1]/tbody[1]/tr/td[2]");
-			List<WebElement> listOfObjectCount = listOfWebElement;
-			for (int i = 0; i < listOfObjectCount.size(); i++) {
-				objectCountListInReport.add(listOfObjectCount.get(i).getText());
-			}
-			listOfWebElement = xtexts("//*[contains(text(),'Folders Details')]/following::table[1]/tbody[1]/tr/td[3]");
-			List<WebElement> listOfFolderSize = listOfWebElement;
-			for (int i = 0; i < listOfFolderSize.size(); i++) {
-				folderSizeListInReport.add(listOfFolderSize.get(i).getText());
-			}
-			Assert.assertEquals(folderNameListInReport.size(),folderNameList.size());
-			Assert.assertEquals(folderNameListInReport,folderNameList);
-			Assert.assertEquals(objectCountListInFile.size(),objectCountListInReport.size());
-			Assert.assertEquals(objectCountListInFile,objectCountListInReport);
-			Assert.assertEquals(folderSizeListInFile.size(),folderSizeListInReport.size());
-			Assert.assertEquals(folderSizeListInFile,folderSizeListInReport);
 			log.info("TC 02 Verify the size and Number of the file system Directories are captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -251,11 +248,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	public void tc03_verifyIgnoredFiles() throws Exception {
 		log.info("TC 03 Verify the ignored files are captured in Report validation Started.............");
 		loadLowLevelReportInBrowser();
-		establishWindowsSshConnection();
-		sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-		sftpChannel.connect();
-		InputStream stream = sftpChannel
-				.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/const/fs_constants.py");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("fs_constants_windows"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String excludedFoldersinFile = null;
@@ -269,8 +263,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			List<String> excluedFoldersListInFile = Arrays.asList(excludedFoldersinFile.split(","));
 			List<String> excluedFoldersListInReport = new ArrayList<String>();
 
-			listOfWebElement = xtexts(
-					"//*[contains(text(),'Excluded Folder Details')]/following::table[1]/tbody[1]/tr");
+			listOfWebElement = xtexts(xpathProperties.getProperty("excluded_folder_details"));
 			for (int i = 1; i < listOfWebElement.size(); i++) {
 				excluedFoldersListInReport.add(listOfWebElement.get(i).getText());
 			}
@@ -278,8 +271,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			Collections.sort(excluedFoldersListInFile);
 			Assert.assertEquals(excluedFoldersListInReport.size(), excluedFoldersListInFile.size());
 			Assert.assertEquals(excluedFoldersListInReport, excluedFoldersListInFile);
-
-			dbConnection.close();
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 03 Verify the ignored files are captured in Report validation Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -292,11 +285,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	public void tc04_verifyAttachementRoot() throws Exception {
 		log.info("TC 04 Verify attachment root path is captured in report validation started..............");
 		loadLowLevelReportInBrowser();
-		establishWindowsSshConnection();
-		sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-		sftpChannel.connect();
-		InputStream stream = sftpChannel
-				.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String propsFilePath = null;
@@ -306,9 +296,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 					propsFilePath = line.split("=")[1].replaceAll("'", "").replaceAll("\\\\", "/");
 				}
 			}
-			establishWindowsSshConnection();
-			sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-			sftpChannel.connect();
+			establishSshConnectionForSourceInstance();
 			if (null != propsFilePath) {
 				propsFilePath = "/" + propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
@@ -322,7 +310,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 								: "Attachment Root Not Available";
 						String newLine = System.getProperty("line.separator");
 						String rootFileSystem = null;
-						Channel channel = jschSession.openChannel("exec");
+						Channel channel = session.openChannel("exec");
 						String commandtofindFileSystemSize = "powershell.exe \"Get-ChildItem " + attachmentRoot
 								+ " -Recurse | Measure-Object -Property Length -sum\"";
 						((ChannelExec) channel).setCommand(commandtofindFileSystemSize);
@@ -332,57 +320,60 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 							rootFileSystem = lines.collect(Collectors.joining(newLine));
 						}
 						channel.disconnect();
-						String DirectorySize = "";
-						double kb = 0;
-						double mb = 0;
-						double gb = 0;
-						double tb = 0;
-						String countOfObject = rootFileSystem.trim().split("\n")[0].trim().split(":")[1].trim();
-						String DirectorySizeInByte = rootFileSystem.trim().split("\n")[2].trim().split(":")[1].trim();
-						DirectorySize = String.format("", Integer.valueOf(DirectorySizeInByte)) + "B";
-						if (Double.parseDouble(DirectorySizeInByte) >= 1024) {
-							kb = Double.parseDouble(DirectorySizeInByte) / 1024;
-							DirectorySize = String.format("%.2f", kb) + " KB";
-						}
-						if (kb >= 1024) {
-							mb = kb / 1024;
-							DirectorySize = String.format("%.2f", mb) + " MB";
-						}
-						if (mb >= 1024) {
-							gb = mb / 1024;
-							DirectorySize = String.format("%.2f", gb) + " GB";
-						}
-						if (gb >= 1024) {
-							tb = gb / 1024;
-							DirectorySize = String.format("%.2f", tb) + " TB";
-						}
-						int DirectorySizeCharCount = DirectorySize.length();
-						String DirectoryAvailability = DirectorySizeCharCount != 0 ? "True" : "False";
-						listOfWebElement = xtexts(
-								"//*[contains(text(),'Attachment Folder Details')]/following::table[1]/tbody[1]/tr/td");
-						List<WebElement> listOfWebElementCopy = listOfWebElement;
-						for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-							listOfWebElement = xtexts(
-									"//*[contains(text(),'Attachment Folder Details')]/following::table[1]/tbody[1]/tr["
-											+ (i + 1) + "]/td");
-							if (i == 0) {
-								assertEquals(listOfWebElement.get(0).getText(), countOfObject);
+						if(null != rootFileSystem && rootFileSystem != "") {
+							String DirectorySize = "";
+							double kb = 0;
+							double mb = 0;
+							double gb = 0;
+							double tb = 0;
+							String countOfObject = rootFileSystem.trim().split("\n")[0].trim().split(":")[1].trim();
+							String DirectorySizeInByte = rootFileSystem.trim().split("\n")[2].trim().split(":")[1].trim();
+							DirectorySize = String.format("", Integer.valueOf(DirectorySizeInByte)) + "B";
+							if (Double.parseDouble(DirectorySizeInByte) >= 1024) {
+								kb = Double.parseDouble(DirectorySizeInByte) / 1024;
+								DirectorySize = String.format("%.2f", kb) + " KB";
 							}
-							if (i == 1) {
-								assertEquals(listOfWebElement.get(0).getText(), DirectorySize);
+							if (kb >= 1024) {
+								mb = kb / 1024;
+								DirectorySize = String.format("%.2f", mb) + " MB";
 							}
-							if (i == 2) {
-								assertEquals(listOfWebElement.get(0).getText(), attachmentRoot.replaceAll("/", "\\\\"));
+							if (mb >= 1024) {
+								gb = mb / 1024;
+								DirectorySize = String.format("%.2f", gb) + " GB";
 							}
-							if (i == 3) {
-								assertEquals(listOfWebElement.get(0).getText(), DirectoryAvailability);
+							if (gb >= 1024) {
+								tb = gb / 1024;
+								DirectorySize = String.format("%.2f", tb) + " TB";
 							}
-
+							int DirectorySizeCharCount = DirectorySize.length();
+							String DirectoryAvailability = DirectorySizeCharCount != 0 ? "True" : "False";
+							listOfWebElement = xtexts(xpathProperties.getProperty("attachment_folder_details"));
+							List<WebElement> listOfWebElementCopy = listOfWebElement;
+							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
+								listOfWebElement = xtexts(
+										"//*[contains(text(),'Attachment Folder Details')]/following::table[1]/tbody[1]/tr["
+												+ (i + 1) + "]/td");
+								if (i == 0) {
+									assertEquals(listOfWebElement.get(0).getText(), countOfObject);
+								}
+								if (i == 1) {
+									assertEquals(listOfWebElement.get(0).getText(), DirectorySize);
+								}
+								if (i == 2) {
+									assertEquals(listOfWebElement.get(0).getText(), attachmentRoot.replaceAll("/", "\\\\"));
+								}
+								if (i == 3) {
+									assertEquals(listOfWebElement.get(0).getText(), DirectoryAvailability);
+								}
+	
+							}
 						}
 					}
 				}
 				assertEquals(attachmentRootAvailability, "Attachment Root Available");
 			}
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 04 Verify attachment root path is captured in report validation ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -401,11 +392,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	public static void tc06_verifyApplicationLog() throws JSchException, SftpException, Exception {
 		log.info("TC 06 Verify Application Log captured in report. started..............");
 		loadLowLevelReportInBrowser();
-		establishWindowsSshConnection();
-		sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-		sftpChannel.connect();
-		InputStream stream = sftpChannel
-				.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String logFilePath = null;
@@ -415,9 +403,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 					logFilePath = line.split("=")[1].replaceAll("'", "").replaceAll("\\\\", "/");
 				}
 			}
-			establishWindowsSshConnection();
-			sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-			sftpChannel.connect();
+			//establishSshConnectionForSourceInstance();
 			String logDirectory = null;
 			String logFile = null;
 			if(null != logFilePath) {
@@ -440,7 +426,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 							"Log Directory Available" : "Log Directory Not Available";
 					String newLine = System.getProperty("line.separator");
 					String logFileSize = null;
-			 		Channel channel = jschSession.openChannel("exec");
+			 		Channel channel = session.openChannel("exec");
 					String commandtofindLogFileSize = "powershell.exe \"Get-ChildItem " + logPath
 							+ " -Recurse | Measure-Object -Property Length -sum\"";
 			 		((ChannelExec) channel).setCommand(commandtofindLogFileSize);
@@ -450,8 +436,6 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			 			logFileSize = lines.collect(Collectors.joining(newLine));
 			 		}
 			 		channel.disconnect();
-			 		System.out.println("logDirectorySize::"+logFileSize);
-			 		
 			 		String directorySize = "";
 					double kb = 0;
 					double mb = 0;
@@ -476,7 +460,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 						directorySize = String.format("%.2f", tb) + " TB";
 					}
 					String logDirectoryAvailable = directorySize.length() != 0 ? "True" : "False";
-					listOfWebElement = xtexts("//*[contains(text(),'Application Log details')]/following::table[1]/tbody[1]/tr/td");
+					listOfWebElement = xtexts(xpathProperties.getProperty("application_log_details"));
 					List<WebElement> listOfWebElementCopy = listOfWebElement;
 					for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 						listOfWebElement = xtexts("//*[contains(text(),'Application Log details')]/following::table[1]/tbody[1]/tr[" + (i + 1) + "]/td");
@@ -493,12 +477,15 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 				}
 				Assert.assertEquals(logDirectoryAvailability, "Log Directory Available");
 			}
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 06 Verify Application Log captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
 		}
 	}
+	
 	@Test
 	public void tc07_ReportCheck() throws Exception {
 		log.info("TC 07 Report check started....................");
@@ -512,7 +499,6 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			Assert.assertEquals(web, checkList[i] + " Available");
 		}
 		log.info("TC 07 Report check ended....................");
-
 	}
 
 	/**
@@ -525,11 +511,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	public static void tc09_verifyIfWrongPathsGiven() throws JSchException, SftpException, Exception {
 		log.info("TC 09 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
 		loadLowLevelReportInBrowser();
-		establishWindowsSshConnection();
-		sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-		sftpChannel.connect();
-		InputStream stream = sftpChannel
-				.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String mountPath = null;
@@ -545,7 +528,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			}
 			String newLine = System.getProperty("line.separator");
 			String output = null;
-			Channel channel = jschSession.openChannel("exec");
+			Channel channel = session.openChannel("exec");
 			String commandtofindPathExistance = "powershell.exe \"Test-Path " + mountPath + " \"";
 			((ChannelExec) channel).setCommand(commandtofindPathExistance);
 			InputStream inputStream = channel.getInputStream();
@@ -557,7 +540,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	 		if(output.equals("True")) {
 	 			Assert.assertEquals("Mount Directory exists", "Mount Directory not exists");
 	 		} else {
-	 			listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td");
+	 			listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
 				List<WebElement> listOfWebElementCopy = listOfWebElement;
 				for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 					listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td[" + (i + 1) + "]");
@@ -572,7 +555,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 				}
 	 		}
 	 		
-	 		channel = jschSession.openChannel("exec");
+	 		channel = session.openChannel("exec");
 			commandtofindPathExistance = "powershell.exe \"Test-Path " + webResourcePath + " \"";
 			((ChannelExec) channel).setCommand(commandtofindPathExistance);
 			inputStream = channel.getInputStream();
@@ -585,11 +568,13 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			if(output.equals("True")) {
 				Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
 	 		} else {
-	 			text = xtext("//*[contains(text(),'Web Resources')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("web_resources_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
-	 			text = xtext("//*[contains(text(),'Folders Details')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("folder_details_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
 	 		} 
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 09 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -607,11 +592,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	public static void tc10_verifyIfNoPathGiven() throws JSchException, SftpException, Exception {
 		log.info("TC 10 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
 		loadLowLevelReportInBrowser();
-		establishWindowsSshConnection();
-		sftpChannel = (ChannelSftp) jschSession.openChannel("sftp");
-		sftpChannel.connect();
-		InputStream stream = sftpChannel
-				.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String mountPath = null;
@@ -626,7 +608,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 				}
 			}
 	 		if(mountPath.equals("")) {
-		 		listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td");
+		 		listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
 				List<WebElement> listOfWebElementCopy = listOfWebElement;
 				for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 					listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td[" + (i + 1) + "]");
@@ -643,13 +625,15 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	 			Assert.assertEquals("Mount Directory exists", "Mount Directory not exists");
 	 		}
 	 		if(webResourcePath.equals("")) {
-	 			text = xtext("//*[contains(text(),'Web Resources')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("web_resources_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
-	 			text = xtext("//*[contains(text(),'Folders Details')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("folder_details_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
 	 		} else {
 	 			Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
 	 		}
+	 		sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 10 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());

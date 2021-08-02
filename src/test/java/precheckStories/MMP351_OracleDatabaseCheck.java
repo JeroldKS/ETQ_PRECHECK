@@ -21,10 +21,10 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc01_DBMetaInfo() throws Exception {
 		log.info("TC 01 DB Meta Info validation started....................");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		xpathProperties = loadXpathFile();
-		listOfWebElement = xtexts("//*[contains(text(),'DB Meta Information')]/following::tbody[1]/tr");
+		listOfWebElement = xtexts(xpathProperties.getProperty("db_meta_info"));
 		List<WebElement> listOfText = listOfWebElement;
 		List<String> reportMetaInfoList = new ArrayList<>();
 		List<String> dbMetaInfoIndexList = new ArrayList<>();
@@ -69,12 +69,12 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc02_checkDataTypes() throws Exception {
 		log.info("TC 02 Check for Unsupported Data types. Started...");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		xpathProperties = loadXpathFile();
 		List<String> dataTypeInReport = new ArrayList<>();
 		List<String> dataTypeInDB = new ArrayList<>();
-		listOfWebElement = xtexts("//*[contains(text(),'Datatypes Present in Current DB')]/following::table[1]/tbody[1]/tr");
+		listOfWebElement = xtexts(xpathProperties.getProperty("data_types"));
 		List<WebElement> listOfWebElementCopy = listOfWebElement;
 		for(int i = 0; i < listOfWebElementCopy.size(); i++) {
 			dataTypeInReport.add(listOfWebElementCopy.get(i).getText());
@@ -101,7 +101,7 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc03_verifyIndexCountLessThan64() throws Exception {
 		log.info("TC 03 Verify all the table/schema should not have index count >64. Started...");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		List<String> indexesInDB = new ArrayList<>();
 		sourceQuery = query(prop.getProperty("get_index_count"));
@@ -122,10 +122,10 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc04_verifyIndexInformationGreaterThan64() throws Exception {
 		log.info("TC 04 Verify the table/schema index count >64 captured in report. Started...");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		xpathProperties = loadXpathFile();
-		listOfWebElement = xtexts("//*[contains(text(),'Index Information (>64)')]/following::tbody[1]/tr");
+		listOfWebElement = xtexts(xpathProperties.getProperty("index_info"));
 		List<WebElement> listOfText = listOfWebElement;
 		List<String> tableSchemaListInReport = new ArrayList<>();
 		List<String> tableSchemaListInDB = new ArrayList<>();
@@ -161,7 +161,7 @@ public class MMP351_OracleDatabaseCheck extends Base {
 				log.error("Meta Info not match : " + tableSchemaListCopy);
 			}
 		} else {
-			text = xtext("//*[contains(text(),'Index Information (>64)')]/following::h3[1]");
+			text = xtext(xpathProperties.getProperty("index_info_nodata"));
 			Assert.assertEquals(text, "No Maximum Index(>64) found");
 		}
 		dbConnection.close();
@@ -176,7 +176,7 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc05_findMaximumIdentifiers() throws Exception {
 		log.info("TC 05 Verify maximum length of db identifiers no be >64. Started...");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		List<String> identifiersInDB = new ArrayList<>();
 		sourceQuery = query(prop.getProperty("get_max_identifiers_count"));
@@ -197,10 +197,10 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc06_verifyIdentifierLengthGreaterThan64() throws Exception {
 		log.info("TC 06 Verify the identifiers length >64 captured in report. Started...");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		xpathProperties = loadXpathFile();
-		listOfWebElement = xtexts("//*[contains(text(),'DB Maximum Identifiers (>64)')]/following::tbody[1]/tr");
+		listOfWebElement = xtexts(xpathProperties.getProperty("db_max_identifiers"));
 		List<WebElement> listOfText = listOfWebElement;
 		List<String> identifiersListInReport = new ArrayList<>();
 		List<String> identifiersListInDB = new ArrayList<>();
@@ -236,7 +236,7 @@ public class MMP351_OracleDatabaseCheck extends Base {
 				log.error("Identifiers not match : " + identifierListCopy);
 			}
 		} else {
-			text = xtext("//*[contains(text(),'DB Maximum Identifiers (>64)')]/following::h3[1]");
+			text = xtext(xpathProperties.getProperty("db_max_identifiers_nodata"));
 			Assert.assertEquals(text, "No Data Present");
 		}
 		dbConnection.close();
@@ -251,11 +251,11 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc07_verifyMaterializedViewAndPackage() throws Exception {
 		log.info("TC 07 Verify Materialized views and Packages captured in report. Started...");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		xpathProperties = loadXpathFile();
-		listOfWebElement = xtexts("//*[contains(text(),'DB Materialized views(Oracle)')]/following::tbody[1]/tr");
+		listOfWebElement = xtexts(xpathProperties.getProperty("db_materialized_view_oracle"));
 		List<WebElement> listOfText = listOfWebElement;
 		List<String> materializedViewsInReport = new ArrayList<>();
 		List<String> materializedViewsInDB = new ArrayList<>();
@@ -291,11 +291,11 @@ public class MMP351_OracleDatabaseCheck extends Base {
 				log.error("Materialized views not match : " + materializedViewsCopy);
 			}
 		} else {
-			text = xtext("//*[contains(text(),'DB Materialized views(Oracle)')]/following::h3[1]");
+			text = xtext(xpathProperties.getProperty("db_materialized_view_oracle_nodata"));
 			Assert.assertEquals(text, "No Data Present");
 		}
 		
-		listOfWebElement = xtexts("//*[contains(text(),'DB Package List(Oracle)')]/following::tbody[1]/tr");
+		listOfWebElement = xtexts(xpathProperties.getProperty("db_materialized_view_oracle"));
 		List<WebElement> listOfElements = listOfWebElement;
 		List<String> packagesInReport = new ArrayList<>();
 		List<String> packagesInDB = new ArrayList<>();
@@ -331,7 +331,7 @@ public class MMP351_OracleDatabaseCheck extends Base {
 				log.error("Materialized views not match : " + packagesCopy);
 			}
 		} else {
-			text = xtext("//*[contains(text(),'DB Package List(Oracle)')]/following::h3[1]");
+			text = xtext(xpathProperties.getProperty("db_materialized_view_oracle_nodata"));
 			Assert.assertEquals(text, "No Data Present");
 		}
 		dbConnection.close();
@@ -347,7 +347,7 @@ public class MMP351_OracleDatabaseCheck extends Base {
 		log.info("TC 08 Database parameters check started....................");
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP351_query.properties");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		xpathProperties = loadXpathFile();
 		
 		//Db version
@@ -392,10 +392,9 @@ public class MMP351_OracleDatabaseCheck extends Base {
 	public void tc09_ReportCheck() throws Exception {
 		log.info("TC 09 Report check started....................");
 		loadLowLevelReportInBrowser();
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		xpathProperties = loadXpathFile();
 		listOfWebElement = xtexts(xpathProperties.getProperty("report_validation"));
-		//listOfText = listString();
 		String[] checkList = { "DB Meta Information", "Datatypes Present in Current DB", "DB Maximum Identifiers", 
 				"Index Information", "DB Materialized views(Oracle)","DB Package List(Oracle)","Utilized DB size",
 				"Database Version", "Engine Version", "DB Privileges Validation"};

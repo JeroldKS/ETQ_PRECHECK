@@ -37,8 +37,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	public static void tc01_verifyFileSystemSize() throws JSchException, SftpException, Exception {
 		log.info("TC 01 Verify the overall file system size. Started.............");
 		loadLowLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String mountPath = null;
@@ -61,25 +61,38 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 		 			commandOutput = lines.collect(Collectors.joining(newLine));
 		 		}
 		 		channel.disconnect();
-				String isFileAvailable = commandOutput.contains("Filesystem") == true ? "True" : "False";
-				String output = commandOutput.split("\n")[1].replaceAll("\\s{2,}", " ").trim();
-				String availableSize = output.split(" ")[3].replace("G", " GB");
-				listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td");
-				List<WebElement> listOfWebElementCopy = listOfWebElement;
-				for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-					listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td[" + (i + 1) + "]");
-					List<WebElement> listDataList = listOfWebElement;
-					if (i == 0) {
-						Assert.assertEquals(listDataList.get(0).getText(), mountPath);
-					} else if (i == 1) {
-						Assert.assertEquals(listDataList.get(0).getText(), isFileAvailable);
-					} else if (i == 2) {
-						Assert.assertEquals(listDataList.get(0).getText(), availableSize);
+		 		if(null != commandOutput) {
+					String isFileAvailable = commandOutput.contains("Filesystem") == true ? "True" : "False";
+					String output = commandOutput.split("\n")[1].replaceAll("\\s{2,}", " ").trim();
+					String availableSize = output.split(" ")[3];
+					if(availableSize.contains("T")) {
+						availableSize = output.split(" ")[3].replace("T", " TB");
+					} else if(availableSize.contains("G")) {
+						availableSize = output.split(" ")[3].replace("G", " GB");
+					} else if(availableSize.contains("M")) {
+						availableSize = output.split(" ")[3].replace("M", " MB");
+					} else if(availableSize.contains("K")) {
+						availableSize = output.split(" ")[3].replace("K", " KB");
 					}
-				}
+					listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
+					List<WebElement> listOfWebElementCopy = listOfWebElement;
+					for (int i = 0; i < listOfWebElementCopy.size(); i++) {
+						listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td[" + (i + 1) + "]");
+						List<WebElement> listDataList = listOfWebElement;
+						if (i == 0) {
+							Assert.assertEquals(listDataList.get(0).getText(), mountPath);
+						} else if (i == 1) {
+							Assert.assertEquals(listDataList.get(0).getText(), isFileAvailable);
+						} else if (i == 2) {
+							Assert.assertEquals(listDataList.get(0).getText(), availableSize);
+						}
+					}
+		 		}
 			} else {
 				Assert.assertEquals("mount_path not available", "mount_path available");
 			}
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 01 Verify the overall file system size. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -97,9 +110,9 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	public static void tc02_verifySizeandNumberOfFolders() throws JSchException, SftpException, Exception {
 		log.info("TC 02 Verify the size and Number of the file system Directories are captured in report. started..............");
 		loadLowLevelReportInBrowser();
-		establishSshConnection();
+		establishSshConnectionForSourceInstance();
 		try {
-			InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/fs_constants.py");
+			InputStream stream = sftpChannel.get(fileProperties.getProperty("fs_constants_linux"));
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String excludedFoldersinFile = null;
 			String output;
@@ -110,7 +123,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				}
 			}
 			List<String> excluedFoldersListInFile = Arrays.asList(excludedFoldersinFile.split(","));
-			stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
 			br = new BufferedReader(new InputStreamReader(stream));
 			String webResourcePath = null;
 			String line;
@@ -160,26 +173,37 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 		 		channel.connect();
 		 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
 		 			output = lines.collect(Collectors.joining(newLine));
-		 			String[] folderSizeArray = output.replaceAll("[\t]+", " ").trim().split(" ");
-			 		String folderSize = folderSizeArray[0].replaceAll("G", " GB").replaceAll("K", " KB");
-			 		folderSizeListInFile.add(folderSize);
+		 			if(null != output) {
+			 			String[] folderSizeArray = output.replaceAll("[\t]+", " ").trim().split(" ");
+				 		String folderSize = folderSizeArray[0];
+						if(folderSize.contains("T")) {
+							folderSize = folderSizeArray[0].replace("T", " TB");
+						} else if(folderSize.contains("G")) {
+							folderSize = folderSizeArray[0].replace("G", " GB");
+						} else if(folderSize.contains("M")) {
+							folderSize = folderSizeArray[0].replace("M", " MB");
+						} else if(folderSize.contains("K")) {
+							folderSize = folderSizeArray[0].replace("K", " KB");
+						}
+				 		folderSizeListInFile.add(folderSize);
+		 			}
 		 		}
 		 		channel.disconnect();
 	 		}
 	 		List<String> folderNameListInReport = new ArrayList<String>();
 	 		List<String> objectCountListInReport = new ArrayList<String>();
 	 		List<String> folderSizeListInReport = new ArrayList<String>();
-	 		listOfWebElement = xtexts("//*[contains(text(),'Folders Details')]/following::table[1]/tbody[1]/tr/td[1]");
+	 		listOfWebElement = xtexts(xpathProperties.getProperty("folder_details"));
 			List<WebElement> listOfFolderName = listOfWebElement;
 			for (int i = 0; i < listOfFolderName.size(); i++) {
 				folderNameListInReport.add(listOfFolderName.get(i).getText());
 			}
-			listOfWebElement = xtexts("//*[contains(text(),'Folders Details')]/following::table[1]/tbody[1]/tr/td[2]");
+			listOfWebElement = xtexts(xpathProperties.getProperty("count_of_objects"));
 			List<WebElement> listOfObjectCount = listOfWebElement;
 			for (int i = 0; i < listOfObjectCount.size(); i++) {
 				objectCountListInReport.add(listOfObjectCount.get(i).getText());
 			}
-			listOfWebElement = xtexts("//*[contains(text(),'Folders Details')]/following::table[1]/tbody[1]/tr/td[3]");
+			listOfWebElement = xtexts(xpathProperties.getProperty("folder_size"));
 			List<WebElement> listOfFolderSize = listOfWebElement;
 			for (int i = 0; i < listOfFolderSize.size(); i++) {
 				folderSizeListInReport.add(listOfFolderSize.get(i).getText());
@@ -190,6 +214,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 			Assert.assertEquals(objectCountListInFile,objectCountListInReport);
 			Assert.assertEquals(folderSizeListInFile.size(),folderSizeListInReport.size());
 			Assert.assertEquals(folderSizeListInFile,folderSizeListInReport);
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 02 Verify the size and Number of the file system Directories are captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -207,8 +233,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	public static void tc03_verifyIgnoredFiles() throws JSchException, SftpException, Exception {
 		log.info("TC 03 Verify the ignored files are captured in Report. Started.............");
 		loadLowLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/fs_constants.py");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("fs_constants_linux"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String excludedFoldersinFile = null;
@@ -221,7 +247,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 			List<String> excluedFoldersListInFile = Arrays.asList(excludedFoldersinFile.split(","));
 			List<String> excluedFoldersListInReport = new ArrayList<String>();
 			
-			listOfWebElement = xtexts("//*[contains(text(),'Excluded Folder Details')]/following::table[1]/tbody[1]/tr");
+			listOfWebElement = xtexts(xpathProperties.getProperty("excluded_folder_details"));
 			for (int i = 1; i < listOfWebElement.size(); i++) {
 				excluedFoldersListInReport.add(listOfWebElement.get(i).getText());
 			}
@@ -229,6 +255,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 			Collections.sort(excluedFoldersListInFile);
 			Assert.assertEquals(excluedFoldersListInReport.size(), excluedFoldersListInFile.size());
 			Assert.assertEquals(excluedFoldersListInReport, excluedFoldersListInFile);
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 03 Verify the ignored files are captured in Report. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -246,8 +274,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	public static void tc04_verifyAttachementRoot() throws JSchException, SftpException, Exception {
 		log.info("TC 04 Verify attachment root path is captured in report. started..............");
 		loadLowLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String propsFilePath = null;
@@ -257,7 +285,6 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 					propsFilePath = line.split("=")[1].replaceAll("\"", "");
 				}
 			}
-			establishSshConnection();
 			if(null != propsFilePath) {
 				propsFilePath = propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
@@ -290,11 +317,23 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				 			rootFileCount = lines.collect(Collectors.joining(newLine));
 				 		}
 				 		channel.disconnect();
-				 		
-				 		String[] rootDirectoryArray = rootFileSystemSize.replaceAll("[\t]+", " ").trim().split(" ");
-				 		String rootDirectorySize = rootDirectoryArray[0].replace("G", " GB");
-				 		String rootDirectoryAvailability = rootDirectorySize.contains("GB") ? "True" : "False";
-						listOfWebElement = xtexts("//*[contains(text(),'Attachment Folder Details')]/following::table[1]/tbody[1]/tr/td");
+				 		String rootDirectoryAvailability = "False";
+				 		String rootDirectorySize = null;
+				 		if(null != rootFileSystemSize) {
+					 		String[] rootDirectoryArray = rootFileSystemSize.replaceAll("[\t]+", " ").trim().split(" ");
+					 		rootDirectorySize = rootDirectoryArray[0];
+							if(rootDirectorySize.contains("T")) {
+								rootDirectorySize = rootDirectoryArray[0].replace("T", " TB");
+							} else if(rootDirectorySize.contains("G")) {
+								rootDirectorySize = rootDirectoryArray[0].replace("G", " GB");
+							} else if(rootDirectorySize.contains("M")) {
+								rootDirectorySize = rootDirectoryArray[0].replace("M", " MB");
+							} else if(rootDirectorySize.contains("K")) {
+								rootDirectorySize = rootDirectoryArray[0].replace("K", " KB");
+							}
+							rootDirectoryAvailability =  "True";
+				 		}
+						listOfWebElement = xtexts(xpathProperties.getProperty("attachment_folder_details"));
 						List<WebElement> listOfWebElementCopy = listOfWebElement;
 						for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 							listOfWebElement = xtexts("//*[contains(text(),'Attachment Folder Details')]/following::table[1]/tbody[1]/tr[" + (i + 1) + "]/td");
@@ -316,6 +355,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				}
 				Assert.assertEquals(attachmentRootAvailability, "Attachment Root Available");
 			}
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 04 Verify attachment root path is captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -333,8 +374,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	public static void tc06_verifyApplicationLog() throws JSchException, SftpException, Exception {
 		log.info("TC 06 Verify Application Log captured in report. started..............");
 		loadLowLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String logFilePath = null;
@@ -344,7 +385,6 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 					logFilePath = line.split("=")[1].replaceAll("\"", "");
 				}
 			}
-			establishSshConnection();
 			if(null != logFilePath) {
 				logFilePath = logFilePath + "/log4j2.properties";
 				stream = sftpChannel.get(logFilePath);
@@ -367,10 +407,24 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				 		}
 				 		channel.disconnect();
 				 		
-				 		String[] logDirectoryArray = logDirectorySize.replaceAll("[\t]+", " ").trim().split(" ");
-				 		String logDirectorySizeInKB = logDirectoryArray[0].replace("K", " KB");
-				 		String logDirectoryAvailable = logDirectorySizeInKB.contains("KB") ? "True" : "False";
-						listOfWebElement = xtexts("//*[contains(text(),'Application Log details')]/following::table[1]/tbody[1]/tr/td");
+				 		String logDirectorySizeInKB = null;
+				 		String logDirectoryAvailable = "False";
+				 		if(null != logDirectorySize) {
+				 			String[] logDirectoryArray = logDirectorySize.replaceAll("[\t]+", " ").trim().split(" ");
+				 			logDirectorySizeInKB = logDirectoryArray[0];
+							if(logDirectorySizeInKB.contains("T")) {
+								logDirectorySizeInKB = logDirectoryArray[0].replace("T", " TB");
+							} else if(logDirectorySizeInKB.contains("G")) {
+								logDirectorySizeInKB = logDirectoryArray[0].replace("G", " GB");
+							} else if(logDirectorySizeInKB.contains("M")) {
+								logDirectorySizeInKB = logDirectoryArray[0].replace("M", " MB");
+							} else if(logDirectorySizeInKB.contains("K")) {
+								logDirectorySizeInKB = logDirectoryArray[0].replace("K", " KB");
+							}
+							logDirectoryAvailable = "True";
+				 		}
+						
+						listOfWebElement = xtexts(xpathProperties.getProperty("application_log_details"));
 						List<WebElement> listOfWebElementCopy = listOfWebElement;
 						for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 							listOfWebElement = xtexts("//*[contains(text(),'Application Log details')]/following::table[1]/tbody[1]/tr[" + (i + 1) + "]/td");
@@ -389,6 +443,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				}
 				Assert.assertEquals(logDirectoryAvailability, "Log Directory Available");
 			}
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 06 Verify Application Log captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -424,8 +480,8 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	public static void tc09_verifyIfWrongPathsGiven() throws JSchException, SftpException, Exception {
 		log.info("TC 09 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
 		loadLowLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String mountPath = null;
@@ -452,7 +508,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 		}
 	 		channel.disconnect();
 	 		if(output.equals("Not Exists")) {
-		 		listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td");
+		 		listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
 				List<WebElement> listOfWebElementCopy = listOfWebElement;
 				for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 					listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td[" + (i + 1) + "]");
@@ -479,13 +535,15 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 		}
 	 		channel.disconnect();
 	 		if(output.equals("Not Exists")) {
-	 			text = xtext("//*[contains(text(),'Web Resources')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("web_resources_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
-	 			text = xtext("//*[contains(text(),'Folders Details')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("folder_details_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
 	 		} else {
 	 			Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
 	 		}
+	 		sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 09 Verify if the given wrong path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -503,15 +561,15 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	public static void tc10_verifyIfNoPathGiven() throws JSchException, SftpException, Exception {
 		log.info("TC 10 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Started.............");
 		loadLowLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String mountPath = null;
 			String webResourcePath = null;
 			String line;
 			while ((line = br.readLine()) != null) {
-				if (line.contains("mount_path") && !line.contains("#")) {
+				if (line.contains("mount_path") && !line.contains("#") && null == mountPath) {
 					mountPath = line.split("=")[1].replaceAll("\'", "").replaceAll("\"", "");
 				}
 				if (line.contains("web_resource_path") && !line.contains("#")) {
@@ -519,7 +577,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 				}
 			}
 	 		if(mountPath.equals("")) {
-		 		listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td");
+		 		listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
 				List<WebElement> listOfWebElementCopy = listOfWebElement;
 				for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 					listOfWebElement = xtexts("//*[contains(text(),'Filesystem Details')]/following::table[1]/tbody[1]/tr[2]/td[" + (i + 1) + "]");
@@ -536,13 +594,15 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 			Assert.assertEquals("Mount Directory exists", "Mount Directory not exists");
 	 		}
 	 		if(webResourcePath.equals("")) {
-	 			text = xtext("//*[contains(text(),'Web Resources')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("web_resources_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
-	 			text = xtext("//*[contains(text(),'Folders Details')]/following::table[1]/following::h3");
+	 			text = xtext(xpathProperties.getProperty("folder_details_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
 	 		} else {
 	 			Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
 	 		}
+	 		sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 10 Verify if the given no path with the result as False is displayed in the Report when the Precheck is run with the non existing path. Ended.............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());

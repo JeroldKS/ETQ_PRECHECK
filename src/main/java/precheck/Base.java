@@ -131,14 +131,14 @@ public class Base {
 			dbConnection = DriverManager.getConnection(
 					loginProperties.getProperty("ipForMssqlSourceDB"),
 					loginProperties.getProperty("userNameForMssqlSourceDB"), loginProperties.getProperty("passwordForMssqlSourceDB"));
-			log.info("MYSQL DB connected....................");
+			log.info("MSSQL Source DB connected....................");
 			
 		} else if (databaseUserInput.equals("oracleSource")) {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			dbConnection = DriverManager.getConnection("jdbc:oracle:thin:@"+loginProperties.getProperty("ipForWindowsOracleSource")+":"
 					+loginProperties.getProperty("portNoForWindowsOracleSource")+"/"+loginProperties.getProperty("serviceNameForWindowsOracleSource"),
 			loginProperties.getProperty("userForWindowsOracleSource"), loginProperties.getProperty("passwordForWindowsOracleSource"));
-			log.info("Oracle DB connected....................");
+			log.info("Oracle Source DB connected....................");
 		}
 	}
 

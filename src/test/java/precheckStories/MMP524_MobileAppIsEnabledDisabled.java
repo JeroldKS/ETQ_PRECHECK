@@ -2,14 +2,12 @@ package precheckStories;
 
 import org.testng.annotations.Test;
 import org.testng.AssertJUnit;
-import static org.testng.Assert.assertEquals;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.Test;
 
 import precheck.Base;
 
@@ -19,26 +17,24 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 	
 	/**
 	 * This method is to find mobile app enabled and compare with report
-	 * 
 	 * @throws SQLException
 	 */
 	@Test
 	public void tc01_IsMobileAppEnabled() throws SQLException {
-		log.info("mobile_app_enabled_started....................");
-		// source_Query = query(prop.getProperty("mysql_db_meta_info"));
-		sourceQuery = query("SELECT form_name FROM engine.form_settings WHERE MOBILIZED_FORM_ID = 1;");
-
+		log.info("TC 01 Verifying the Mobile App Enabled. Started...................");
 		try {
+			loadHighLevelReportInBrowser();
 			List<String> dbMobileEnabledList = new ArrayList<>();
 			List<String> reportMobileEnabledList = new ArrayList<>();
+			establishDatabaseconnection();
+			sourceQuery = query(prop.getProperty("mobileapp_enabled"));
 			while (sourceQuery.next()) {
 				dbMobileEnabledList.add(sourceQuery.getObject(1).toString());
 			}
 			if (dbMobileEnabledList.size() == 0) {
 				throw new NullPointerException();
 			}
-			// listOfWebElement = xtexts(prop_xpath.getProperty("mysql_meta_body"));
-			listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td");
+			listOfWebElement = xtexts(xpathProperties.getProperty("mobile_app"));
 			List<WebElement> dup_texts = listOfWebElement;
 			for (int i = 0; i < dup_texts.size(); i++) {
 				listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td[" + (i + 1) + "]");
@@ -50,7 +46,7 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 					AssertJUnit.assertEquals(listDataList.get(0).getText(), "Action needed");
 				}
 				if (i == 2) {
-					listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td/ul/li");
+					listOfWebElement = xtexts(xpathProperties.getProperty("mobile_app_enabled_list"));
 					for (int j = 0; j < listOfWebElement.size(); j++) {
 						text = xtext("//*[contains(text(),'Mobile App')]/../td/ul/li[" + (j + 1) + "]");
 						reportMobileEnabledList.add(text);
@@ -64,12 +60,12 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 					AssertJUnit.assertEquals(listDataList.get(0).getText(), "Wait until this feature is available");
 				}
 			}
-
+			dbConnection.close();
 		} catch (Exception e) {
-			log.info(
-					"mobile app is now disable, to validate this TC need to enable the mobile app....................");
+			log.info("mobile app is now disable, to validate this TC need to enable the mobile app........");
 
 		}
+		log.info("TC 01 Verifying the Mobile App Enabled. Ended...................");
 	}
 	
 	/**
@@ -78,19 +74,17 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 	 */
 	@Test
 	public void tc02_IsMobileAppDisabled() throws SQLException {
-		log.info("mobile_app_disabled_started....................");
-		// source_Query = query(prop.getProperty("mysql_db_meta_info"));
-		sourceQuery = query(
-				"SELECT form_name, form_id, MOBILIZED_FORM_ID FROM engine.form_settings WHERE MOBILIZED_FORM_ID = 1;");
+		log.info("TC 02 Verifying the Mobile App Disabled. Started...................");
 		try {
+			loadHighLevelReportInBrowser();
+			establishDatabaseconnection();
+			sourceQuery = query(prop.getProperty("mobileapp_disabled"));
 			sourceQuery.next();
-			log.info("Mobile app eabled = " + sourceQuery.getObject(1).toString());
-
-			log.info(
-					"mobile app is now enable, to validate this TC need to disable the mobile app....................");
+			log.info("Mobile app enabled = " + sourceQuery.getObject(1).toString());
+			log.info("mobile app is now enable, to validate this TC need to disable the mobile app....................");
+			dbConnection.close();
 		} catch (Exception e) {
-			// listOfWebElement = xtexts(prop_xpath.getProperty("mysql_meta_body"));
-			listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td");
+			listOfWebElement = xtexts(xpathProperties.getProperty("mobile_app"));
 			List<WebElement> listOfTexts = listOfWebElement;
 			for (int i = 0; i < listOfTexts.size(); i++) {
 				listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td[" + (i + 1) + "]");
@@ -108,7 +102,7 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 				}
 			}
 		}
-
+		log.info("TC 02 Verifying the Mobile App Disabled. Ended...................");
 	}
 
 
@@ -119,19 +113,19 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 	@Test
 	public void tc04_IsReportContainsFormName() throws SQLException,Exception {
 		loadHighLevelReportInBrowser();
-		log.info("Verifying the report contains the form name....................");
-		sourceQuery = query(
-				"SELECT form_name FROM engine.form_settings WHERE MOBILIZED_FORM_ID = 1;");
+		log.info("TC 04 Verifying the report contains the form name. Started...................");
 		try {
 			List<String> enabledFormNamesInDb = new ArrayList<>();
 			List<String> enabledFormNameInReport = new ArrayList<>();
+			establishDatabaseconnection();
+			sourceQuery = query(prop.getProperty("mobileapp_enabled"));
 			while (sourceQuery.next()) {
 				enabledFormNamesInDb.add(sourceQuery.getObject(1).toString());
 			}
 			if (enabledFormNamesInDb.size()==0) {
 				throw new NullPointerException();
 			}
-			listOfWebElement = xtexts("//*[contains(text(),'Mobile App')]/../td[3]/ul/li");
+			listOfWebElement = xtexts(xpathProperties.getProperty("mobile_app_list"));
 			List<WebElement> dup_texts = listOfWebElement;
 			for(int i=0; i< dup_texts.size(); i++) {
 				enabledFormNameInReport.add(dup_texts.get(i).getText());
@@ -139,9 +133,11 @@ public class MMP524_MobileAppIsEnabledDisabled extends Base {
 			Collections.sort(enabledFormNamesInDb);
 			Collections.sort(enabledFormNameInReport);
 			AssertJUnit.assertEquals(enabledFormNamesInDb, enabledFormNameInReport);
+			dbConnection.close();
 		} catch (Exception e) {
 			log.info("mobile app is now disable, to validate this TC need to enable the mobile app....................");
 
 		}
+		log.info("TC 04 Verifying the report contains the form name. Ended...................");
 	}
 }

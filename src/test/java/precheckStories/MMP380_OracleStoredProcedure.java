@@ -24,7 +24,7 @@ public class MMP380_OracleStoredProcedure extends Base {
 	public void tc01_verifyReportHasStoredProcedureHeading() throws Exception {
 		log.info("TC 01 Verifying the Report has Stored Procedure Headings. Started...................");
 		loadLowLevelReportInBrowser();
-		listOfWebElement = xtexts("//*[contains(text(),'Stored Procedures')]/following::table[1]/thead/tr/th");
+		listOfWebElement = xtexts(xpathProperties.getProperty("stored_procedure_heading"));
 		List<WebElement> listOfWebElementCopy = listOfWebElement;
 		for (int i = 0; i < listOfWebElementCopy.size(); i++) {
 			listOfWebElement = xtexts("//*[contains(text(),'Stored Procedures')]/following::table[1]/thead/tr/th[" + (i + 1) + "]");
@@ -49,19 +49,19 @@ public class MMP380_OracleStoredProcedure extends Base {
 	@Test
 	public void tc02_IsReportStoredProcedureMatchesSource() throws Exception {
 		log.info("TC 02 Validates whether the Stored Procedure count in Report matches with source DB. Started....................");
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP380_query.properties");
 		List<String> schemaNameListInReport = new ArrayList<>();
 		List<String> spCountInReport = new ArrayList<>();
 		try {
-			listOfWebElement = xtexts("//*[contains(text(),'DB Meta Information')]/following::table[1]/tbody[1]/tr/td[1]");
+			listOfWebElement = xtexts(xpathProperties.getProperty("meta_info_db_column"));
 			List<WebElement> listOfSchemaName = listOfWebElement;
 			for (int i = 0; i < listOfSchemaName.size(); i++) {
 				schemaNameListInReport.add(listOfSchemaName.get(i).getText());
 			}
 			
-			listOfWebElement = xtexts("//*[contains(text(),'DB Meta Information')]/following::table[1]/tbody[1]/tr/td[6]");
+			listOfWebElement = xtexts(xpathProperties.getProperty("stored_procedure_column"));
 			List<WebElement> listOfSPCount = listOfWebElement;
 			for (int i = 0; i < listOfSPCount.size(); i++) {
 				spCountInReport.add(listOfSPCount.get(i).getText());
@@ -120,7 +120,7 @@ public class MMP380_OracleStoredProcedure extends Base {
 	@Test
 	public void tc04_IsReportStoredProcedureMatchesSource() throws Exception {
 		log.info("TC 04 Report stored procedure matches source validation started....................");
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP380_query.properties");
 		xpathProperties = loadXpathFile();
@@ -175,11 +175,11 @@ public class MMP380_OracleStoredProcedure extends Base {
 	@Test
 	public void tc06_IsReportCaptureStoredProcedureCount() throws Exception {
 		log.info("TC 06 Checking whether the report captured Stored Procedure Count. started....................");
-		establishDatabaseconnection("oracleSource");
+		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP380_query.properties");
 		xpathProperties = loadXpathFile();
-		listOfWebElement = xtexts("//*[contains(text(),'SP Count')]/../following::tbody[1]/tr/td[6]");
+		listOfWebElement = xtexts(xpathProperties.getProperty("sp_count"));
 		listOfText = listString();
 		int storedProcedureCount = 0;
 		for (int i = 0; i < listOfText.size(); i++) {

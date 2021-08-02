@@ -20,10 +20,17 @@ import precheck.Base;
 public class MMP385_LinuxInfraCheck extends Base {
 	static Logger log = Logger.getLogger(MMP524_MobileAppIsEnabledDisabled.class.getName());
 
+	/**
+	 * Verify if the user is able to perform Linux Infra check
+	 * @throws JSchException
+	 * @throws SftpException
+	 * @throws Exception
+	 */
 	@Test
 	public static void tc01_verifyInfraChecks() throws JSchException, SftpException, Exception {
+		log.info("TC 01 Verifying if the user is able to perform Linux Infra Check. Started.....");
 		loadLowLevelReportInBrowser();
-		establishSshConnectionforSourceDB();
+		establishSshConnectionForSourceInstance();
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
 	    Channel channel = session.openChannel("exec");
@@ -64,7 +71,7 @@ public class MMP385_LinuxInfraCheck extends Base {
 
 		// Check User has Sudo Privileges
 		channel = session.openChannel("exec");
-		String checkUserHasSudoPrivilege = "sudo -n true 2>/dev/null && echo True || echo False";
+		String checkUserHasSudoPrivilege = "sudo -n true 2>/dev/null && echo \"Yes\" || echo \"No\"";
 		((ChannelExec) channel).setCommand(checkUserHasSudoPrivilege);
 		inputStream = channel.getInputStream();
 		channel.connect();
@@ -97,12 +104,20 @@ public class MMP385_LinuxInfraCheck extends Base {
  		}
  		Assert.assertNotNull(commandOutput);
 		channel.disconnect();
+		log.info("TC 01 Verifying if the user is able to perform Linux Infra Check. Ended.....");
 	}
 	
+	/**
+	 * Verify the report captures linux infra check details
+	 * @throws JSchException
+	 * @throws SftpException
+	 * @throws Exception
+	 */
 	@Test
 	public static void tc03_verifyInfraChecks() throws JSchException, SftpException, Exception {
+		log.info("TC 03 Verifying the report caputures Linux Infra Check. Started.....");
 		loadLowLevelReportInBrowser();
-		establishSshConnectionforSourceDB();
+		establishSshConnectionForSourceInstance();
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
 	    Channel channel = session.openChannel("exec");
@@ -126,8 +141,8 @@ public class MMP385_LinuxInfraCheck extends Base {
 		channel.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
  			commandOutput = lines.collect(Collectors.joining(newLine));
- 			String osType = commandOutput.split("=")[1];
- 			text = xtext("//*[contains(text(),'OS')]/../td[2]");
+ 			String osType = commandOutput.split("=")[1].replaceAll("\"", "");
+ 			text = xtext("//*[contains(text(),'Operating System')]/../td[2]");
  			Assert.assertEquals(osType, text);
  		}
 		channel.disconnect();
@@ -147,18 +162,14 @@ public class MMP385_LinuxInfraCheck extends Base {
 
 		// Check User has Sudo Privileges
 		channel = session.openChannel("exec");
-		String checkUserHasSudoPrivilege = "sudo -n true 2>/dev/null && echo True || echo False";
+		String checkUserHasSudoPrivilege = "sudo -n true 2>/dev/null && echo \"Yes\" || echo \"No\"";
 		((ChannelExec) channel).setCommand(checkUserHasSudoPrivilege);
 		inputStream = channel.getInputStream();
 		channel.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
  			commandOutput = lines.collect(Collectors.joining(newLine));
- 			text = xtext("//*[contains(text(),'User has Sudo Privileges')]/../td[2]");
- 			String isSudoPrivilegeAvailable = "false";
- 			if(commandOutput.equals("True")) {
- 				isSudoPrivilegeAvailable = "Successful";
- 			}
- 			Assert.assertEquals(isSudoPrivilegeAvailable, text);
+ 			text = xtext("//*[contains(text(),'Sudo Privileges')]/../td[2]");
+ 			Assert.assertEquals(commandOutput, text);
  		}
 		channel.disconnect();
 
@@ -170,7 +181,7 @@ public class MMP385_LinuxInfraCheck extends Base {
 		channel.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
  			commandOutput = lines.collect(Collectors.joining(newLine));
- 			text = xtext("//*[contains(text(),'memory')]/../td[2]");
+ 			text = xtext("//*[contains(text(),'Memory')]/../td[2]");
  			Assert.assertEquals(commandOutput, text);
  		}
 		channel.disconnect();
@@ -187,5 +198,6 @@ public class MMP385_LinuxInfraCheck extends Base {
  			Assert.assertEquals(commandOutput, text);
  		}
 		channel.disconnect();
+		log.info("TC 03 Verifying the report caputures Linux Infra Check. Ended.....");
 	}
 }

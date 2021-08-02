@@ -35,20 +35,31 @@ public class MMP359_PythonScriptCode extends Base {
 	public void tc01_fetchCountOfString() throws SQLException, Exception {
 		log.info("TC 01 Fetching Count of 'getValue(Description)' String. Started....");
 		loadHighLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
+		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 		String webAppPath = null;
 		String line;
 		while ((line = br.readLine()) != null) {
 			if (line.contains("web_app_file_path") && !line.contains("#")) {
-				webAppPath = line.split("=")[1].replaceAll("\"", "");
+				webAppPath = line.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
 			}
+		}
+		String commandtoFetchFilesContainsKeyword = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			commandtoFetchFilesContainsKeyword = "powershell.exe \"Get-ChildItem -Path "+webAppPath+"\\*.py -Recurse | Select-String -Pattern 'getValue(\"Description\")' -CaseSensitive\"";
 		}
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
 	    Channel channel = session.openChannel("exec");
-	    String commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
+	    //String commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
  		((ChannelExec) channel).setCommand(commandtoFetchFilesContainsKeyword);
  		InputStream inputStream = channel.getInputStream();
  		channel.connect();
@@ -69,8 +80,13 @@ public class MMP359_PythonScriptCode extends Base {
 	public void tc02_checkPrecheckReportCapturesKeyword() throws SQLException, Exception {
 		log.info("TC 02 Checking whether the Precheck Report captures Python files contain 'getValue(Description)' String. Started....");
 		loadHighLevelReportInBrowser();
-		establishSshConnection();
-		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
+		}
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 		String webAppPath = null;
 		String line;
@@ -79,10 +95,16 @@ public class MMP359_PythonScriptCode extends Base {
 				webAppPath = line.split("=")[1].replaceAll("\"", "");
 			}
 		}
+		String commandtoFetchFilesContainsKeyword = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			commandtoFetchFilesContainsKeyword = "powershell.exe \"Get-ChildItem -Path "+webAppPath+"\\*.py -Recurse | Select-String -Pattern 'getValue(\"Description\")' -CaseSensitive\"";
+		}
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
 	    Channel channel = session.openChannel("exec");
- 		String commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
+	    //String commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
  		((ChannelExec) channel).setCommand(commandtoFetchFilesContainsKeyword);
  		InputStream inputStream = channel.getInputStream();
  		channel.connect();

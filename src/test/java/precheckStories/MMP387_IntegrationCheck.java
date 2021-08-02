@@ -262,14 +262,10 @@ public class MMP387_IntegrationCheck extends Base{
 				if (i == 1) {
 					assertEquals(listDataList.get(0).getText(), "N/A");
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "N/A");
-				} else if (i == 3) {
 					assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 				}
 			} else {
 				if (i == 1) {
-					assertEquals(listDataList.get(0).getText(), "Action Required");
-				} else if (i == 2) {
 					text = xtext(xpathProperties.getProperty("sharePointProfile_p"));
 					assertEquals(text, "This authentication is not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("sharePointProfile_list"));
@@ -279,12 +275,13 @@ public class MMP387_IntegrationCheck extends Base{
 					}
 					Collections.sort(sharePointProfileListInDB);
 					Collections.sort(sharePointProfileListInReport);
-					assertEquals(sharePointProfileListInDB, sharePointProfileListInReport);
-				} else if (i == 3) {
+					assertEquals(sharePointProfileListInReport, sharePointProfileListInDB);
+				} else if (i == 2) {
 					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
 				}
 			}
 		}
+		dbConnection.close();
 		log.info("TC 04 Checking For Share Point Profile ended..............");
 	}
 	
@@ -309,22 +306,18 @@ public class MMP387_IntegrationCheck extends Base{
 		listOfWebElement = xtexts(xpathProperties.getProperty("wsRestfulProfile"));
 		List<WebElement> listOfWebElementCopy = listOfWebElement;
 		for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-			listOfWebElement = xtexts("//*[contains(text(),'WS Restful Connection Profile')]/../td[" + (i + 1) + "]");
+			listOfWebElement = xtexts("//*[contains(text(),'WS Restful Profile')]/../td[" + (i + 1) + "]");
 			List<WebElement> listDataList = listOfWebElement;
 			if(null == wsRestfulProfileListInDB || wsRestfulProfileListInDB.isEmpty()) {
 				if (i == 1) {
 					assertEquals(listDataList.get(0).getText(), "N/A");
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "N/A");
-				} else if (i == 3) {
 					assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 				}
 			} else {
 				if (i == 1) {
-					assertEquals(listDataList.get(0).getText(), "Action Required");
-				} else if (i == 2) {
 					text = xtext(xpathProperties.getProperty("wsRestfulProfile_p"));
-					assertEquals(text, "This authentication is not supported in NXG");
+					assertEquals(text, "The following Restful Web Service Profiles are not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("wsRestfulProfile_list"));
 					List<WebElement> wsProfileList = listOfWebElement;
 					for (int j = 0; j < wsProfileList.size(); j++) {
@@ -332,9 +325,9 @@ public class MMP387_IntegrationCheck extends Base{
 					}
 					Collections.sort(wsRestfulProfileListInDB);
 					Collections.sort(wsRestfulProfileListInReport);
-					assertEquals(wsRestfulProfileListInDB, wsRestfulProfileListInReport);
-				} else if (i == 3) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
+					assertEquals(wsRestfulProfileListInReport, wsRestfulProfileListInDB);
+				} else if (i == 2) {
+					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use the cognito authentication");
 				}
 			}
 		}
@@ -360,22 +353,18 @@ public class MMP387_IntegrationCheck extends Base{
 		listOfWebElement = xtexts(xpathProperties.getProperty("wsRestfulOperation"));
 		List<WebElement> listOfWebElementCopy = listOfWebElement;
 		for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-			listOfWebElement = xtexts("//*[contains(text(),'WS Restful Operation Connection Profile')]/../td[" + (i + 1) + "]");
+			listOfWebElement = xtexts("//*[contains(text(),'WS Restful Operation')]/../td[" + (i + 1) + "]");
 			List<WebElement> listDataList = listOfWebElement;
 			if(null == wsRestfulOperationProfileListInDB || wsRestfulOperationProfileListInDB.isEmpty()) {
 				if (i == 1) {
 					assertEquals(listDataList.get(0).getText(), "N/A");
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "N/A");
-				} else if (i == 3) {
 					assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 				}
 			} else {
 				if (i == 1) {
-					assertEquals(listDataList.get(0).getText(), "Action Required");
-				} else if (i == 2) {
 					text = xtext(xpathProperties.getProperty("wsRestfulOperation_p"));
-					assertEquals(text, "This authentication is not supported in NXG");
+					assertEquals(text, "The following Restful Web Service Profiles are not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("wsRestfulOperation_list"));
 					List<WebElement> wsOperationProfileList = listOfWebElement;
 					for (int j = 0; j < wsOperationProfileList.size(); j++) {
@@ -383,12 +372,13 @@ public class MMP387_IntegrationCheck extends Base{
 					}
 					Collections.sort(wsRestfulOperationProfileListInDB);
 					Collections.sort(wsRestfulOperationProfileListInReport);
-					assertEquals(wsRestfulOperationProfileListInDB, wsRestfulOperationProfileListInReport);
-				} else if (i == 3) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
+					assertEquals(wsRestfulOperationProfileListInReport, wsRestfulOperationProfileListInDB);
+				} else if (i == 2) {
+					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use the cognito authentication");
 				}
 			}
 		}
+		dbConnection.close();
 	}
 	
 	/**
@@ -418,16 +408,12 @@ public class MMP387_IntegrationCheck extends Base{
 				if (i == 1) {
 					assertEquals(listDataList.get(0).getText(), "N/A");
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "N/A");
-				} else if (i == 3) {
 					assertEquals(listDataList.get(0).getText(), "Good to Migrate");
-				}
+				} 
 			} else {
 				if (i == 1) {
-					assertEquals(listDataList.get(0).getText(), "Action Required");
-				} else if (i == 2) {
 					text = xtext(xpathProperties.getProperty("databaseConnectionProfile_p"));
-					assertEquals(text, "This authentication is not supported in NXG");
+					assertEquals(text, "This connection profile is not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("databaseConnectionProfile_list"));
 					List<WebElement> databaseConnectionProfileList = listOfWebElement;
 					for (int j = 0; j < databaseConnectionProfileList.size(); j++) {
@@ -435,12 +421,13 @@ public class MMP387_IntegrationCheck extends Base{
 					}
 					Collections.sort(databaseConnectionProfileListInDB);
 					Collections.sort(databaseConnectionProfileListInReport);
-					assertEquals(databaseConnectionProfileListInDB, databaseConnectionProfileListInReport);
-				} else if (i == 3) {
+					assertEquals(databaseConnectionProfileListInReport, databaseConnectionProfileListInDB);
+				} else if (i == 2) {
 					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
 				}
 			}
 		}
+		dbConnection.close();
 		log.info("TC 06 Checking For Database Connection Profile Profile ended..............");
 	}
 	
@@ -465,20 +452,16 @@ public class MMP387_IntegrationCheck extends Base{
 		listOfWebElement = xtexts(xpathProperties.getProperty("wsAccessConnectionProfile"));
 		List<WebElement> listOfWebElementCopy = listOfWebElement;
 		for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-			listOfWebElement = xtexts("//*[contains(text(),'WS Access Connection Profile')]/../td[" + (i + 1) + "]");
+			listOfWebElement = xtexts("//*[contains(text(),'WS Access Profile')]/../td[" + (i + 1) + "]");
 			List<WebElement> listDataList = listOfWebElement;
 			if(null == wsAccessConnectionProfileListInDB || wsAccessConnectionProfileListInDB.isEmpty()) {
 				if (i == 1) {
 					assertEquals(listDataList.get(0).getText(), "N/A");
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "N/A");
-				} else if (i == 3) {
 					assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 				}
 			} else {
 				if (i == 1) {
-					assertEquals(listDataList.get(0).getText(), "Action Required");
-				} else if (i == 2) {
 					text = xtext(xpathProperties.getProperty("wsAccessConnectionProfile_p"));
 					assertEquals(text, "This authentication is not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("wsAccessConnectionProfile_list"));
@@ -488,12 +471,13 @@ public class MMP387_IntegrationCheck extends Base{
 					}
 					Collections.sort(wsAccessConnectionProfileListInDB);
 					Collections.sort(wsAccessConnectionProfileListInReport);
-					assertEquals(wsAccessConnectionProfileListInDB, wsAccessConnectionProfileListInReport);
-				} else if (i == 3) {
+					assertEquals(wsAccessConnectionProfileListInReport, wsAccessConnectionProfileListInDB);
+				} else if (i == 2) {
 					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
 				}
 			}
 		}
+		dbConnection.close();
 		log.info("TC 07 Checking For WS Access Connection Profile Profile ended..............");
 	}
 	
@@ -518,20 +502,16 @@ public class MMP387_IntegrationCheck extends Base{
 		listOfWebElement = xtexts(xpathProperties.getProperty("soapConnectionProfile"));
 		List<WebElement> listOfWebElementCopy = listOfWebElement;
 		for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-			listOfWebElement = xtexts("//*[contains(text(),'SOAP Connection Profile')]/../td[" + (i + 1) + "]");
+			listOfWebElement = xtexts("//*[contains(text(),'SOAP WS Profile')]/../td[" + (i + 1) + "]");
 			List<WebElement> listDataList = listOfWebElement;
 			if(null == soapProfileListInDB || soapProfileListInDB.isEmpty()) {
 				if (i == 1) {
 					assertEquals(listDataList.get(0).getText(), "N/A");
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "N/A");
-				} else if (i == 3) {
 					assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 				}
 			} else {
 				if (i == 1) {
-					assertEquals(listDataList.get(0).getText(), "Action Required");
-				} else if (i == 2) {
 					text = xtext(xpathProperties.getProperty("soapConnectionProfile_p"));
 					assertEquals(text, "This authentication is not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("soapConnectionProfile_list"));
@@ -541,12 +521,13 @@ public class MMP387_IntegrationCheck extends Base{
 					}
 					Collections.sort(soapProfileListInDB);
 					Collections.sort(soapProfileListInReport);
-					assertEquals(soapProfileListInDB, soapProfileListInReport);
-				} else if (i == 3) {
+					assertEquals(soapProfileListInReport, soapProfileListInDB);
+				} else if (i == 2) {
 					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
 				}
 			}
 		}
+		dbConnection.close();
 		log.info("TC 08 Checking For SOAP Connection Profile Profile ended..............");
 	}
 	
@@ -596,11 +577,9 @@ public class MMP387_IntegrationCheck extends Base{
 								listOfWebElement = xtexts("//*[contains(text(),'LDAP Authentication')]/../td[" + (i + 1) + "]");
 								List<WebElement> listDataList = listOfWebElement;
 								if (i == 1) {
-									assertEquals(listDataList.get(0).getText(), "Enabled");
-								} else if (i == 2) {
 									assertEquals(listDataList.get(0).getText(), "This authentication is not supported in NXG");
-								} else if (i == 3) {
-									assertEquals(listDataList.get(0).getText(), "Reconfigure the authentication to the supported option");
+								} else if (i == 2) {
+									assertEquals(listDataList.get(0).getText(), "Reconfigure the authentication to a supported option");
 								}
 							}
 						}
@@ -663,10 +642,8 @@ public class MMP387_IntegrationCheck extends Base{
 								listOfWebElement = xtexts("//*[contains(text(),'LDAP Authentication')]/../td[" + (i + 1) + "]");
 								List<WebElement> listDataList = listOfWebElement;
 								if (i == 1) {
-									assertEquals(listDataList.get(0).getText(), "No Action");
-								} else if (i == 2) {
 									assertEquals(listDataList.get(0).getText(), "N/A");
-								} else if (i == 3) {
+								} else if (i == 2) {
 									assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 								}
 							}

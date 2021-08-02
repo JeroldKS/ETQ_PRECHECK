@@ -29,7 +29,7 @@ public class MMP389_EMDRCheck extends Base {
 	 */
 	@Test
 	public static void tc01_isAS2SubmissionEnabled() throws JSchException, SftpException, Exception {
-		log.info("TC_01 Verify if the user is able navigate and able to access the  File “emdr_user_configuration.properties” along with the Property AS2_SUBMISSION_ENABLED.started....................");
+		log.info("TC_01 Verify if the user is able navigate and able to access the  File emdr_user_configuration.properties along with the Property AS2_SUBMISSION_ENABLED.started....................");
 		loadHighLevelReportInBrowser();
 		InputStream stream = null;
 		establishSshConnectionForSourceInstance();
@@ -50,7 +50,7 @@ public class MMP389_EMDRCheck extends Base {
 			Assert.assertEquals(isAs2SubmissionEnabledAvailable, "AS2_SUBMISSION_ENABLED Available");
 			sftpChannel.disconnect();
 			session.disconnect();
-			log.info("TC_01 Verify if the user is able navigate and able to access the  File “emdr_user_configuration.properties” along with the Property AS2_SUBMISSION_ENABLED.Ended....................");
+			log.info("TC_01 Verify if the user is able navigate and able to access the  File emdr_user_configuration.properties along with the Property AS2_SUBMISSION_ENABLED.Ended....................");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
 			io.getMessage();
