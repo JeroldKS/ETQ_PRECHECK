@@ -44,7 +44,7 @@ public class MMP528_JavaClassesInETQScript extends Base{
 	public static void tc01_checkKeywordsAvailable() throws JSchException, SftpException, Exception {
 		log.info("TC 01 Checking if the keywords available in Property file. Started....");
 		loadHighLevelReportInBrowser();
-		establishSshConnection();
+		establishSshConnectionForSourceInstance();
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
 		try {
 			String keywordsAvailability = "Java Keywords not Available";
@@ -83,7 +83,7 @@ public class MMP528_JavaClassesInETQScript extends Base{
 	public static void tc03_identifyMatchingKeywords() throws JSchException, SftpException, Exception {
 		log.info("TC 03 Identifying matching keywords in config file and Python file. Started....");
 		loadHighLevelReportInBrowser();
-		establishSshConnection();
+		establishSshConnectionForSourceInstance();
 		List<String> expectedKeyWordList = new ArrayList<String>(Arrays.asList("import *", "import sys", "import os", "from java.lang", "import Runtime, System", "from java.io", "import java.lang.Runtime", "import java.io.File"));
 		InputStream stream = sftpChannel.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/Property.toml");
 		BufferedReader br = new BufferedReader(new InputStreamReader(stream));

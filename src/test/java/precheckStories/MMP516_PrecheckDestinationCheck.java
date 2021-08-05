@@ -41,9 +41,9 @@ public class MMP516_PrecheckDestinationCheck extends Base{
 		establishSshConnectionForSourceInstance();
 		InputStream stream = null;
 		if(osUserInput.equalsIgnoreCase("linux")) {
-			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_migration_linux"));
 		} else if(osUserInput.equalsIgnoreCase("windows")) {
-			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_migration_windows"));
 		}
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));

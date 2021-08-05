@@ -1,7 +1,10 @@
 package precheck;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,11 +24,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 
 public class Base {
 	public static Properties loginProperties;
@@ -43,6 +47,7 @@ public class Base {
 	public static ChannelSftp sftpChannel;
 	public static String osUserInput;
 	public static String databaseUserInput;
+	public static String envId = null;
 	static Logger log = Logger.getLogger(Base.class.getName());
 
 	/**
@@ -50,7 +55,7 @@ public class Base {
 	 * @return driver
 	 * @throws Exception
 	 */
-	@BeforeTest
+	//@BeforeTest
 	public static WebDriver startbrowser() throws Exception {
 		log.info("browser launch started....................");
 		Properties browserProperties = new Properties();
@@ -78,6 +83,7 @@ public class Base {
 	}
 
 	public static WebDriver loadLowLevelReportInBrowser() throws Exception {
+		startbrowser();
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
@@ -88,6 +94,7 @@ public class Base {
 	}
 	
 	public static WebDriver loadHighLevelReportInBrowser() throws Exception {
+		startbrowser();
 		Properties browserProperties = new Properties();
 		FileInputStream browserFile = new FileInputStream(System.getProperty("user.dir") + "//src//main//resources//properties//browser.properties");
 		browserProperties.load(browserFile);
@@ -225,6 +232,59 @@ public class Base {
 		return "Connection Success";
 	}
 	
+	public static String establishTargetDatabaseconnection() throws JSchException, SftpException, Exception {
+		String connectionStatus = null;
+		String host= null;
+		String username= null;
+		String password= null;
+		String port= null;
+		List<String> targetDBCredentials = new ArrayList<String>();
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_migration_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_migration_windows"));
+		}
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+			String line;
+			while ((line = br.readLine()) != null) {
+				if (line.contains("db.target") && !line.contains("#")) {
+					int count = 0;
+					while(count < 4) {
+						targetDBCredentials.add(br.readLine());
+						count++;
+					}
+				} 
+				if(line.contains("env_id") && !line.contains("#")) {
+					envId = line.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
+				}
+			}
+			for(String credentials : targetDBCredentials) {
+				if(credentials.contains("host")) {
+					host = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
+				}
+				if(credentials.contains("username")) {
+					username = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
+				}
+				if(credentials.contains("password")) {
+					password = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
+				}
+				if(credentials.contains("port")) {
+					port = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
+				}
+			}
+			if(null != host && null != username && null != password && null != port &&
+					!host.isEmpty() && !username.isEmpty() && !password.isEmpty() && !port.isEmpty()) {
+				connectionStatus = establishDestinationDatabaseconnection(host, username, password, port);
+			}
+		}catch (IOException io) {
+			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
+			io.getMessage();
+		}
+		return connectionStatus;
+	}
 	/**
 	 * This method is for fetching web element's text
 	 * @param x
