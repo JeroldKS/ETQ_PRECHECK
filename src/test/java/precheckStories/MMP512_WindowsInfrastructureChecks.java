@@ -17,12 +17,14 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 
 	/**
 	 * To verify Windows infrastructure checks matches report
+	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public static void tc01_IsWindowsInfrastructureChecksMatchesReport() throws Exception {
 		log.info("TC_01 Windows infrastructure checks matches report validation started..............");
 		establishSshConnectionForSourceInstance();
+		loadLowLevelReportInBrowser();
 		String newLine = System.getProperty("line.separator");
 		String commandOutput = null;
 		ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
@@ -32,8 +34,11 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		channelExec.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
 			commandOutput = lines.collect(Collectors.joining(newLine));
-			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
+		text = xtext("//*[contains(text(),'Operating System')]/following::td[1]");
+		String windows="Windows";
+		Assert.assertTrue(commandOutput.toLowerCase().contains(windows.toLowerCase()),commandOutput+" != "+text);
+		Assert.assertTrue(text.toLowerCase().contains(windows.toLowerCase()),commandOutput+" != "+text);
 
 		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand(
@@ -43,9 +48,10 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		channelExec.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
 			commandOutput = lines.collect(Collectors.joining(newLine));
-			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
-
+		text = xtext("//*[contains(text(),'System Memory')]/following::td[1]");
+		Assert.assertEquals(commandOutput.trim(), text.trim(),commandOutput+" != "+text);
+		
 		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand(
 				"powershell.exe  \"Get-WmiObject -class Win32_processor | select NumberOfCores | ConvertTo-Json\"");
@@ -54,8 +60,9 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		channelExec.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
 			commandOutput = lines.collect(Collectors.joining(newLine));
-			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
+		text = xtext("//*[contains(text(),'CPU Core Count')]/following::td[1]");
+		Assert.assertTrue(commandOutput.contains(text),commandOutput+" != "+text );
 
 		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand("powershell.exe  [System.Security.Principal.WindowsIdentity]::GetCurrent().Name");
@@ -64,8 +71,9 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		channelExec.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
 			commandOutput = lines.collect(Collectors.joining(newLine));
-			System.out.println("OUTPUT : " + commandOutput.toString());
 		}
+		text = xtext("//*[contains(text(),'User ID')]/following::td[1]");
+		Assert.assertTrue(commandOutput.toLowerCase().contains(text.toLowerCase()),commandOutput+" != "+text);
 
 		channelExec = (ChannelExec) session.openChannel("exec");
 		channelExec.setCommand(
@@ -75,13 +83,19 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		channelExec.connect();
 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(in)).lines()) {
 			commandOutput = lines.collect(Collectors.joining(newLine));
-			System.out.println("OUTPUT : " + commandOutput.toString());
+		}
+		text = xtext("//*[contains(text(),'Admin Privileges')]/following::td[1]");
+		if (commandOutput.equalsIgnoreCase("True")) {
+			Assert.assertEquals(text,"Yes",commandOutput+" != "+text);
+		}else if (commandOutput.equalsIgnoreCase("False")) {
+			Assert.assertEquals(text,"No",commandOutput+" != "+text);
 		}
 		log.info("TC_01 Windows infrastructure checks matches report validation ended..............");
 	}
 
 	/**
-	 * To verify Report capture infra check
+	 * To verify Report capture infrastructure check
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -92,16 +106,16 @@ public class MMP512_WindowsInfrastructureChecks extends Base {
 		listOfWebElement = xtexts(xpathProperties.getProperty("infraCheckList"));
 		listOfText = listString();
 		System.out.println(listOfText);
-		String[] checkList = { "OS", "Kernel Version", "User ID", "User has Sudo Privileges", "memory",
-				"CPU Core Count" };
+		String[] checkList = { "Operating System", "User ID", "Admin Privileges", "System Memory", "CPU Core Count" };
 		for (int i = 0; i < checkList.length; i++) {
-			Assert.assertTrue(listOfText.contains(checkList[i]), checkList[i] + " : Expected is not capture");
+			 Assert.assertTrue(listOfText.contains(checkList[i]), checkList[i] + " : Expected is not capture");
 		}
 		log.info("TC_02 Report capture infra check validation ended..............");
 	}
 
 	/**
 	 * To verify Report capture if user privileges false
+	 * 
 	 * @throws Exception
 	 */
 	@Test

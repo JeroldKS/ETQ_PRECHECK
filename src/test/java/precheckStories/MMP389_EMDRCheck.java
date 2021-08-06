@@ -81,7 +81,7 @@ public class MMP389_EMDRCheck extends Base {
 			while ((line = br.readLine()) != null) {
 				if (line.contains("AS2_SUBMISSION_ENABLED") && !line.contains("#")) {
 					isAs2SubmissionEnabledAvailable = "AS2_SUBMISSION_ENABLED Available";
-					String isAs2SubmissionEnabled = line.split("=")[1];
+					String isAs2SubmissionEnabled = line.split("=")[1].trim();
 					if(isAs2SubmissionEnabled.equals("1")) {
 						listOfWebElement = xtexts(xpathProperties.getProperty("eMDR"));
 						List<WebElement> listOfWebElementCopy = listOfWebElement;
@@ -149,8 +149,6 @@ public class MMP389_EMDRCheck extends Base {
 							} else if (i == 1) {
 								assertEquals(listDataList.get(0).getText(), "N/A");
 							} else if (i == 2) {
-								assertEquals(listDataList.get(0).getText(), "N/A");
-							} else if (i == 3) {
 								assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 							}
 						}

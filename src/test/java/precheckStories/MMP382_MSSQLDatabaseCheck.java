@@ -55,7 +55,7 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 		establishDatabaseconnection();
 		loadLowLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
-		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQL_Database_Check.properties");
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP382_MSSQLDatabaseCheck.properties");
 		String[] supportedDataTypes = { "GEOMETRY", "POINT", "LINESTRING", "POLYGON", "GEOMETRYCOLLECTION",
 				"MULTILINESTRING", "MULTIPOINT", "MULTIPOLYGON", "DATE", "TIME", "DATETIME", "TIMESTAMP", "YEAR",
 				"CHAR", "VARCHAR", "BINARY", "VARBINARY", "TINYBLOB", "BLOB", "MEDIUMBLOB", "LONGBLOB", "TINYTET",
@@ -173,9 +173,9 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 		while (sourceQuery.next()) {
 			identifiers.add(String.valueOf(sourceQuery.getObject(1)) + "." + String.valueOf(sourceQuery.getObject(2))
 					+ "." + String.valueOf(sourceQuery.getObject(3)));
-
 		}
 		if (identifiers.size() != 0) {
+			System.out.println(identifiers.size());
 			for (int i = 0; i < identifiers.size(); i++) {
 				log.error("Identifiers created in MSSQL is grater than 64 = " + identifiers.get(i));
 			}
