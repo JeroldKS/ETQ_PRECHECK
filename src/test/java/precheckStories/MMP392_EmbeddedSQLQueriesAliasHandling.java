@@ -130,7 +130,7 @@ public class MMP392_EmbeddedSQLQueriesAliasHandling extends Base {
 								+ keywordPathSplit[0] + "." + keywordPathSplit[1] + " where  FIELD_ID = ' "
 								+ keywordPathSplit[3] + " '");
 			} else {
-				Assert.assertNotNull(sourceQuery.getObject(1).toString(),
+				Assert.assertNotNull(String.valueOf(sourceQuery.getObject(1)),
 						"Report captured path is invalid : " + "select " + keywordPathSplit[2] + " from "
 								+ keywordPathSplit[0] + "." + keywordPathSplit[1] + " where  FIELD_ID = '"
 								+ keywordPathSplit[3] + "'");

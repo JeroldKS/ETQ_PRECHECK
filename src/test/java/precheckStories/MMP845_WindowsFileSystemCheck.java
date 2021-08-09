@@ -71,22 +71,27 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 				double gb = 0;
 				double tb = 0;
 				String directorySizeInByte = rootFileSystem.trim().split("\n")[2].trim().split(":")[1].trim();
-				directorySize = String.format("", Integer.valueOf(directorySizeInByte)) + "B";
+				directorySize = String.format("%.2f", Double.parseDouble(directorySizeInByte));
+				directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " B";
 				if (Double.parseDouble(directorySizeInByte) >= 1024) {
 					kb = Double.parseDouble(directorySizeInByte) / 1024;
-					directorySize = String.format("%.2f", kb) + " KB";
+					directorySize = String.format("%.2f", kb);
+					directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " KB";
 				}
 				if (kb >= 1024) {
 					mb = kb / 1024;
-					directorySize = String.format("%.2f", mb) + " MB";
+					directorySize = String.format("%.2f", mb);
+					directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " MB";
 				}
 				if (mb >= 1024) {
 					gb = mb / 1024;
-					directorySize = String.format("%.2f", gb) + " GB";
+					directorySize = String.format("%.2f", gb);
+					directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " GB";
 				}
 				if (gb >= 1024) {
 					tb = gb / 1024;
-					directorySize = String.format("%.2f", tb) + " TB";
+					directorySize = String.format("%.2f", tb);
+					directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " TB";
 				}
 				String isFileAvailable = directorySize.length() != 0 ? "True" : "False";
 				listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
@@ -182,61 +187,69 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 		 			output = lines.collect(Collectors.joining(newLine));
 		 		}
 		 		channel.disconnect();
-		 		if(null != output && output != "") {
+		 		if(null != output && !output.trim().isEmpty()) {
 			 		String directorySize = "";
 					double kb = 0;
 					double mb = 0;
 					double gb = 0;
 					double tb = 0;
 					String countOfObject = output.trim().split("\n")[0].trim().split(":")[1].trim();
-					String DirectorySizeInByte = output.trim().split("\n")[2].trim().split(":")[1].trim();
-					directorySize = Integer.valueOf(DirectorySizeInByte) + "B";
-					if (Double.parseDouble(DirectorySizeInByte) >= 1024) {
-						kb = Double.parseDouble(DirectorySizeInByte) / 1024;
-						directorySize = String.format("%.2f", kb) + " KB";
+					String directorySizeInByte = output.trim().split("\n")[2].trim().split(":")[1].trim();
+					directorySize = String.format("%.2f", Double.parseDouble(directorySizeInByte));
+					directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " B";
+					if (Double.parseDouble(directorySizeInByte) >= 1024) {
+						kb = Double.parseDouble(directorySizeInByte) / 1024;
+						directorySize = String.format("%.2f", kb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " KB";
 					}
 					if (kb >= 1024) {
 						mb = kb / 1024;
-						directorySize = String.format("%.2f", mb) + " MB";
+						directorySize = String.format("%.2f", mb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " MB";
 					}
 					if (mb >= 1024) {
 						gb = mb / 1024;
-						directorySize = String.format("%.2f", gb) + " GB";
+						directorySize = String.format("%.2f", gb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " GB";
 					}
 					if (gb >= 1024) {
 						tb = gb / 1024;
-						directorySize = String.format("%.2f", tb) + " TB";
+						directorySize = String.format("%.2f", tb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " TB";
 					}
 					folderSizeListInFile.add(directorySize);
 					objectCountListInFile.add(countOfObject);
+		 		} else {
+		 			folderSizeListInFile.add("0B");
+					objectCountListInFile.add("0");
 		 		}
-		 		List<String> folderNameListInReport = new ArrayList<String>();
-		 		List<String> objectCountListInReport = new ArrayList<String>();
-		 		List<String> folderSizeListInReport = new ArrayList<String>();
-		 		listOfWebElement = xtexts(xpathProperties.getProperty("folder_details"));
-				List<WebElement> listOfFolderName = listOfWebElement;
-				for (int i = 0; i < listOfFolderName.size(); i++) {
-					folderNameListInReport.add(listOfFolderName.get(i).getText());
-				}
-				listOfWebElement = xtexts(xpathProperties.getProperty("count_of_objects"));
-				List<WebElement> listOfObjectCount = listOfWebElement;
-				for (int i = 0; i < listOfObjectCount.size(); i++) {
-					objectCountListInReport.add(listOfObjectCount.get(i).getText());
-				}
-				listOfWebElement = xtexts(xpathProperties.getProperty("folder_size"));
-				List<WebElement> listOfFolderSize = listOfWebElement;
-				for (int i = 0; i < listOfFolderSize.size(); i++) {
-					folderSizeListInReport.add(listOfFolderSize.get(i).getText());
-				}
-				Assert.assertEquals(folderNameListInReport.size(),folderNameList.size());
-				Assert.assertEquals(folderNameListInReport,folderNameList);
-				Assert.assertEquals(objectCountListInFile.size(),objectCountListInReport.size());
-				Assert.assertEquals(objectCountListInFile,objectCountListInReport);
-				Assert.assertEquals(folderSizeListInFile.size(),folderSizeListInReport.size());
-				Assert.assertEquals(folderSizeListInFile,folderSizeListInReport);
-				sftpChannel.disconnect();
-		 		session.disconnect();
+	 		}
+	 		List<String> folderNameListInReport = new ArrayList<String>();
+	 		List<String> objectCountListInReport = new ArrayList<String>();
+	 		List<String> folderSizeListInReport = new ArrayList<String>();
+	 		listOfWebElement = xtexts(xpathProperties.getProperty("folder_details"));
+			List<WebElement> listOfFolderName = listOfWebElement;
+			for (int i = 0; i < listOfFolderName.size(); i++) {
+				folderNameListInReport.add(listOfFolderName.get(i).getText());
 			}
+			listOfWebElement = xtexts(xpathProperties.getProperty("count_of_objects"));
+			List<WebElement> listOfObjectCount = listOfWebElement;
+			for (int i = 0; i < listOfObjectCount.size(); i++) {
+				objectCountListInReport.add(listOfObjectCount.get(i).getText());
+			}
+			listOfWebElement = xtexts(xpathProperties.getProperty("folder_size"));
+			List<WebElement> listOfFolderSize = listOfWebElement;
+			for (int i = 0; i < listOfFolderSize.size(); i++) {
+				folderSizeListInReport.add(listOfFolderSize.get(i).getText());
+			}
+			Assert.assertEquals(folderNameListInReport.size(),folderNameList.size());
+			Assert.assertEquals(folderNameListInReport,folderNameList);
+			Assert.assertEquals(objectCountListInReport.size(),objectCountListInFile.size());
+			Assert.assertEquals(objectCountListInReport,objectCountListInFile);
+			Assert.assertEquals(folderSizeListInReport.size(),folderSizeListInFile.size());
+			Assert.assertEquals(folderSizeListInReport,folderSizeListInFile);
+			sftpChannel.disconnect();
+	 		session.disconnect();
 			log.info("TC 02 Verify the size and Number of the file system Directories are captured in report. Ended..............");
 		} catch (IOException io) {
 			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
@@ -260,17 +273,46 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 							.replaceAll(" ", "");
 				}
 			}
+			
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
+			br = new BufferedReader(new InputStreamReader(stream));
+			String webResourcePath = null;
+			String line1;
+			while ((line1 = br.readLine()) != null) {
+				if (line1.contains("web_resource_path") && !
+						line1.contains("#")) {
+					webResourcePath = line1.split("=")[1].replaceAll("\'", "").replaceAll("\"", "").trim();
+				}
+			}
+			String newLine = System.getProperty("line.separator");
+			String folders = null;
+			Channel channel = session.openChannel("exec");
+			String commandtoListFolders = "powershell.exe \"Get-ChildItem " + webResourcePath
+					+ " -Directory | Select name \"";
+			((ChannelExec) channel).setCommand(commandtoListFolders);
+			InputStream inputStream = channel.getInputStream();
+			channel.connect();
+			try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
+				folders = lines.collect(Collectors.joining(newLine));
+			}
+			channel.disconnect();
+			
 			List<String> excluedFoldersListInFile = Arrays.asList(excludedFoldersinFile.split(","));
 			List<String> excluedFoldersListInReport = new ArrayList<String>();
-
+			List<String> excluedFoldersListInFileFinal = new ArrayList<String>();
+			for(String exl : excluedFoldersListInFile) {
+				if(folders.contains(exl)) {
+					excluedFoldersListInFileFinal.add(exl);
+				}
+			}
 			listOfWebElement = xtexts(xpathProperties.getProperty("excluded_folder_details"));
 			for (int i = 1; i < listOfWebElement.size(); i++) {
 				excluedFoldersListInReport.add(listOfWebElement.get(i).getText());
 			}
 			Collections.sort(excluedFoldersListInReport);
-			Collections.sort(excluedFoldersListInFile);
-			Assert.assertEquals(excluedFoldersListInReport.size(), excluedFoldersListInFile.size());
-			Assert.assertEquals(excluedFoldersListInReport, excluedFoldersListInFile);
+			Collections.sort(excluedFoldersListInFileFinal);
+			Assert.assertEquals(excluedFoldersListInReport.size(), excluedFoldersListInFileFinal.size());
+			Assert.assertEquals(excluedFoldersListInReport, excluedFoldersListInFileFinal);
 			sftpChannel.disconnect();
 	 		session.disconnect();
 			log.info("TC 03 Verify the ignored files are captured in Report validation Ended.............");
@@ -296,7 +338,6 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 					propsFilePath = line.split("=")[1].replaceAll("'", "").replaceAll("\\\\", "/");
 				}
 			}
-			establishSshConnectionForSourceInstance();
 			if (null != propsFilePath) {
 				propsFilePath = "/" + propsFilePath + "/config.properties";
 				stream = sftpChannel.get(propsFilePath);
@@ -304,7 +345,8 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 				String attachmentRootAvailability = "Attachment Root Not Available";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("attachmentRoot") && !line.contains("#")) {
-						String attachmentRoot = line.split("=")[1].replaceAll("\\\\", "/");
+						String attachmentRootWindowsFormat =  line.split("=")[1];
+						String attachmentRoot = attachmentRootWindowsFormat.replaceAll("\\\\", "/");
 						attachmentRootAvailability = (null != attachmentRoot && !attachmentRoot.trim().isEmpty())
 								? "Attachment Root Available"
 								: "Attachment Root Not Available";
@@ -320,53 +362,74 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 							rootFileSystem = lines.collect(Collectors.joining(newLine));
 						}
 						channel.disconnect();
-						if(null != rootFileSystem && rootFileSystem != "") {
-							String DirectorySize = "";
+						//Check Directory Availability
+						String directoryAvailability = null;
+						channel = session.openChannel("exec");
+						String commandtoCheckDirAvailability = "powershell.exe \"Test-Path "+attachmentRootWindowsFormat+"\"";
+						((ChannelExec) channel).setCommand(commandtoCheckDirAvailability);
+						inputStream = channel.getInputStream();
+						channel.connect();
+						try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
+							directoryAvailability = lines.collect(Collectors.joining(newLine));
+						}
+						channel.disconnect();
+						
+						String directorySize = null;
+						String countOfObject = null;
+						if(null != rootFileSystem && !rootFileSystem.trim().isEmpty()) {
 							double kb = 0;
 							double mb = 0;
 							double gb = 0;
 							double tb = 0;
-							String countOfObject = rootFileSystem.trim().split("\n")[0].trim().split(":")[1].trim();
-							String DirectorySizeInByte = rootFileSystem.trim().split("\n")[2].trim().split(":")[1].trim();
-							DirectorySize = String.format("", Integer.valueOf(DirectorySizeInByte)) + "B";
-							if (Double.parseDouble(DirectorySizeInByte) >= 1024) {
-								kb = Double.parseDouble(DirectorySizeInByte) / 1024;
-								DirectorySize = String.format("%.2f", kb) + " KB";
+							countOfObject = rootFileSystem.trim().split("\n")[0].trim().split(":")[1].trim();
+							String directorySizeInByte = rootFileSystem.trim().split("\n")[2].trim().split(":")[1].trim();
+							directorySize = String.format("%.2f", Double.parseDouble(directorySizeInByte));
+							directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " B";
+							if (Double.parseDouble(directorySizeInByte) >= 1024) {
+								kb = Double.parseDouble(directorySizeInByte) / 1024;
+								directorySize = String.format("%.2f", kb);
+								directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " KB";
 							}
 							if (kb >= 1024) {
 								mb = kb / 1024;
-								DirectorySize = String.format("%.2f", mb) + " MB";
+								directorySize = String.format("%.2f", mb);
+								directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " MB";
 							}
 							if (mb >= 1024) {
 								gb = mb / 1024;
-								DirectorySize = String.format("%.2f", gb) + " GB";
+								directorySize = String.format("%.2f", gb);
+								directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " GB";
 							}
 							if (gb >= 1024) {
 								tb = gb / 1024;
-								DirectorySize = String.format("%.2f", tb) + " TB";
+								directorySize = String.format("%.2f", tb);
+								directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " TB";
 							}
-							int DirectorySizeCharCount = DirectorySize.length();
-							String DirectoryAvailability = DirectorySizeCharCount != 0 ? "True" : "False";
-							listOfWebElement = xtexts(xpathProperties.getProperty("attachment_folder_details"));
-							List<WebElement> listOfWebElementCopy = listOfWebElement;
-							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-								listOfWebElement = xtexts(
-										"//*[contains(text(),'Attachment Folder Details')]/following::table[1]/tbody[1]/tr["
-												+ (i + 1) + "]/td");
-								if (i == 0) {
-									assertEquals(listOfWebElement.get(0).getText(), countOfObject);
-								}
-								if (i == 1) {
-									assertEquals(listOfWebElement.get(0).getText(), DirectorySize);
-								}
-								if (i == 2) {
-									assertEquals(listOfWebElement.get(0).getText(), attachmentRoot.replaceAll("/", "\\\\"));
-								}
-								if (i == 3) {
-									assertEquals(listOfWebElement.get(0).getText(), DirectoryAvailability);
-								}
-	
+						} else {
+							if(directoryAvailability.equals("True")) {
+								countOfObject = "0";
+								directorySize = "0B";
 							}
+						}
+						listOfWebElement = xtexts(xpathProperties.getProperty("attachment_folder_details"));
+						List<WebElement> listOfWebElementCopy = listOfWebElement;
+						for (int i = 0; i < listOfWebElementCopy.size(); i++) {
+							listOfWebElement = xtexts(
+									"//*[contains(text(),'Attachment Folder Details')]/following::table[1]/tbody[1]/tr["
+											+ (i + 1) + "]/td");
+							if (i == 0) {
+								assertEquals(listOfWebElement.get(0).getText(), countOfObject);
+							}
+							if (i == 1) {
+								assertEquals(listOfWebElement.get(0).getText(), directorySize);
+							}
+							if (i == 2) {
+								assertEquals(listOfWebElement.get(0).getText(), attachmentRootWindowsFormat);
+							}
+							if (i == 3) {
+								assertEquals(listOfWebElement.get(0).getText(), directoryAvailability);
+							}
+
 						}
 					}
 				}
@@ -403,7 +466,6 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 					logFilePath = line.split("=")[1].replaceAll("'", "").replaceAll("\\\\", "/");
 				}
 			}
-			//establishSshConnectionForSourceInstance();
 			String logDirectory = null;
 			String logFile = null;
 			if(null != logFilePath) {
@@ -442,23 +504,29 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 					double gb = 0;
 					double tb = 0;
 					String directorySizeInByte = logFileSize.trim().split("\n")[2].trim().split(":")[1].trim();
-					directorySize = String.format("", Integer.valueOf(directorySizeInByte)) + "B";
+					directorySize = String.format("%.2f", Double.parseDouble(directorySizeInByte));
+					directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " B";
 					if (Double.parseDouble(directorySizeInByte) >= 1024) {
 						kb = Double.parseDouble(directorySizeInByte) / 1024;
-						directorySize = String.format("%.2f", kb) + " KB";
+						directorySize = String.format("%.2f", kb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " KB";
 					}
 					if (kb >= 1024) {
 						mb = kb / 1024;
-						directorySize = String.format("%.2f", mb) + " MB";
+						directorySize = String.format("%.2f", mb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " MB";
 					}
 					if (mb >= 1024) {
 						gb = mb / 1024;
-						directorySize = String.format("%.2f", gb) + " GB";
+						directorySize = String.format("%.2f", gb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " GB";
 					}
 					if (gb >= 1024) {
 						tb = gb / 1024;
-						directorySize = String.format("%.2f", tb) + " TB";
+						directorySize = String.format("%.2f", tb);
+						directorySize = (directorySize.endsWith("0") ? directorySize.replaceAll(".$", "") : directorySize) + " TB";
 					}
+					
 					String logDirectoryAvailable = directorySize.length() != 0 ? "True" : "False";
 					listOfWebElement = xtexts(xpathProperties.getProperty("application_log_details"));
 					List<WebElement> listOfWebElementCopy = listOfWebElement;
@@ -538,7 +606,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			}
 			channel.disconnect();
 	 		if(output.equals("True")) {
-	 			Assert.assertEquals("Mount Directory exists", "Mount Directory not exists");
+	 			log.info("This test case works only if Given Mount Directory Path is wrong");
 	 		} else {
 	 			listOfWebElement = xtexts(xpathProperties.getProperty("file_system_details"));
 				List<WebElement> listOfWebElementCopy = listOfWebElement;
@@ -566,7 +634,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 			channel.disconnect();
 			
 			if(output.equals("True")) {
-				Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
+				log.info("This test case works only if Given Web Resource Directory Path is wrong");
 	 		} else {
 	 			text = xtext(xpathProperties.getProperty("web_resources_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
@@ -622,7 +690,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 					}
 				}
 	 		} else {
-	 			Assert.assertEquals("Mount Directory exists", "Mount Directory not exists");
+	 			log.info("This test case works only if No Path is Given as Mount Directory");
 	 		}
 	 		if(webResourcePath.equals("")) {
 	 			text = xtext(xpathProperties.getProperty("web_resources_no_data"));
@@ -630,7 +698,7 @@ public class MMP845_WindowsFileSystemCheck extends Base {
 	 			text = xtext(xpathProperties.getProperty("folder_details_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
 	 		} else {
-	 			Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
+	 			log.info("This test case works only if No Path is Given as Web Resource Directory");
 	 		}
 	 		sftpChannel.disconnect();
 	 		session.disconnect();

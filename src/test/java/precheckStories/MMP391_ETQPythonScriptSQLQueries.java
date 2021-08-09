@@ -17,7 +17,7 @@ public class MMP391_ETQPythonScriptSQLQueries extends Base {
 	public void tc01_IsListHaveIdAndDescriptionColumnName() throws Exception {
 		log.info("tc01_Is List Have Id And Description ColumnName started....................");
 		establishDatabaseconnection();
-		prop = loadQueryFile("\\src\\test\\resources\\precheck\\queries\\MMP391_ETQPythonScriptSQLQueries.properties");
+		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP391_ETQPythonScriptSQLQueries.properties");
 		sourceQuery = query(prop.getProperty("idAndDescriptionList"));
 		while (sourceQuery.next()) {
 			Assert.assertNotNull(String.valueOf(sourceQuery.getObject(2)),

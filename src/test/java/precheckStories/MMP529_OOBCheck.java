@@ -106,7 +106,7 @@ public class MMP529_OOBCheck extends Base{
 					}
 					Collections.sort(unmatchedDesignListInDB);
 					Collections.sort(unmatchedDesignListInReport);
-					assertEquals(unmatchedDesignListInDB, unmatchedDesignListInReport);
+					assertEquals(unmatchedDesignListInReport, unmatchedDesignListInDB);
 				}
 			}
 			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
@@ -164,7 +164,7 @@ public class MMP529_OOBCheck extends Base{
 					}
 					Collections.sort(matchedDesignListInDB);
 					Collections.sort(matchedDesignListInReport);
-					Assert.assertNotEquals(matchedDesignListInDB, matchedDesignListInReport);
+					Assert.assertNotEquals(matchedDesignListInReport, matchedDesignListInDB);
 				}
 			}
 			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");
@@ -222,7 +222,7 @@ public class MMP529_OOBCheck extends Base{
 					}
 					Collections.sort(matchedDesignListInDB);
 					Collections.sort(matchedDesignListInReport);
-					assertNotEquals(matchedDesignListInDB, matchedDesignListInReport);
+					assertNotEquals(matchedDesignListInReport, matchedDesignListInDB);
 				}
 			}
 			Assert.assertEquals(oobDesignList, "OOB Design Name List Available");

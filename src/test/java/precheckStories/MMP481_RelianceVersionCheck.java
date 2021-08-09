@@ -99,12 +99,15 @@ public class MMP481_RelianceVersionCheck  extends Base{
 					String relianceVersionInConstFile = line.split("=")[1].replaceAll("\'", "").replaceAll("[\\[\\]]", "");
 					String[] relianceVersionArray = relianceVersionInConstFile.split(",");
 					List<String> relianceVersionList = new ArrayList<>(Arrays.asList(relianceVersionArray));
-					String validationStatus = relianceVersionList.contains(relianceVersioninProperty) ? "PASSED" : "FAILED";
-					assertEquals(validationStatus, "PASSED");
-					text = xtext(xpathProperties.getProperty("reliance_version_validation"));
-					assertEquals(validationStatus, text);
-					text = xtext(xpathProperties.getProperty("reliance_version"));
-					assertEquals(relianceVersioninProperty, text);
+					String validationStatus = relianceVersionList.contains(relianceVersioninProperty) ? "PASS" : "FAIL";
+					if(validationStatus.equals("PASS")) {
+						text = xtext(xpathProperties.getProperty("reliance_version_validation"));
+						assertEquals(validationStatus, text);
+						text = xtext(xpathProperties.getProperty("reliance_version"));
+						assertEquals(relianceVersioninProperty, text);
+					} else {
+						log.info("This Test case works only if Reliance validation pass");
+					}
 				}
 			}
 			sftpChannel.disconnect();
@@ -153,12 +156,16 @@ public class MMP481_RelianceVersionCheck  extends Base{
 					String relianceVersionInConstFile = line.split("=")[1].replaceAll("\'", "").replaceAll("[\\[\\]]", "");
 					String[] relianceVersionArray = relianceVersionInConstFile.split(",");
 					List<String> relianceVersionList = new ArrayList<>(Arrays.asList(relianceVersionArray));
-					String validationStatus = relianceVersionList.contains(relianceVersioninProperty) ? "PASSED" : "FAILED";
-					assertEquals(validationStatus, "FAILED");
-					text = xtext(xpathProperties.getProperty("reliance_version_validation"));
-					assertEquals(validationStatus, text);
-					text = xtext(xpathProperties.getProperty("reliance_version"));
-					assertEquals(relianceVersioninProperty, text);
+					String validationStatus = relianceVersionList.contains(relianceVersioninProperty) ? "PASS" : "FAIL";
+					//assertEquals(validationStatus, "FAILED");
+					if(validationStatus.equals("FAIL")) {
+						text = xtext(xpathProperties.getProperty("reliance_version_validation"));
+						assertEquals(validationStatus, text);
+						text = xtext(xpathProperties.getProperty("reliance_version"));
+						assertEquals(relianceVersioninProperty, text);
+					} else {
+						log.info("This Test case works only if Reliance validation pass");
+					}
 				}
 			}
 			sftpChannel.disconnect();

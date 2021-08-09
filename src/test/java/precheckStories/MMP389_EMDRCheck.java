@@ -75,9 +75,9 @@ public class MMP389_EMDRCheck extends Base {
 			stream = sftpChannel.get(fileProperties.getProperty("emdr_file_windows"));
 		}
 		try {
+			String isAs2SubmissionEnabledAvailable = "AS2_SUBMISSION_ENABLED Not Available";
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String line;
-			String isAs2SubmissionEnabledAvailable = "AS2_SUBMISSION_ENABLED Not Available";
 			while ((line = br.readLine()) != null) {
 				if (line.contains("AS2_SUBMISSION_ENABLED") && !line.contains("#")) {
 					isAs2SubmissionEnabledAvailable = "AS2_SUBMISSION_ENABLED Available";
@@ -99,7 +99,7 @@ public class MMP389_EMDRCheck extends Base {
 							}
 						}
 					} else {
-						Assert.assertEquals("AS2_SUBMISSION_ENABLED = 0", "AS2_SUBMISSION_ENABLED = 1");
+						log.info("This Test Case works only if AS2_SUBMISSION_ENABLED is 1");
 					}
 				}
 			}
@@ -131,9 +131,9 @@ public class MMP389_EMDRCheck extends Base {
 			stream = sftpChannel.get(fileProperties.getProperty("emdr_file_windows"));
 		}
 		try {
+			String isAs2SubmissionEnabledAvailable = "AS2_SUBMISSION_ENABLED Not Available";
 			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 			String line;
-			String isAs2SubmissionEnabledAvailable = "AS2_SUBMISSION_ENABLED Not Available";
 			while ((line = br.readLine()) != null) {
 				if (line.contains("AS2_SUBMISSION_ENABLED") && !line.contains("#")) {
 					isAs2SubmissionEnabledAvailable = "AS2_SUBMISSION_ENABLED Available";
@@ -153,7 +153,7 @@ public class MMP389_EMDRCheck extends Base {
 							}
 						}
 					} else {
-						Assert.assertEquals("AS2_SUBMISSION_ENABLED = 1", "AS2_SUBMISSION_ENABLED = 0");
+						log.info("This Test Case works only if AS2_SUBMISSION_ENABLED is 0");
 					}
 				}
 			}

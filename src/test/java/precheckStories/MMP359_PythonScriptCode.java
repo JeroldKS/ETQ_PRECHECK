@@ -11,9 +11,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -69,78 +67,6 @@ public class MMP359_PythonScriptCode extends Base {
  		Assert.assertNotNull(commandOutput);
  		channel.disconnect();
  		log.info("TC 01 Fetching Count of 'getValue(\"Description\")' String. Started....");
-	}
-	
-	/**
-	 * Checking whether the precheck report captures getValue("Description") in webapp folder
-	 * @throws SQLException
-	 * @throws Exception
-	 */
-	@Test
-	public void tc02_checkPrecheckReportCapturesKeyword() throws SQLException, Exception {
-		log.info("TC 02 Checking whether the Precheck Report captures Python files contain 'getValue(Description)' String. Started....");
-		loadHighLevelReportInBrowser();
-		establishSshConnectionForSourceInstance();
-		InputStream stream = null;
-		if(osUserInput.equalsIgnoreCase("linux")) {
-			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
-		} else if(osUserInput.equalsIgnoreCase("windows")) {
-			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_windows"));
-		}
-		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-		String webAppPath = null;
-		String line;
-		while ((line = br.readLine()) != null) {
-			if (line.contains("web_app_file_path") && !line.contains("#")) {
-				webAppPath = line.split("=")[1].replaceAll("\"", "");
-			}
-		}
-		String commandtoFetchFilesContainsKeyword = null;
-		if(osUserInput.equalsIgnoreCase("linux")) {
-			commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
-		} else if(osUserInput.equalsIgnoreCase("windows")) {
-			commandtoFetchFilesContainsKeyword = "powershell.exe \"Get-ChildItem -Path "+webAppPath+"\\*.py -Recurse | Select-String -Pattern 'getValue(\"Description\")' -CaseSensitive\"";
-		}
-		String newLine = System.getProperty("line.separator");
-		String commandOutput = null;
-	    Channel channel = session.openChannel("exec");
-	    //String commandtoFetchFilesContainsKeyword = "grep -Rw "+webAppPath+" -e 'getValue(\"Description\")' --include=*.py";
- 		((ChannelExec) channel).setCommand(commandtoFetchFilesContainsKeyword);
- 		InputStream inputStream = channel.getInputStream();
- 		channel.connect();
- 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
- 			commandOutput = lines.collect(Collectors.joining(newLine));
- 		}
- 		Assert.assertNotNull(commandOutput);
- 		channel.disconnect();
- 		TreeMap<String,String> keywordOccuranceMapInInstance = new TreeMap<String,String>();
- 		TreeMap<String,String> keywordOccuranceMapInReport = new TreeMap<String,String>();
- 		List<String> commandOutputasList = Arrays.asList(commandOutput.split("\n"));
- 		for(String commandOutputLine : commandOutputasList) {
- 			String pythonFile = commandOutputLine.split(":")[0].trim();
- 			String command = "grep -Rw "+ pythonFile + " -e 'getValue(\"Description\")'  | wc -l";
- 			channel = session.openChannel("exec");
- 	 		((ChannelExec) channel).setCommand(command);
- 	 		inputStream = channel.getInputStream();
- 	 		channel.connect();
- 	 		try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
- 	 			commandOutput = lines.collect(Collectors.joining(newLine));
- 	 		}
- 	 		keywordOccuranceMapInInstance.put(pythonFile, commandOutput);
- 	 		channel.disconnect();
- 		}
- 		listOfWebElement = xtexts("//*[contains(text(),'Keyword Ids in ETQ script')]/../td[3]/table/tbody/tr");
-	 		List<WebElement> listOfWebElementCopy = listOfWebElement;
-		for (int i = 0; i < listOfWebElementCopy.size(); i++) {
-			listOfWebElement = xtexts("//*[contains(text(),'Keyword Ids in ETQ script')]/../td[3]/table/tbody/tr[" + (i + 1) + "]");
-			text = xtext("//*[contains(text(),'Keyword Ids in ETQ script')]/../td[3]/table/tbody/tr[" + (i + 1) + "]/td[1]");
-			String fileName = text;
-			text = xtext("//*[contains(text(),'Keyword Ids in ETQ script')]/../td[3]/table/tbody/tr[" + (i + 1) + "]/td[2]");
-			String count = text;
-			keywordOccuranceMapInReport.put(fileName, count);
-		}
-		Assert.assertEquals(keywordOccuranceMapInReport, keywordOccuranceMapInInstance);
- 		log.info("TC 02 Checking whether the Precheck Report captures Python files contain 'getValue(Description)' String. Ended....");
 	}
 	
 	/**

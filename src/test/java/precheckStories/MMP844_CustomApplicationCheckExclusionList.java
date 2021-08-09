@@ -28,11 +28,9 @@ public class MMP844_CustomApplicationCheckExclusionList extends Base {
 				"//src//test//resources//precheck//queries//MMP844_CustomApplicationCheckExclusionList.properties");
 		InputStream stream = null;
 		if(osUserInput.equalsIgnoreCase("linux")) {
-			stream = sftpChannel
-					.get("/home/ec2-user/QA_testing/migration-tool/src/precheck/const/common_constants.py");
+			stream = sftpChannel.get(fileProperties.getProperty("common_constants_linux"));
 		} else if(osUserInput.equalsIgnoreCase("windows")) {
-			stream = sftpChannel
-			.get("/D:/precheck_windows/v7/PrecheckWindows_21_07_2021/precheck/const/common_constants.py");
+			stream = sftpChannel.get(fileProperties.getProperty("common_constants_windows"));
 		}
 		
 

@@ -57,12 +57,10 @@ public class MMP387_IntegrationCheck extends Base{
 				}
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				String ssoStatus = "SSO Disabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ssoEnabled") && !line.contains("#")) {
 						String ssoEnabled = line.split("=")[1];
 						if(ssoEnabled.trim().equals("1")) {
-							ssoStatus = "SSO Enabled";
 							listOfWebElement = xtexts(xpathProperties.getProperty("ssoEnabled"));
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -76,10 +74,11 @@ public class MMP387_IntegrationCheck extends Base{
 									assertEquals(listDataList.get(0).getText(), "Reconfigure the authentication to the a supported option");
 								}
 							}
+						} else {
+							log.info("This test case will work only if SSO Enabled is 1");
 						}
 					}
 				}
-				assertEquals(ssoStatus, "SSO Enabled");
 			}
 			sftpChannel.disconnect();
 			session.disconnect();
@@ -124,12 +123,10 @@ public class MMP387_IntegrationCheck extends Base{
 				}
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				String ssoStatus = "SSO Enabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ssoEnabled") && !line.contains("#")) {
 						String ssoEnabled = line.split("=")[1];
 						if(ssoEnabled.trim().equals("0")) {
-							ssoStatus = "SSO Disabled";
 							listOfWebElement = xtexts(xpathProperties.getProperty("ssoEnabled"));
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -142,11 +139,12 @@ public class MMP387_IntegrationCheck extends Base{
 								} else if (i == 3) {
 									assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 								}
-							}
+							} 
+						} else {
+							log.info("This test case will work only if SSO Enabled is 0");
 						}
 					}
 				}
-				assertEquals(ssoStatus, "SSO Disabled");
 			}
 			sftpChannel.disconnect();
 			session.disconnect();
@@ -317,7 +315,7 @@ public class MMP387_IntegrationCheck extends Base{
 			} else {
 				if (i == 1) {
 					text = xtext(xpathProperties.getProperty("wsRestfulProfile_p"));
-					assertEquals(text, "The following Restful Web Service Profiles are not supported in NXG");
+					assertEquals(text, "The following Restful Web Service Profiles do not have the correct authentication");
 					listOfWebElement = xtexts(xpathProperties.getProperty("wsRestfulProfile_list"));
 					List<WebElement> wsProfileList = listOfWebElement;
 					for (int j = 0; j < wsProfileList.size(); j++) {
@@ -327,7 +325,7 @@ public class MMP387_IntegrationCheck extends Base{
 					Collections.sort(wsRestfulProfileListInReport);
 					assertEquals(wsRestfulProfileListInReport, wsRestfulProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use the cognito authentication");
+					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use Cognito authentication");
 				}
 			}
 		}
@@ -364,7 +362,7 @@ public class MMP387_IntegrationCheck extends Base{
 			} else {
 				if (i == 1) {
 					text = xtext(xpathProperties.getProperty("wsRestfulOperation_p"));
-					assertEquals(text, "The following Restful Web Service Profiles are not supported in NXG");
+					assertEquals(text, "The following Restful Operations do not have the correct authentication");
 					listOfWebElement = xtexts(xpathProperties.getProperty("wsRestfulOperation_list"));
 					List<WebElement> wsOperationProfileList = listOfWebElement;
 					for (int j = 0; j < wsOperationProfileList.size(); j++) {
@@ -374,7 +372,7 @@ public class MMP387_IntegrationCheck extends Base{
 					Collections.sort(wsRestfulOperationProfileListInReport);
 					assertEquals(wsRestfulOperationProfileListInReport, wsRestfulOperationProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use the cognito authentication");
+					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use Cognito authentication");
 				}
 			}
 		}
@@ -413,7 +411,7 @@ public class MMP387_IntegrationCheck extends Base{
 			} else {
 				if (i == 1) {
 					text = xtext(xpathProperties.getProperty("databaseConnectionProfile_p"));
-					assertEquals(text, "This connection profile is not supported in NXG");
+					assertEquals(text, "The following Database Connection Profiles are not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("databaseConnectionProfile_list"));
 					List<WebElement> databaseConnectionProfileList = listOfWebElement;
 					for (int j = 0; j < databaseConnectionProfileList.size(); j++) {
@@ -423,7 +421,7 @@ public class MMP387_IntegrationCheck extends Base{
 					Collections.sort(databaseConnectionProfileListInReport);
 					assertEquals(databaseConnectionProfileListInReport, databaseConnectionProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
+					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to use a REST Web Services profile that uses Cognito authentication");
 				}
 			}
 		}
@@ -513,7 +511,7 @@ public class MMP387_IntegrationCheck extends Base{
 			} else {
 				if (i == 1) {
 					text = xtext(xpathProperties.getProperty("soapConnectionProfile_p"));
-					assertEquals(text, "This authentication is not supported in NXG");
+					assertEquals(text, "The following SOAP Profiles are not supported in NXG");
 					listOfWebElement = xtexts(xpathProperties.getProperty("soapConnectionProfile_list"));
 					List<WebElement> soapProfileList = listOfWebElement;
 					for (int j = 0; j < soapProfileList.size(); j++) {
@@ -523,7 +521,7 @@ public class MMP387_IntegrationCheck extends Base{
 					Collections.sort(soapProfileListInReport);
 					assertEquals(soapProfileListInReport, soapProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to the use REST Web Services instead");
+					assertEquals(listDataList.get(0).getText(), "Reconfigure the connection profile to use a REST Web Services profile that uses Cognito authentication");
 				}
 			}
 		}
@@ -565,12 +563,10 @@ public class MMP387_IntegrationCheck extends Base{
 				}
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				String ldapAvailability = "LDAP Availability Disabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ldapUnavailable") && !line.contains("#")) {
 						String ldabUnavailable = line.split("=")[1];
 						if(ldabUnavailable.trim().equals("0")) {
-							ldapAvailability = "LDAP Availability Enabled";
 							listOfWebElement = xtexts(xpathProperties.getProperty("ldap_authentication"));
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -582,10 +578,11 @@ public class MMP387_IntegrationCheck extends Base{
 									assertEquals(listDataList.get(0).getText(), "Reconfigure the authentication to a supported option");
 								}
 							}
+						} else {
+							log.info("This Test case will work only if ldabUnavailable is 1");
 						}
 					}
 				}
-				assertEquals(ldapAvailability, "LDAP Availability Enabled");
 			}
 			sftpChannel.disconnect();
 			session.disconnect();
@@ -630,12 +627,10 @@ public class MMP387_IntegrationCheck extends Base{
 				}
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				String ldapAvailability = "LDAP Availability Enabled";
 				while ((line = br.readLine()) != null) {
 					if (line.contains("ldapUnavailable") && !line.contains("#")) {
 						String ldabUnavailable = line.split("=")[1];
 						if(ldabUnavailable.trim().equals("1")) {
-							ldapAvailability = "LDAP Availability Disabled";
 							listOfWebElement = xtexts(xpathProperties.getProperty("ldap_authentication"));
 							List<WebElement> listOfWebElementCopy = listOfWebElement;
 							for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -647,10 +642,11 @@ public class MMP387_IntegrationCheck extends Base{
 									assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 								}
 							}
+						} else {
+							log.info("This Test case will work only if ldabUnavailable is 0");
 						}
 					}
 				}
-				assertEquals(ldapAvailability, "LDAP Availability Disabled");
 			}
 			sftpChannel.disconnect();
 			session.disconnect();

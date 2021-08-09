@@ -119,6 +119,8 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 									assertEquals(listDataList.get(0).getText(), "Property is enabled but not supported on NXG");
 								} 
 							}
+						} else {
+							log.info("This Test case works only if isEtQDevelopmentEnvironment is 1");
 						}
 					}
 				}
@@ -178,9 +180,11 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 								if (i == 1) {
 									assertEquals(listDataList.get(0).getText(), "N/A");
 								} else if (i == 2) {
-									assertEquals(listDataList.get(0).getText(), "Good to migrate");
+									assertEquals(listDataList.get(0).getText(), "Good to Migrate");
 								} 
 							}
+						} else {
+							log.info("This Test case works only if isEtQDevelopmentEnvironment is 0");
 						}
 					}
 				}
@@ -228,14 +232,13 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 				}
 				stream = sftpChannel.get(propsFilePath);
 				br = new BufferedReader(new InputStreamReader(stream));
-				String isEtQDevelopmentEnvironment = "isEtQDevelopmentEnvironment Unavailable";
+				boolean isEtQDevelopmentEnvironment = false;
 				while ((line = br.readLine()) != null) {
 					if (line.contains("isEtQDevelopmentEnvironment") && !line.contains("#")) {
-						isEtQDevelopmentEnvironment = "isEtQDevelopmentEnvironment Available";
+						isEtQDevelopmentEnvironment = true;
 					}
 				}
-				assertEquals(isEtQDevelopmentEnvironment, "isEtQDevelopmentEnvironment Unavailable");
-				if(isEtQDevelopmentEnvironment == "isEtQDevelopmentEnvironment Unavailable") {
+				if(!isEtQDevelopmentEnvironment) {
 					listOfWebElement = xtexts(xpathProperties.getProperty("etq_development_environment"));
 					List<WebElement> listOfWebElementCopy = listOfWebElement;
 					for (int i = 0; i < listOfWebElementCopy.size(); i++) {
@@ -244,9 +247,11 @@ public class MMP530_ETQDevelopmentEnvironmentProperty extends Base{
 						if (i == 1) {
 							assertEquals(listDataList.get(0).getText(), "N/A");
 						} else if (i == 2) {
-							assertEquals(listDataList.get(0).getText(), "Review prior to migration, variable “isEtQDevelopmentEnvironment” is unavailable");
+							assertEquals(listDataList.get(0).getText(), "Review prior to migration, variable \"isEtQDevelopmentEnvironment\" is unavailable");
 						} 
 					}
+				} else {
+					log.info("This Test case works only if isEtQDevelopmentEnvironment variable is not available in config.properties");
 				}
 			}
 			sftpChannel.disconnect();
