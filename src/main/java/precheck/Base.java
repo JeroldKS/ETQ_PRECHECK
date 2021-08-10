@@ -24,6 +24,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -34,11 +35,14 @@ import com.jcraft.jsch.SftpException;
 public class Base {
 	public static Properties loginProperties;
 	public static Connection dbConnection;
+	public static Connection targetDBConnection;
 	public static WebDriver driver;
 	public static String text;
 	public static List<WebElement> listOfWebElement;
 	public static Statement mysqlStatement;
+	public static Statement targetMysqlStatement;
 	public static ResultSet sourceQuery;
+	public static ResultSet targetQuery;
 	public static Properties prop;
 	public static Properties xpathProperties;
 	public static Properties fileProperties = new Properties();;
@@ -226,7 +230,7 @@ public class Base {
 	public static String establishDestinationDatabaseconnection(String host, String user, String password, String port) throws Exception {
 		log.info("Destination DB connection started....................");
 		Class.forName("com.mysql.jdbc.Driver");
-		dbConnection = DriverManager.getConnection(
+		targetDBConnection = DriverManager.getConnection(
 				"jdbc:mysql://" + host + ":" + port + "/", user , password);
 		log.info("MYSQL Destination DB connected....................");
 		return "Connection Success";
@@ -285,6 +289,36 @@ public class Base {
 		}
 		return connectionStatus;
 	}
+	
+	/**
+	 * The method used to get current environment ID in target
+	 * @return
+	 * @throws Exception
+	 */
+	@BeforeSuite
+	public String envID() throws Exception {
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_migration_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_migration_windows"));
+		}
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+			String line;
+			while ((line = br.readLine()) != null) {
+				if(line.contains("env_id") && !line.contains("#")) {
+					envId = line.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
+				}
+			}
+		}catch (IOException io) {
+			log.error("Exception occurred during reading file from SFTP server due to " + io.getMessage());
+			io.getMessage();
+		}System.out.println(envId);
+		return envId;
+	}
+	
 	/**
 	 * This method is for fetching web element's text
 	 * @param x
@@ -320,7 +354,7 @@ public class Base {
 	}
 
 	/**
-	 * This method is used for parsing Query to DataBase
+	 * This method is used for parsing Query to source DataBase
 	 * @param query
 	 * @return
 	 * @throws SQLException
@@ -329,7 +363,17 @@ public class Base {
 		mysqlStatement = dbConnection.createStatement();
 		sourceQuery = mysqlStatement.executeQuery(query);
 		return sourceQuery;
-
+	}
+	/**
+	 * This method is used for parsing Query to target DataBase
+	 * @param query
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ResultSet targetQuery(String query) throws SQLException {
+		targetMysqlStatement = targetDBConnection.createStatement();
+		targetQuery = targetMysqlStatement.executeQuery(query);
+		return targetQuery;
 	}
 
 	/**
