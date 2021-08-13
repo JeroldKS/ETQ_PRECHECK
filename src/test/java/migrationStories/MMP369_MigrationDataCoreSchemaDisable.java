@@ -30,11 +30,12 @@ public class MMP369_MigrationDataCoreSchemaDisable extends Base {
 		Assert.assertEquals(connectionStatus, "Connection Success");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP369_query.properties");
 		List<String> indexesInDB = new ArrayList<>();
-		sourceQuery = query(prop.getProperty("list_of_tasks")+"\'"+envId+"\'");
-		while (sourceQuery.next()) {
-			indexesInDB.add(sourceQuery.getObject(1).toString());
+		targetQuery = targetQuery(prop.getProperty("list_of_tasks")+"\'"+envId+"\'");
+		while (targetQuery.next()) {
+			indexesInDB.add(targetQuery.getObject(1).toString());
 		}
 		Assert.assertTrue(!indexesInDB.isEmpty());
+		targetDBConnection.close();
 		log.info("TC 01 Checking whether Engine schema is successfully migrated. Ended.......");
 	}
 	
@@ -52,12 +53,13 @@ public class MMP369_MigrationDataCoreSchemaDisable extends Base {
 		Assert.assertEquals(connectionStatus, "Connection Success");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP369_query.properties");
 		List<String> indexesInDB = new ArrayList<>();
-		sourceQuery = query(prop.getProperty("list_of_tasks")+"\'"+envId+"\'");
-		while (sourceQuery.next()) {
-			indexesInDB.add(sourceQuery.getObject(3).toString());
+		targetQuery = targetQuery(prop.getProperty("list_of_tasks")+"\'"+envId+"\'");
+		while (targetQuery.next()) {
+			indexesInDB.add(targetQuery.getObject(3).toString());
 		}
 		Assert.assertTrue(!indexesInDB.isEmpty());
 		Assert.assertTrue(!indexesInDB.contains("1"));
+		targetDBConnection.close();
 		log.info("TC 02 Verify whether IS_ENABLED column is set to 0 in the task_settings table. Ended.......");
 	}
 }
