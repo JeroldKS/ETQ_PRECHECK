@@ -178,7 +178,6 @@ public class MMP382_MSSQLDatabaseCheck extends Base {
 					+ "." + String.valueOf(sourceQuery.getObject(3)));
 		}
 		if (identifiers.size() != 0) {
-			System.out.println(identifiers.size());
 			for (int i = 0; i < identifiers.size(); i++) {
 				log.error("Identifiers created in MSSQL is grater than 64 = " + identifiers.get(i));
 			}

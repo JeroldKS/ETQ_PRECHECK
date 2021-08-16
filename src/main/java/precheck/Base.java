@@ -45,7 +45,7 @@ public class Base {
 	public static ResultSet targetQuery;
 	public static Properties prop;
 	public static Properties xpathProperties;
-	public static Properties fileProperties = new Properties();;
+	public static Properties fileProperties = new Properties();
 	public static List<String> listOfText;
 	public static Session session;
 	public static ChannelSftp sftpChannel;
@@ -157,7 +157,7 @@ public class Base {
 	 * This method is to close DB connection and chrome browser
 	 * @throws Exception
 	 */
-	@AfterTest
+	//@AfterTest
 	public static void closeconnection() throws Exception {
 		driver.close();
 		log.info("all connection closed....................");
@@ -295,8 +295,8 @@ public class Base {
 	 * @return
 	 * @throws Exception
 	 */
-	@BeforeSuite
-	public String envID() throws Exception {
+	//@BeforeSuite
+	public String getEnvID() throws Exception {
 		establishSshConnectionForSourceInstance();
 		InputStream stream = null;
 		if(osUserInput.equalsIgnoreCase("linux")) {

@@ -21,9 +21,9 @@ public class MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule extend
 		log.info("TC 01 \"DISPLAY_IN_HOMEPAGE\" column is set to ZERO for employee training application validation started.......");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
-		targetQuery = targetQuery(
-				"select DISPLAY_IN_HOMEPAGE, application_name, environment_uuid from engine.application_settings where application_name = 'TRAINING' and environment_uuid ='"
-						+ envId + "';");
+		getEnvID();
+		prop = loadQueryFile("\\src\\test\\resources\\migration\\queries\\MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule.properties");
+		targetQuery = targetQuery(prop.getProperty("displayInHomePageColumn")+ envId + "';");
 		while (targetQuery.next()) {
 			Assert.assertEquals(String.valueOf(targetQuery.getObject(1)), "0");
 		}
@@ -40,17 +40,16 @@ public class MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule extend
 		log.info("TC 02 rest of records in application settings table are not updated validation started.......");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		prop = loadQueryFile("\\src\\test\\resources\\migration\\queries\\MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule.properties");
 		ArrayList<String> targetColumnNameList = new ArrayList<String>();
-		targetQuery = targetQuery(
-				"select * from engine.application_settings where application_name = 'TRAINING' and environment_uuid ='"
-						+ envId + "';");
+		targetQuery = targetQuery(prop.getProperty("targetRecordInApplicationSettings")+ envId + "';");
 		int targetColumnCount = targetQuery.getMetaData().getColumnCount();
 		for (int i = 0; i < targetColumnCount; i++) {
 			targetColumnNameList.add(targetQuery.getMetaData().getColumnName(i + 1));
 		}
 		establishDatabaseconnection();
 		List<String> sourceColumnNameList = new ArrayList<>();
-		sourceQuery = query("select * from engine.application_settings where application_name = 'TRAINING' ");
+		sourceQuery = query(prop.getProperty("sourceRecordInApplicationSettings"));
 		int sourceColumnCount = sourceQuery.getMetaData().getColumnCount();
 		for (int i = 0; i < sourceColumnCount; i++) {
 			sourceColumnNameList.add(sourceQuery.getMetaData().getColumnName(i + 1));

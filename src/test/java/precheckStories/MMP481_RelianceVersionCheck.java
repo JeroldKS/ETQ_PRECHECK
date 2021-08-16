@@ -59,7 +59,7 @@ public class MMP481_RelianceVersionCheck  extends Base{
  		assertEquals(commandOutput, "True");
  		channel.disconnect();
  		sftpChannel.disconnect();
- 		log.info("TC 01 Checking whether the Property.toml file is editable or not started..............");
+ 		log.info("TC 01 Checking whether the Property.toml file is editable or not ended..............");
 	}
 	
 	/**
