@@ -1,0 +1,44 @@
+{
+	"embeddedQueries": [
+		{
+			"schema": "engine",
+			"table": "datasource_settings",
+			"field": "STATEMENT"
+		},
+		{
+			"schema": "engine",
+			"table": "field_settings",
+			"field": "LOOKUP_SQL_QUERY"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_settings",
+			"field": "LOOKUP_QUERY"
+		},
+		{
+			"schema": "engine",
+			"table": "escalation_settings",
+			"field": "SELECTION_SQL"
+		},
+		{
+			"schema": "engine",
+			"table": "form_settings",
+			"field": "LINK_DESCRIPTION_SQL"
+		},
+		{
+			"schema": "engine",
+			"table": "datasource_settings",
+			"field": "DISPLAY_VALUES_QUERY"
+		},
+		{
+			"schema": "engine",
+			"table": "form_settings",
+			"field": "TRAINING_REQUIREMENT_DESC"
+		},
+		{
+			"schema": "rating",
+			"table": "SUB_CRITERIA_VARIABLES",
+			"field": "PERCENTAGE_QUERY"
+		}
+	]
+}

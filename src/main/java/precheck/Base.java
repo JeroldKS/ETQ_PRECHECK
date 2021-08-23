@@ -36,13 +36,16 @@ public class Base {
 	public static Properties loginProperties;
 	public static Connection dbConnection;
 	public static Connection targetDBConnection;
+	public static Connection oobDBConnection;
 	public static WebDriver driver;
 	public static String text;
 	public static List<WebElement> listOfWebElement;
 	public static Statement mysqlStatement;
 	public static Statement targetMysqlStatement;
+	public static Statement oobMysqlStatement;
 	public static ResultSet sourceQuery;
 	public static ResultSet targetQuery;
+	public static ResultSet oobQuery;
 	public static Properties prop;
 	public static Properties xpathProperties;
 	public static Properties fileProperties = new Properties();
@@ -153,6 +156,24 @@ public class Base {
 		}
 	}
 
+	/**
+	 * The method used to connect OOB DataBase
+	 * @throws Exception
+	 */
+	public static void establishOOBDatabaseconnection() throws Exception {
+		log.info("db connection started....................");
+		loginProperties = new Properties();
+		try (FileInputStream credentialsFile = new FileInputStream(
+				System.getProperty("user.dir") + "//src//main//resources//properties//credentials.properties")) {
+			loginProperties.load(credentialsFile);
+		}
+		
+		Class.forName("com.mysql.jdbc.Driver");
+		oobDBConnection = DriverManager.getConnection(
+				"jdbc:mysql://" + loginProperties.getProperty("hostForOOBDB") + ":" + loginProperties.getProperty("portForOOBDB") + "/",
+				loginProperties.getProperty("userNameForOOBDB"), loginProperties.getProperty("passwordForOOBDB"));
+		log.info("OOB DB connected....................");
+	}
 	/**
 	 * This method is to close DB connection and chrome browser
 	 * @throws Exception
@@ -374,6 +395,18 @@ public class Base {
 		targetMysqlStatement = targetDBConnection.createStatement();
 		targetQuery = targetMysqlStatement.executeQuery(query);
 		return targetQuery;
+	}
+	
+	/**
+	 * This method is used for parsing Query to OOB DataBase
+	 * @param query
+	 * @return
+	 * @throws SQLException
+	 */
+	public static ResultSet oobQuery(String query) throws SQLException {
+		oobMysqlStatement = oobDBConnection.createStatement();
+		oobQuery = oobMysqlStatement.executeQuery(query);
+		return oobQuery;
 	}
 
 	/**

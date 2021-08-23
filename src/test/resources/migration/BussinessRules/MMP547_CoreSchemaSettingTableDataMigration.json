@@ -1,0 +1,124 @@
+{
+	"settings": [
+		{
+			"schema": "engine",
+			"table": "action_settings",
+			"field": "action_name"
+		},
+		{
+			"schema": "engine",
+			"table": "application_settings",
+			"field": "application_name"
+		},
+		{
+			"schema": "engine",
+			"table": "column_settings",
+			"field": "column_name"
+		},
+		{
+			"schema": "engine",
+			"table": "db_view_settings",
+			"field": "DB_VIEW_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "escalation_settings",
+			"field": "ESCALATION_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "inheritance_settings",
+			"field": "INHERITANCE_SETTING_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_settings",
+			"field": "PHASE_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "prompt_settings",
+			"field": "PROMPT_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "section_settings",
+			"field": "SECTION_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "tab_settings",
+			"field": "TAB_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "task_settings",
+			"field": "TASK_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "user_settings",
+			"field": "USER_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "view_settings",
+			"field": "VIEW_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "wf_settings",
+			"field": "WORKFLOW_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "datasource_settings",
+			"field": "DATASOURCE_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "field_settings",
+			"field": "FIELD_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "webresource_settings",
+			"field": "IGNORE TABLE"
+		},
+		{
+			"schema": "engine",
+			"table": "form_settings",
+			"field": "FORM_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_settings",
+			"field": "SUBFORM_NAME"
+		},
+		{
+			"schema": "datacenter",
+			"table": "mail_profile",
+			"field": "MAIL_NAME"
+		},
+		{
+			"schema": "datacenter",
+			"table": "mail_profile",
+			"field": "MAIL_NAME"
+		},
+		{
+			"schema": "datacenter",
+			"table": "mail_profile",
+			"field": "MAIL_NAME"
+		},
+		{
+			"schema": "datacenter",
+			"table": "mail_profile",
+			"field": "MAIL_NAME"
+		},
+		{
+			"schema": "datacenter",
+			"table": "mail_profile",
+			"field": "MAIL_NAME"
+		}
+	]
+}
