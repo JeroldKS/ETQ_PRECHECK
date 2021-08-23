@@ -59,19 +59,19 @@
 		{
 			"schema": "engine",
 			"table": "applications_datasource",
-			"field": "application_id",
+			"field": "PERANT_APPLICATION_ID",
 			"query": "select application_id from engine.application_settings where APPLICATION_NAME IN ('ENGINE', 'DATACENTER', 'LOOKUPS')"
 		},
 		{
 			"schema": "engine",
 			"table": "dual_link_field",
-			"field": "FORM_ID",
+			"field": "FIELD_ID",
 			"query": "SELECT FORM_ID AS ids FROM ENGINE.FORM_SETTINGS WHERE FORM_NAME IN ( 'ENGINE_ACTION_SETTINGS', 'ENGINE_APPLICATION_SETTINGS', 'ENGINE_COLUMN_SETTINGS', 'ENGINE_DATASOURCE_SETTINGS', 'ENGINE_FORM_SETTINGS', 'ENGINE_PHASE_SETTINGS', 'ENGINE_SUBFORM_SETTINGS', 'ENGINE_VIEW_SETTINGS', 'ENGINE_WORKFLOW_SETTINGS', 'ENGINE_FIELD_SETTINGS', 'ENGINE_SECTION_SETTINGS', 'ENGINE_ESCALATION_SETTINGS', 'ENGINE_WEBRESOURCE_SETTINGS', 'ENGINE_DATABASE_VIEW_SETTINGS', 'ENGINE_INHERITANCE_SETTINGS', 'ENGINE_TAB_SETTINGS', 'ENGINE_PROMPT_SETTINGS', 'ENGINE_USER_SETTINGS', 'ENGINE_TASK_SETTINGS', 'DATACENTER_LOCATION_PROFILE', 'DATACENTER_PORTAL_PROFILE', 'DATACENTER_MASTER_KEYWORD_LIST', 'DATACENTER_LOCATION_KEYWORD_LIST', 'DATACENTER_CONNECTION_PROFILE', 'DATACENTER_MASTER_NAMES_LIST', 'DATACENTER_LOCATION_NAMES_LIST', 'DECISION_TREE_PROFILE', 'DATACENTER_SAVED_QUERY', 'DATACENTER_SUBFORM_MAPPING', 'DATACENTER_TIME_ZONE_SETTINGS', 'DATACENTER_EXTERNAL_DATABASE_LINK', 'DATACENTER_MAIL_PROFILE', 'DATACENTER_MASTER_TEMPLATE', 'DATACENTER_LOCATION_TEMPLATE', 'SHAREPOINT_PROFILE', 'DATACENTER_SHAREPOINT_MAPPING_PROFILE', 'DATACENTER_SAP_HR_CONNECTION_PROFILE', 'DATACENTER_ROOM_PROFILE', 'ETQ_DATACENTER_LOCALE_SETTINGS', 'ETQ_DATACENTER_LOCALIZATION_PROFILE', 'ETQ_DATACENTER_SCRIPT_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_SOAP_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_RESTFUL_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_ACCESS_PROFILE', 'ETQ_DATACENTER_FACILITY_PROFILE', 'ETQ_DATACENTER_LOCATION_FILE_SERVER_PROFILE', 'ETQ_DATACENTER_MONTHLY_ACTIVE_USERS_PROFILE', 'ETQ$MAIL_ACTIVITY', 'ETQ_DATACENTER_DOCUMENT_DELETION_HISTORY' );"
 		},
 		{
 			"schema": "engine",
 			"table": "field_paste_forms",
-			"field": "FORM_ID",
+			"field": "FIELD_ID",
 			"query": "SELECT FORM_ID AS ids FROM ENGINE.FORM_SETTINGS WHERE FORM_NAME IN ( 'ENGINE_ACTION_SETTINGS', 'ENGINE_APPLICATION_SETTINGS', 'ENGINE_COLUMN_SETTINGS', 'ENGINE_DATASOURCE_SETTINGS', 'ENGINE_FORM_SETTINGS', 'ENGINE_PHASE_SETTINGS', 'ENGINE_SUBFORM_SETTINGS', 'ENGINE_VIEW_SETTINGS', 'ENGINE_WORKFLOW_SETTINGS', 'ENGINE_FIELD_SETTINGS', 'ENGINE_SECTION_SETTINGS', 'ENGINE_ESCALATION_SETTINGS', 'ENGINE_WEBRESOURCE_SETTINGS', 'ENGINE_DATABASE_VIEW_SETTINGS', 'ENGINE_INHERITANCE_SETTINGS', 'ENGINE_TAB_SETTINGS', 'ENGINE_PROMPT_SETTINGS', 'ENGINE_USER_SETTINGS', 'ENGINE_TASK_SETTINGS', 'DATACENTER_LOCATION_PROFILE', 'DATACENTER_PORTAL_PROFILE', 'DATACENTER_MASTER_KEYWORD_LIST', 'DATACENTER_LOCATION_KEYWORD_LIST', 'DATACENTER_CONNECTION_PROFILE', 'DATACENTER_MASTER_NAMES_LIST', 'DATACENTER_LOCATION_NAMES_LIST', 'DECISION_TREE_PROFILE', 'DATACENTER_SAVED_QUERY', 'DATACENTER_SUBFORM_MAPPING', 'DATACENTER_TIME_ZONE_SETTINGS', 'DATACENTER_EXTERNAL_DATABASE_LINK', 'DATACENTER_MAIL_PROFILE', 'DATACENTER_MASTER_TEMPLATE', 'DATACENTER_LOCATION_TEMPLATE', 'SHAREPOINT_PROFILE', 'DATACENTER_SHAREPOINT_MAPPING_PROFILE', 'DATACENTER_SAP_HR_CONNECTION_PROFILE', 'DATACENTER_ROOM_PROFILE', 'ETQ_DATACENTER_LOCALE_SETTINGS', 'ETQ_DATACENTER_LOCALIZATION_PROFILE', 'ETQ_DATACENTER_SCRIPT_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_SOAP_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_RESTFUL_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_ACCESS_PROFILE', 'ETQ_DATACENTER_FACILITY_PROFILE', 'ETQ_DATACENTER_LOCATION_FILE_SERVER_PROFILE', 'ETQ_DATACENTER_MONTHLY_ACTIVE_USERS_PROFILE', 'ETQ$MAIL_ACTIVITY', 'ETQ_DATACENTER_DOCUMENT_DELETION_HISTORY' );"
 		},
 		{
@@ -127,6 +127,883 @@
 			"table": "form_top_bar_actions",
 			"field": "FORM_ID",
 			"query": "SELECT FORM_ID AS ids FROM ENGINE.FORM_SETTINGS WHERE FORM_NAME IN ( 'ENGINE_ACTION_SETTINGS', 'ENGINE_APPLICATION_SETTINGS', 'ENGINE_COLUMN_SETTINGS', 'ENGINE_DATASOURCE_SETTINGS', 'ENGINE_FORM_SETTINGS', 'ENGINE_PHASE_SETTINGS', 'ENGINE_SUBFORM_SETTINGS', 'ENGINE_VIEW_SETTINGS', 'ENGINE_WORKFLOW_SETTINGS', 'ENGINE_FIELD_SETTINGS', 'ENGINE_SECTION_SETTINGS', 'ENGINE_ESCALATION_SETTINGS', 'ENGINE_WEBRESOURCE_SETTINGS', 'ENGINE_DATABASE_VIEW_SETTINGS', 'ENGINE_INHERITANCE_SETTINGS', 'ENGINE_TAB_SETTINGS', 'ENGINE_PROMPT_SETTINGS', 'ENGINE_USER_SETTINGS', 'ENGINE_TASK_SETTINGS', 'DATACENTER_LOCATION_PROFILE', 'DATACENTER_PORTAL_PROFILE', 'DATACENTER_MASTER_KEYWORD_LIST', 'DATACENTER_LOCATION_KEYWORD_LIST', 'DATACENTER_CONNECTION_PROFILE', 'DATACENTER_MASTER_NAMES_LIST', 'DATACENTER_LOCATION_NAMES_LIST', 'DECISION_TREE_PROFILE', 'DATACENTER_SAVED_QUERY', 'DATACENTER_SUBFORM_MAPPING', 'DATACENTER_TIME_ZONE_SETTINGS', 'DATACENTER_EXTERNAL_DATABASE_LINK', 'DATACENTER_MAIL_PROFILE', 'DATACENTER_MASTER_TEMPLATE', 'DATACENTER_LOCATION_TEMPLATE', 'SHAREPOINT_PROFILE', 'DATACENTER_SHAREPOINT_MAPPING_PROFILE', 'DATACENTER_SAP_HR_CONNECTION_PROFILE', 'DATACENTER_ROOM_PROFILE', 'ETQ_DATACENTER_LOCALE_SETTINGS', 'ETQ_DATACENTER_LOCALIZATION_PROFILE', 'ETQ_DATACENTER_SCRIPT_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_SOAP_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_RESTFUL_PROFILE', 'ETQ_DATACENTER_WEBSERVICE_ACCESS_PROFILE', 'ETQ_DATACENTER_FACILITY_PROFILE', 'ETQ_DATACENTER_LOCATION_FILE_SERVER_PROFILE', 'ETQ_DATACENTER_MONTHLY_ACTIVE_USERS_PROFILE', 'ETQ$MAIL_ACTIVITY', 'ETQ_DATACENTER_DOCUMENT_DELETION_HISTORY' );"
+		}
+	],
+	"skip": [
+		{
+			"schema": "engine",
+			"table": "action_types"
+		},
+		{
+			"schema": "engine",
+			"table": "additional_sysfields"
+		},
+		{
+			"schema": "engine",
+			"table": "after_submission_page"
+		},
+		{
+			"schema": "engine",
+			"table": "app_search_modes"
+		},
+		{
+			"schema": "engine",
+			"table": "assign_users_group"
+		},
+		{
+			"schema": "engine",
+			"table": "assignment_filter"
+		},
+		{
+			"schema": "engine",
+			"table": "assignment_format"
+		},
+		{
+			"schema": "engine",
+			"table": "authentication_options"
+		},
+		{
+			"schema": "engine",
+			"table": "based_on"
+		},
+		{
+			"schema": "engine",
+			"table": "based_on_type"
+		},
+		{
+			"schema": "engine",
+			"table": "boolean_values"
+		},
+		{
+			"schema": "engine",
+			"table": "chart_filters"
+		},
+		{
+			"schema": "engine",
+			"table": "charts_display_format"
+		},
+		{
+			"schema": "engine",
+			"table": "column_search_types"
+		},
+		{
+			"schema": "engine",
+			"table": "compare_options"
+		},
+		{
+			"schema": "engine",
+			"table": "compare_types"
+		},
+		{
+			"schema": "engine",
+			"table": "comparison_operator"
+		},
+		{
+			"schema": "engine",
+			"table": "connection_types"
+		},
+		{
+			"schema": "engine",
+			"table": "correction_type"
+		},
+		{
+			"schema": "engine",
+			"table": "create_phase"
+		},
+		{
+			"schema": "engine",
+			"table": "currency_symbols"
+		},
+		{
+			"schema": "engine",
+			"table": "database_vendors"
+		},
+		{
+			"schema": "engine",
+			"table": "datetime_portions"
+		},
+		{
+			"schema": "engine",
+			"table": "datetime_styles"
+		},
+		{
+			"schema": "engine",
+			"table": "days_of_week"
+		},
+		{
+			"schema": "engine",
+			"table": "decision_tree_answers"
+		},
+		{
+			"schema": "engine",
+			"table": "decision_tree_chooses"
+		},
+		{
+			"schema": "engine",
+			"table": "decision_values"
+		},
+		{
+			"schema": "engine",
+			"table": "default_app_access"
+		},
+		{
+			"schema": "engine",
+			"table": "default_condition"
+		},
+		{
+			"schema": "engine",
+			"table": "default_unit"
+		},
+		{
+			"schema": "engine",
+			"table": "defualt_fromula_type"
+		},
+		{
+			"schema": "engine",
+			"table": "dialog_parent_types"
+		},
+		{
+			"schema": "engine",
+			"table": "document_formula_type"
+		},
+		{
+			"schema": "engine",
+			"table": "document_state"
+		},
+		{
+			"schema": "engine",
+			"table": "dtf_format_option"
+		},
+		{
+			"schema": "engine",
+			"table": "dtf_local_option"
+		},
+		{
+			"schema": "engine",
+			"table": "entering_phase_type"
+		},
+		{
+			"schema": "engine",
+			"table": "escalation_actions"
+		},
+		{
+			"schema": "engine",
+			"table": "esignature_icons"
+		},
+		{
+			"schema": "engine",
+			"table": "esignature_type"
+		},
+		{
+			"schema": "engine",
+			"table": "etq_condition_1"
+		},
+		{
+			"schema": "engine",
+			"table": "etq_link_doc_states"
+		},
+		{
+			"schema": "engine",
+			"table": "etq_window_title_type"
+		},
+		{
+			"schema": "engine",
+			"table": "execute_using"
+		},
+		{
+			"schema": "engine",
+			"table": "field_delimiter"
+		},
+		{
+			"schema": "engine",
+			"table": "field_dialog_type"
+		},
+		{
+			"schema": "engine",
+			"table": "field_display_types"
+		},
+		{
+			"schema": "engine",
+			"table": "field_link_mode"
+		},
+		{
+			"schema": "engine",
+			"table": "field_link_types"
+		},
+		{
+			"schema": "engine",
+			"table": "field_names_type"
+		},
+		{
+			"schema": "engine",
+			"table": "field_required_types"
+		},
+		{
+			"schema": "engine",
+			"table": "field_types"
+		},
+		{
+			"schema": "engine",
+			"table": "file_after_processing"
+		},
+		{
+			"schema": "engine",
+			"table": "find_match"
+		},
+		{
+			"schema": "engine",
+			"table": "form_history_types"
+		},
+		{
+			"schema": "engine",
+			"table": "form_subject_type"
+		},
+		{
+			"schema": "engine",
+			"table": "frequency_unit"
+		},
+		{
+			"schema": "engine",
+			"table": "global_search_modes"
+		},
+		{
+			"schema": "engine",
+			"table": "group_routing_type"
+		},
+		{
+			"schema": "engine",
+			"table": "handle_records_subf"
+		},
+		{
+			"schema": "engine",
+			"table": "handling"
+		},
+		{
+			"schema": "engine",
+			"table": "hot_comment_icons"
+		},
+		{
+			"schema": "engine",
+			"table": "hot_keys"
+		},
+		{
+			"schema": "engine",
+			"table": "import_formula_type"
+		},
+		{
+			"schema": "engine",
+			"table": "include_exclude_field"
+		},
+		{
+			"schema": "engine",
+			"table": "jdbc_source_database"
+		},
+		{
+			"schema": "engine",
+			"table": "localization_options"
+		},
+		{
+			"schema": "engine",
+			"table": "location_profile_srv"
+		},
+		{
+			"schema": "engine",
+			"table": "location_security"
+		},
+		{
+			"schema": "engine",
+			"table": "logical_operator"
+		},
+		{
+			"schema": "engine",
+			"table": "lookup_options"
+		},
+		{
+			"schema": "engine",
+			"table": "mail_profile_type"
+		},
+		{
+			"schema": "engine",
+			"table": "mail_profile_types"
+		},
+		{
+			"schema": "engine",
+			"table": "mapping_type"
+		},
+		{
+			"schema": "engine",
+			"table": "method"
+		},
+		{
+			"schema": "engine",
+			"table": "mt_types"
+		},
+		{
+			"schema": "engine",
+			"table": "number_charts_row"
+		},
+		{
+			"schema": "engine",
+			"table": "number_defulat_type"
+		},
+		{
+			"schema": "engine",
+			"table": "number_formats"
+		},
+		{
+			"schema": "engine",
+			"table": "numbering_formats"
+		},
+		{
+			"schema": "engine",
+			"table": "numbering_type"
+		},
+		{
+			"schema": "engine",
+			"table": "offline_distribution_types"
+		},
+		{
+			"schema": "engine",
+			"table": "oi_sync_options"
+		},
+		{
+			"schema": "engine",
+			"table": "onopen_goto"
+		},
+		{
+			"schema": "engine",
+			"table": "person_profile_srv"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_assignment_types"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_condition"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_directions"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_due_date_type"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_forward_type"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_routing_type"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_routing_types"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_tracker_options"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_types"
+		},
+		{
+			"schema": "engine",
+			"table": "portal_content"
+		},
+		{
+			"schema": "engine",
+			"table": "processed_records"
+		},
+		{
+			"schema": "engine",
+			"table": "promotion_options"
+		},
+		{
+			"schema": "engine",
+			"table": "reader_access"
+		},
+		{
+			"schema": "engine",
+			"table": "recs_to_delete"
+		},
+		{
+			"schema": "engine",
+			"table": "rel_field_etqscript"
+		},
+		{
+			"schema": "engine",
+			"table": "search_scopes"
+		},
+		{
+			"schema": "engine",
+			"table": "search_types"
+		},
+		{
+			"schema": "engine",
+			"table": "select_names_options"
+		},
+		{
+			"schema": "engine",
+			"table": "set_phase_criteria"
+		},
+		{
+			"schema": "engine",
+			"table": "short_list_options"
+		},
+		{
+			"schema": "engine",
+			"table": "source_field_formula"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_lookup_refresh_options"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_types"
+		},
+		{
+			"schema": "engine",
+			"table": "tagging_option_type"
+		},
+		{
+			"schema": "engine",
+			"table": "task_timer_frequencies"
+		},
+		{
+			"schema": "engine",
+			"table": "task_week_days"
+		},
+		{
+			"schema": "engine",
+			"table": "timezone_options"
+		},
+		{
+			"schema": "engine",
+			"table": "url_description_type"
+		},
+		{
+			"schema": "engine",
+			"table": "users_from_field_options"
+		},
+		{
+			"schema": "engine",
+			"table": "view_add_filters_lookup"
+		},
+		{
+			"schema": "engine",
+			"table": "view_filters"
+		},
+		{
+			"schema": "engine",
+			"table": "view_order_types"
+		},
+		{
+			"schema": "engine",
+			"table": "view_search_modes"
+		},
+		{
+			"schema": "engine",
+			"table": "voting_options"
+		},
+		{
+			"schema": "engine",
+			"table": "wf_offline_list"
+		},
+		{
+			"schema": "engine",
+			"table": "wf_revision_formats"
+		},
+		{
+			"schema": "engine",
+			"table": "xml_direction"
+		},
+		{
+			"schema": "datacenter",
+			"table": "contact_method"
+		},
+		{
+			"schema": "datacenter",
+			"table": "contact_type"
+		},
+		{
+			"schema": "datacenter",
+			"table": "handle_process_attach"
+		},
+		{
+			"schema": "datacenter",
+			"table": "keyword_sources"
+		},
+		{
+			"schema": "datacenter",
+			"table": "locales"
+		},
+		{
+			"schema": "datacenter",
+			"table": "media_type"
+		},
+		{
+			"schema": "datacenter",
+			"table": "operation_method"
+		},
+		{
+			"schema": "datacenter",
+			"table": "operation_parameters"
+		},
+		{
+			"schema": "datacenter",
+			"table": "parameter_style"
+		},
+		{
+			"schema": "datacenter",
+			"table": "time_zones"
+		},
+		{
+			"schema": "datacenter",
+			"table": "ws_deployment_status"
+		}
+	],
+	"migrateAllMT3": [
+		{
+			"schema": "engine",
+			"table": "form_db_view_settings"
+		},
+		{
+			"schema": "engine",
+			"table": "inheritance_settings_ids"
+		},
+		{
+			"schema": "engine",
+			"table": "inheritance_settings_section"
+		},
+		{
+			"schema": "engine",
+			"table": "view_setting_phase_types"
+		},
+		{
+			"schema": "engine",
+			"table": "action_phase"
+		},
+		{
+			"schema": "engine",
+			"table": "activities_for_completion"
+		},
+		{
+			"schema": "engine",
+			"table": "activities_for_creation"
+		},
+		{
+			"schema": "engine",
+			"table": "additional_system_fields"
+		},
+		{
+			"schema": "engine",
+			"table": "app_view_export_actions"
+		},
+		{
+			"schema": "engine",
+			"table": "app_view_records_actions"
+		},
+		{
+			"schema": "engine",
+			"table": "application_actions"
+		},
+		{
+			"schema": "engine",
+			"table": "application_authors"
+		},
+		{
+			"schema": "engine",
+			"table": "application_designers"
+		},
+		{
+			"schema": "engine",
+			"table": "application_gdelete_users"
+		},
+		{
+			"schema": "engine",
+			"table": "application_managers"
+		},
+		{
+			"schema": "engine",
+			"table": "application_readers"
+		},
+		{
+			"schema": "engine",
+			"table": "assigned_fields"
+		},
+		{
+			"schema": "engine",
+			"table": "assigned_to_field_1"
+		},
+		{
+			"schema": "engine",
+			"table": "assigned_to_field_2"
+		},
+		{
+			"schema": "engine",
+			"table": "assigned_to_field_3"
+		},
+		{
+			"schema": "engine",
+			"table": "assignment_subject"
+		},
+		{
+			"schema": "engine",
+			"table": "attachment_fields1"
+		},
+		{
+			"schema": "engine",
+			"table": "attachment_fields2"
+		},
+		{
+			"schema": "engine",
+			"table": "complex_shortcut"
+		},
+		{
+			"schema": "engine",
+			"table": "complex_values"
+		},
+		{
+			"schema": "engine",
+			"table": "copy_to_field_1"
+		},
+		{
+			"schema": "engine",
+			"table": "copy_to_field_2"
+		},
+		{
+			"schema": "engine",
+			"table": "copy_to_field_3"
+		},
+		{
+			"schema": "engine",
+			"table": "customize_sys_subform_sections"
+		},
+		{
+			"schema": "engine",
+			"table": "customize_sys_subforms_fields"
+		},
+		{
+			"schema": "engine",
+			"table": "customize_system_fields"
+		},
+		{
+			"schema": "engine",
+			"table": "customize_system_sections"
+		},
+		{
+			"schema": "engine",
+			"table": "field_validation"
+		},
+		{
+			"schema": "engine",
+			"table": "form_available_activities"
+		},
+		{
+			"schema": "engine",
+			"table": "form_chairs"
+		},
+		{
+			"schema": "engine",
+			"table": "form_default_editors"
+		},
+		{
+			"schema": "engine",
+			"table": "forwar_phase_subfrom"
+		},
+		{
+			"schema": "engine",
+			"table": "group_members"
+		},
+		{
+			"schema": "engine",
+			"table": "inbound_insert_field_value"
+		},
+		{
+			"schema": "engine",
+			"table": "link_description_expression"
+		},
+		{
+			"schema": "engine",
+			"table": "lookup_fields_mapping"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_active_action"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_activity_workflows"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_assigned_users"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_complex_shortcut"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_edit_sections"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_manual_archive_users"
+		},
+		{
+			"schema": "engine",
+			"table": "phase_read_sections"
+		},
+		{
+			"schema": "engine",
+			"table": "phases_backward"
+		},
+		{
+			"schema": "engine",
+			"table": "phases_forward"
+		},
+		{
+			"schema": "engine",
+			"table": "required_attendees"
+		},
+		{
+			"schema": "engine",
+			"table": "restore_users"
+		},
+		{
+			"schema": "engine",
+			"table": "searchable_fields"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_actions"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_activities"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_fields"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_header_actions"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_sections"
+		},
+		{
+			"schema": "engine",
+			"table": "user_passwords"
+		},
+		{
+			"schema": "engine",
+			"table": "view_additional_filters"
+		},
+		{
+			"schema": "engine",
+			"table": "view_attachments_fields"
+		},
+		{
+			"schema": "engine",
+			"table": "wf_phase_info"
+		},
+		{
+			"schema": "engine",
+			"table": "window_title_expression"
+		},
+		{
+			"schema": "datacenter",
+			"table": "applicability_catgry"
+		},
+		{
+			"schema": "datacenter",
+			"table": "applications_mkls"
+		},
+		{
+			"schema": "datacenter",
+			"table": "authentication_properties"
+		},
+		{
+			"schema": "datacenter",
+			"table": "mail_profile_to_select_fields"
+		},
+		{
+			"schema": "datacenter",
+			"table": "master_attached_templates"
+		},
+		{
+			"schema": "datacenter",
+			"table": "master_template_generals"
+		},
+		{
+			"schema": "datacenter",
+			"table": "master_template_templates"
+		},
+		{
+			"schema": "datacenter",
+			"table": "master_templates_fields"
+		},
+		{
+			"schema": "datacenter",
+			"table": "monthly_active_users"
+		},
+		{
+			"schema": "datacenter",
+			"table": "my_assignments_in_those_apps"
+		},
+		{
+			"schema": "datacenter",
+			"table": "other_attachment"
+		},
+		{
+			"schema": "datacenter",
+			"table": "portal_contents"
+		},
+		{
+			"schema": "datacenter",
+			"table": "question_builder"
+		},
+		{
+			"schema": "datacenter",
+			"table": "script_profile"
+		},
+		{
+			"schema": "datacenter",
+			"table": "sic_codes"
+		},
+		{
+			"schema": "datacenter",
+			"table": "ws_restful_operations"
+		}
+	],
+	"migrateIdsIncludeMT3": [
+		{
+			"schema": "engine",
+			"table": "view_location_filters",
+			"field": "VIEW_ID",
+			"query": "SELECT DISTINCT VIEW_SETTINGS.VIEW_ID as ids FROM ENGINE.VIEW_SETTINGS AS VIEW_SETTINGS LEFT JOIN ENGINE.APPLICATION_SETTINGS APPLICATION_SETTINGS ON (VIEW_SETTINGS.APPLICATION_ID = APPLICATION_SETTINGS.APPLICATION_ID) WHERE APPLICATION_SETTINGS.APPLICATION_NAME not in ('DATACENTER','ENGINE')"
+		},
+		{
+			"schema": "engine",
+			"table": "view_users",
+			"field": "VIEW_ID",
+			"query": "SELECT DISTINCT VIEW_SETTINGS.VIEW_ID as ids FROM ENGINE.VIEW_SETTINGS AS VIEW_SETTINGS LEFT JOIN ENGINE.APPLICATION_SETTINGS APPLICATION_SETTINGS ON (VIEW_SETTINGS.APPLICATION_ID = APPLICATION_SETTINGS.APPLICATION_ID) WHERE APPLICATION_SETTINGS.APPLICATION_NAME not in ('DATACENTER','ENGINE')"
+		}
+	],
+	"migrateBasedOnMTType": [
+		{
+			"schema": "datacenter",
+			"table": "decision_tree_prof",
+			"field": "DECISION_TREE_NAME"
 		}
 	]
 }
