@@ -35,7 +35,7 @@ public class MMP548_CoreSchemaJoinTableDataMigration extends Base {
 		establishDatabaseconnection();
 		establishTargetDatabaseconnection();
 		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
-				+ "\\src\\test\\resources\\migration\\BussinessRules\\MMP548_CoreSchemaJoinTableDataMigration.json");
+				+ "//src//test//resources//migration//BussinessRules//MMP548_CoreSchemaJoinTableDataMigration.json");
 		JSONParser jsonParser = new JSONParser();
 		Object parse = jsonParser.parse(jsonfile);
 		JSONObject jsonObject = (JSONObject) parse;
@@ -70,7 +70,7 @@ public class MMP548_CoreSchemaJoinTableDataMigration extends Base {
 		establishDatabaseconnection();
 		establishTargetDatabaseconnection();
 		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
-				+ "\\src\\test\\resources\\migration\\BussinessRules\\MMP548_CoreSchemaJoinTableDataMigration.json");
+				+"//src//test//resources//migration//BussinessRules//MMP548_CoreSchemaJoinTableDataMigration.json");
 		JSONParser jsonParser = new JSONParser();
 		Object parse = jsonParser.parse(jsonfile);
 		JSONObject jsonObject = (JSONObject) parse;
@@ -137,7 +137,7 @@ public class MMP548_CoreSchemaJoinTableDataMigration extends Base {
 		establishDatabaseconnection();
 		establishTargetDatabaseconnection();
 		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
-				+ "\\src\\test\\resources\\migration\\BussinessRules\\MMP548_CoreSchemaJoinTableDataMigration.json");
+				+ "//src//test//resources//migration//BussinessRules//MMP548_CoreSchemaJoinTableDataMigration.json");
 		JSONParser jsonParser = new JSONParser();
 		Object parse = jsonParser.parse(jsonfile);
 		JSONObject jsonObject = (JSONObject) parse;
@@ -238,7 +238,7 @@ public class MMP548_CoreSchemaJoinTableDataMigration extends Base {
 		establishDatabaseconnection();
 		establishTargetDatabaseconnection();
 		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
-				+ "\\src\\test\\resources\\migration\\BussinessRules\\MMP548_CoreSchemaJoinTableDataMigration.json");
+				+ "//src//test//resources//migration//BussinessRules//MMP548_CoreSchemaJoinTableDataMigration.json");
 		JSONParser jsonParser = new JSONParser();
 		Object parse = jsonParser.parse(jsonfile);
 		JSONObject jsonObject = (JSONObject) parse;
@@ -333,7 +333,7 @@ public class MMP548_CoreSchemaJoinTableDataMigration extends Base {
 		establishDatabaseconnection();
 		establishTargetDatabaseconnection();
 		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
-				+ "\\src\\test\\resources\\migration\\BussinessRules\\MMP548_CoreSchemaJoinTableDataMigration.json");
+				+ "//src//test//resources//migration//BussinessRules//MMP548_CoreSchemaJoinTableDataMigration.json");
 		JSONParser jsonParser = new JSONParser();
 		Object parse = jsonParser.parse(jsonfile);
 		JSONObject jsonObject = (JSONObject) parse;

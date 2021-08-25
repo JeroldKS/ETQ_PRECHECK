@@ -83,33 +83,56 @@ public class MMP560_EmbeddedQueries extends Base {
 			List<String> embeddedQueryListMTType0 = new ArrayList<String>();
 			List<String> embeddedQueryListWithEnvId = new ArrayList<String>();
 			
-			sourceQuery = query("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			List<String> pkNameListInSource = new ArrayList<String>();
+			List<String> pkNameListInOOB = new ArrayList<String>();
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
 			while(sourceQuery.next()) {
-				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(1)));
+				pkNameListInSource.add(String.valueOf(sourceQuery.getObject(1)));
 			}
 			
-			oobQuery = query("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
 			while(oobQuery.next()) {
-				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(1)));
+				pkNameListInOOB.add(String.valueOf(sourceQuery.getObject(1)));
+			}
+			
+			pkNameListInSource.retainAll(pkNameListInOOB);
+			String pkNameListString = null;
+			for(String pkName : pkNameListInSource) {
+				pkNameListString += pkName +",";
+			}
+			pkNameListString = pkNameListString.substring(0, pkNameListString.length() - 1);
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(sourceQuery.next()) {
+				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(2)));
+			}
+			
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(oobQuery.next()) {
+				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(2)));
 			}
 			
 			embeddedQueryListInSource.retainAll(embeddedQueryListInOOB);
 			
-			targetQuery = targetQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 0");
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 0"
+					+ "AND "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
 			while (targetQuery.next()) {
-				embeddedQueryListMTType0.add(String.valueOf(targetQuery.getObject(1)));
+				embeddedQueryListMTType0.add(String.valueOf(targetQuery.getObject(2)));
 			}
 			
 			embeddedQueryListMTType0.retainAll(embeddedQueryListInSource);
 			
 			String tarappendEnvId = envId+"'";
-			targetQuery = targetQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE ENVIRONMENT_UUID = '"+tarappendEnvId);
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE ENVIRONMENT_UUID = '"+tarappendEnvId);
 			while (targetQuery.next()) {
-				embeddedQueryListWithEnvId.add(String.valueOf(targetQuery.getObject(1)));
+				embeddedQueryListWithEnvId.add(String.valueOf(targetQuery.getObject(2)));
 			}
 			embeddedQueryListWithEnvId.retainAll(embeddedQueryListMTType0);
 			
-			Assert.assertEquals(embeddedQueryListMTType0.size(), 0, "This following table values are migrated against Bussiness Rules. "
+			Assert.assertEquals(embeddedQueryListWithEnvId.size(), 0, "This following table values are migrated against Bussiness Rules. "
 					+ "For the schema:: "+embeddedKeys.get("schema") +"and table:: "+embeddedKeys.get("table") + "For MT Type 0");
 		}
 		targetDBConnection.close();
@@ -147,29 +170,53 @@ public class MMP560_EmbeddedQueries extends Base {
 			List<String> embeddedQueryListTargetWithMTType1 = new ArrayList<String>();
 			List<String> embeddedQueryListTargetWithMTType2 = new ArrayList<String>();
 			
-			sourceQuery = query("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			List<String> pkNameListInSource = new ArrayList<String>();
+			List<String> pkNameListInOOB = new ArrayList<String>();
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
 			while(sourceQuery.next()) {
-				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(1)));
+				pkNameListInSource.add(String.valueOf(sourceQuery.getObject(1)));
 			}
 			
-			oobQuery = query("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
 			while(oobQuery.next()) {
-				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(1)));
+				pkNameListInOOB.add(String.valueOf(sourceQuery.getObject(1)));
+			}
+			
+			pkNameListInSource.retainAll(pkNameListInOOB);
+			String pkNameListString = null;
+			for(String pkName : pkNameListInSource) {
+				pkNameListString += pkName +",";
+			}
+			pkNameListString = pkNameListString.substring(0, pkNameListString.length() - 1);
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(sourceQuery.next()) {
+				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(2)));
+			}
+			
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(oobQuery.next()) {
+				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(2)));
 			}
 			
 			embeddedQueryListInSource.retainAll(embeddedQueryListInOOB);
 			
-			targetQuery = targetQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 1");
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 1"
+					+ "AND "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
 			while (targetQuery.next()) {
-				embeddedQueryListTargetWithMTType1.add(String.valueOf(targetQuery.getObject(1)));
+				embeddedQueryListTargetWithMTType1.add(String.valueOf(targetQuery.getObject(2)));
 			}
 			
 			embeddedQueryListTargetWithMTType1.retainAll(embeddedQueryListInSource);
 			
 			String tarappendEnvId = envId+"'";
-			targetQuery = targetQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 2 and ENVIRONMENT_UUID = '"+tarappendEnvId);
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."
+							+embeddedKeys.get("table")+" WHERE MT_TYPE = 2 and ENVIRONMENT_UUID = '"+tarappendEnvId);
 			while (targetQuery.next()) {
-				embeddedQueryListTargetWithMTType2.add(String.valueOf(targetQuery.getObject(1)));
+				embeddedQueryListTargetWithMTType2.add(String.valueOf(targetQuery.getObject(2)));
 			}
 			Assert.assertEquals(embeddedQueryListTargetWithMTType2, embeddedQueryListTargetWithMTType1, "This following table values are migrated against Bussiness Rules. "
 					+ "For the schema:: "+embeddedKeys.get("schema") +"and table:: "+embeddedKeys.get("table") + "For MT Type 2");
@@ -206,27 +253,53 @@ public class MMP560_EmbeddedQueries extends Base {
 		for (int i = 0; i < jsonArrayForEmbeddedQueries.size() ; i++) {
 			Object jsonArrayForEmbeddedObject = jsonArrayForEmbeddedQueries.get(i);
 			JSONObject embeddedKeys = (JSONObject) jsonArrayForEmbeddedObject;
-			List<String> embeddedQueryListSource = new ArrayList<String>();
-			List<String> embeddedQueryListOOB = new ArrayList<String>();
+			List<String> embeddedQueryListInSource = new ArrayList<String>();
+			List<String> embeddedQueryListInOOB = new ArrayList<String>();
 			List<String> embeddedQueryListTarget = new ArrayList<String>();
-			sourceQuery = query("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
-			while (sourceQuery.next()) {
-				embeddedQueryListSource.add(String.valueOf(sourceQuery.getObject(1)));
+			
+			List<String> pkNameListInSource = new ArrayList<String>();
+			List<String> pkNameListInOOB = new ArrayList<String>();
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			while(sourceQuery.next()) {
+				pkNameListInSource.add(String.valueOf(sourceQuery.getObject(1)));
 			}
 			
-			oobQuery = oobQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
-			while (oobQuery.next()) {
-				embeddedQueryListOOB.add(String.valueOf(oobQuery.getObject(1)));
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			while(oobQuery.next()) {
+				pkNameListInOOB.add(String.valueOf(sourceQuery.getObject(1)));
 			}
-			embeddedQueryListSource.removeAll(embeddedQueryListOOB);
+			
+			pkNameListInSource.retainAll(pkNameListInOOB);
+			String pkNameListString = null;
+			for(String pkName : pkNameListInSource) {
+				pkNameListString += pkName +",";
+			}
+			pkNameListString = pkNameListString.substring(0, pkNameListString.length() - 1);
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(sourceQuery.next()) {
+				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(2)));
+			}
+			
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(oobQuery.next()) {
+				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(2)));
+			}
+			
+			embeddedQueryListInSource.removeAll(embeddedQueryListInOOB);
+			
 			
 			String tarappendEnvId = envId+"'";
-			targetQuery = targetQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE ENVIRONMENT_UUID = '"+tarappendEnvId);
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."
+							+embeddedKeys.get("table")+" WHERE ENVIRONMENT_UUID = '"+tarappendEnvId);
 			while (targetQuery.next()) {
-				embeddedQueryListTarget.add(String.valueOf(targetQuery.getObject(1)));
+				embeddedQueryListTarget.add(String.valueOf(targetQuery.getObject(2)));
 			}
 			
-			Assert.assertTrue(!embeddedQueryListSource.containsAll(embeddedQueryListTarget) , "This following table values are migrated against Bussiness Rules. "
+			Assert.assertTrue(!embeddedQueryListInSource.containsAll(embeddedQueryListTarget) , "This following table values are migrated against Bussiness Rules. "
 					+ "For the schema:: "+embeddedKeys.get("schema") +"and table:: "+embeddedKeys.get("table") + "For Unmatched Datas");
 		}
 		
@@ -265,29 +338,53 @@ public class MMP560_EmbeddedQueries extends Base {
 			List<String> embeddedQueryListTargetWithMTType1 = new ArrayList<String>();
 			List<String> embeddedQueryListTargetWithMTType2 = new ArrayList<String>();
 			
-			sourceQuery = query("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			List<String> pkNameListInSource = new ArrayList<String>();
+			List<String> pkNameListInOOB = new ArrayList<String>();
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
 			while(sourceQuery.next()) {
-				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(1)));
+				pkNameListInSource.add(String.valueOf(sourceQuery.getObject(1)));
 			}
 			
-			oobQuery = query("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
 			while(oobQuery.next()) {
-				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(1)));
+				pkNameListInOOB.add(String.valueOf(sourceQuery.getObject(1)));
+			}
+			
+			pkNameListInSource.retainAll(pkNameListInOOB);
+			String pkNameListString = null;
+			for(String pkName : pkNameListInSource) {
+				pkNameListString += pkName +",";
+			}
+			pkNameListString = pkNameListString.substring(0, pkNameListString.length() - 1);
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(sourceQuery.next()) {
+				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(2)));
+			}
+			
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(oobQuery.next()) {
+				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(2)));
 			}
 			
 			embeddedQueryListInSource.retainAll(embeddedQueryListInOOB);
 			
-			targetQuery = targetQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 1");
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 1"
+					+ "AND "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
 			while (targetQuery.next()) {
-				embeddedQueryListTargetWithMTType1.add(String.valueOf(targetQuery.getObject(1)));
+				embeddedQueryListTargetWithMTType1.add(String.valueOf(targetQuery.getObject(2)));
 			}
 			
 			embeddedQueryListTargetWithMTType1.retainAll(embeddedQueryListInSource);
 			
 			String tarappendEnvId = envId+"'";
-			targetQuery = targetQuery("SELECT "+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")+" WHERE MT_TYPE = 2 and ENVIRONMENT_UUID = '"+tarappendEnvId);
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."
+							+embeddedKeys.get("table")+" WHERE MT_TYPE = 2 and ENVIRONMENT_UUID = '"+tarappendEnvId);
 			while (targetQuery.next()) {
-				embeddedQueryListTargetWithMTType2.add(String.valueOf(targetQuery.getObject(1)));
+				embeddedQueryListTargetWithMTType2.add(String.valueOf(targetQuery.getObject(2)));
 			}
 			Assert.assertEquals(embeddedQueryListTargetWithMTType2, embeddedQueryListTargetWithMTType1, "This following table values are migrated against Bussiness Rules. "
 					+ "For the schema:: "+embeddedKeys.get("schema") +"and table:: "+embeddedKeys.get("table") + "For MT Type 2");
@@ -308,32 +405,73 @@ public class MMP560_EmbeddedQueries extends Base {
 	@Test
 	public static void tc06_verifyMTType3() throws JSchException, SftpException, Exception {
 		log.info("TC 06 Verify if the SQL Query in Target after migration with MT_TYPE 3 is same as in Source for the Source PK Name not matched with OOB PK Name. Started.......");
-		prop = loadQueryFile("//src//test//resources//migration//queries//MMP560_query.properties");
 		establishDatabaseconnection();
 		establishOOBDatabaseconnection();
 		String connectionStatus = establishTargetDatabaseconnection();		
 		Assert.assertEquals(connectionStatus, "Connection Success");
-		List<String> embeddedQueryListSource = new ArrayList<String>();
-		List<String> embeddedQueryListOOB = new ArrayList<String>();
-		List<String> embeddedQueryListTarget = new ArrayList<String>();
-		sourceQuery = query(prop.getProperty("get_statement"));
-		while (sourceQuery.next()) {
-			embeddedQueryListSource.add(String.valueOf(sourceQuery.getObject(1)));
-		}
-		oobQuery = oobQuery(prop.getProperty("get_statement"));
-		while (oobQuery.next()) {
-			embeddedQueryListOOB.add(String.valueOf(oobQuery.getObject(1)));
-		}
-		embeddedQueryListSource.removeAll(embeddedQueryListOOB);
-		String tarappendEnvId = envId+"'";
-		targetQuery = targetQuery(prop.getProperty("get_statement_mt_type_3")+tarappendEnvId);
-		while (targetQuery.next()) {
-			embeddedQueryListTarget.add(String.valueOf(targetQuery.getObject(1)));
+		FileReader jsonfile = new FileReader(System.getProperty("user.dir")
+				+ "//src//test//resources//migration//BussinessRules//MMP560_CoreSchemaEmbeddedQueries.json");
+		JSONParser jsonParser = new JSONParser();
+		Object parse = jsonParser.parse(jsonfile);
+		JSONObject jsonObject = (JSONObject) parse;
+		Object embeddedObject = jsonObject.get("embeddedQueries");
+		JSONArray jsonArrayForEmbeddedQueries = (JSONArray) embeddedObject;
+		System.out.println(jsonArrayForEmbeddedQueries.size());
+		for (int i = 0; i < jsonArrayForEmbeddedQueries.size() ; i++) {
+			Object jsonArrayForEmbeddedObject = jsonArrayForEmbeddedQueries.get(i);
+			JSONObject embeddedKeys = (JSONObject) jsonArrayForEmbeddedObject;
+			List<String> embeddedQueryListInSource = new ArrayList<String>();
+			List<String> embeddedQueryListInOOB = new ArrayList<String>();
+			List<String> embeddedQueryListTargetWithMTType3 = new ArrayList<String>();
+			
+			
+			List<String> pkNameListInSource = new ArrayList<String>();
+			List<String> pkNameListInOOB = new ArrayList<String>();
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			while(sourceQuery.next()) {
+				pkNameListInSource.add(String.valueOf(sourceQuery.getObject(1)));
+			}
+			
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table"));
+			while(oobQuery.next()) {
+				pkNameListInOOB.add(String.valueOf(sourceQuery.getObject(1)));
+			}
+			
+			pkNameListInSource.retainAll(pkNameListInOOB);
+			String pkNameListString = null;
+			for(String pkName : pkNameListInSource) {
+				pkNameListString += pkName +",";
+			}
+			pkNameListString = pkNameListString.substring(0, pkNameListString.length() - 1);
+			
+			sourceQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(sourceQuery.next()) {
+				embeddedQueryListInSource.add(String.valueOf(sourceQuery.getObject(2)));
+			}
+			
+			oobQuery = query("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."+embeddedKeys.get("table")
+							+"WHERE "+embeddedKeys.get("pk_name")+" IN ("+pkNameListString+")");
+			while(oobQuery.next()) {
+				embeddedQueryListInOOB.add(String.valueOf(oobQuery.getObject(2)));
+			}
+			
+			embeddedQueryListInSource.retainAll(embeddedQueryListInOOB);
+			
+			String tarappendEnvId = envId+"'";
+			targetQuery = targetQuery("SELECT "+embeddedKeys.get("pk_name")+","+embeddedKeys.get("field")+" FROM "+embeddedKeys.get("schema")+"."
+							+embeddedKeys.get("table")+" WHERE MT_TYPE = 3 and ENVIRONMENT_UUID = '"+tarappendEnvId);
+			while (targetQuery.next()) {
+				embeddedQueryListTargetWithMTType3.add(String.valueOf(targetQuery.getObject(2)));
+			}
+			
+			Assert.assertEquals(embeddedQueryListTargetWithMTType3, embeddedQueryListInSource, "This following table values are migrated against Bussiness Rules. "
+					+ "For the schema:: "+embeddedKeys.get("schema") +"and table:: "+embeddedKeys.get("table") + "For MT Type 3");
 		}
 		dbConnection.close();
 		oobDBConnection.close();
 		targetDBConnection.close();
-		Assert.assertEquals(embeddedQueryListTarget, embeddedQueryListSource);
 		log.info("TC 06 Verify if the SQL Query in Target after migration with MT_TYPE 3 is same as in Source for the Source PK Name not matched with OOB PK Name. Ended.......");
 	}
 }

@@ -60,12 +60,28 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 	public static void tc03_verifyNonCoreSchemaTableStructureMigrated() throws JSchException, SftpException, Exception {
 		log.info("TC 03 Verifying that the Non-core Schema Table structures alone are migrated post migration. Started.......");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP546_query.properties");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		String coreSchemas = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		}
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String line;
+		while ((line = br.readLine()) != null) {
+			if(line.contains("CORE_SCHEMA") && !line.contains("#")) {
+				coreSchemas = line.split("=")[1].trim();
+			}
+		}
 		establishDatabaseconnection();
-		String connectionStatus = establishTargetDatabaseconnection();		
+		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> nonCoreSchemaTablesInSource = new ArrayList<>();
 		List<String> nonCoreSchemaTablesInTarget = new ArrayList<>();
-		sourceQuery = query(prop.getProperty("get_non_core_schema_tables_source"));
+		sourceQuery = query(prop.getProperty("get_non_core_schema_tables_source")+coreSchemas);
 		while (sourceQuery.next()) {
 			nonCoreSchemaTablesInSource.add(sourceQuery.getObject(1).toString());
 		}
@@ -76,6 +92,7 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 		}
 		dbConnection.close();
 		targetDBConnection.close();
+		session.disconnect();
 		Collections.sort(nonCoreSchemaTablesInTarget);
 		Collections.sort(nonCoreSchemaTablesInSource);
 		Assert.assertEquals(nonCoreSchemaTablesInTarget,nonCoreSchemaTablesInSource, "Some of the Non Core Schema Table Structures are not migrated");
@@ -92,9 +109,25 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 	public static void tc05_verifyallNonCoreSchemasAppendedwithenvidintheTarget() throws JSchException, SftpException, Exception {
 		log.info("TC 05 Verify if the Environment ID is appended only to the Non-Core Schema name in the Target after Migration. Started...");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP546_query.properties");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		String coreSchemas = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		}
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String line;
+		while ((line = br.readLine()) != null) {
+			if(line.contains("CORE_SCHEMA") && !line.contains("#")) {
+				coreSchemas = line.split("=")[1].trim();
+			}
+		}
 		establishDatabaseconnection();
-		String connectionStatus = establishTargetDatabaseconnection();		
+		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> nonCoreSchemasInTarget = new ArrayList<>();
 		List<String> nonCoreSchemasInSource = new ArrayList<>();
 		String tarappendEnvId = envId+"'";
@@ -103,12 +136,13 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 			nonCoreSchemasInTarget.add(String.valueOf(targetQuery.getObject(1)));
 		}
 		String srcappendEnvId = "_";
-		sourceQuery = query(prop.getProperty("get_non_core_schemas_source"));
+		sourceQuery = query(prop.getProperty("get_non_core_schemas_source")+coreSchemas);
 		while (sourceQuery.next()) {
 			nonCoreSchemasInSource.add(String.valueOf(sourceQuery.getObject(1)) + srcappendEnvId + envId);
 		}
 		targetDBConnection.close();
 		dbConnection.close();
+		session.disconnect();
 		Collections.sort(nonCoreSchemasInSource);
 		Collections.sort(nonCoreSchemasInTarget);
 		Assert.assertEquals(nonCoreSchemasInSource, nonCoreSchemasInTarget);
@@ -141,6 +175,7 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 		}
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> coreSchemaList = Arrays.asList(coreSchemas.split(","));
 		List<String> coreSchemaListWithEnvId = new ArrayList<String>();
 		for(String coreSchema : coreSchemaList) {
@@ -153,6 +188,9 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 		while (targetQuery.next()) {
 			coreSchemaTables.add(targetQuery.getObject(0).toString());
 		}
+		session.disconnect();
+		dbConnection.close();
+		targetDBConnection.close();
 		Assert.assertEquals(coreSchemaTables.size(),0,"Some of the Core Schemas appended with ENV_ID");
 		log.info("TC 06 Verifying that the Core schemas are not appended with Environment ID in the Target after migration. Ended.......");
 	}
@@ -167,12 +205,28 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 	public static void tc07_verifyNonCoreSchemaTableStructureAppendedWithEnvId() throws JSchException, SftpException, Exception {
 		log.info("TC 07 Verifying that the Non-Core Schema Table structure in the Target is with the new schema name appended with Env ID. Started.......");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP546_query.properties");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		String coreSchemas = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		}
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String line;
+		while ((line = br.readLine()) != null) {
+			if(line.contains("CORE_SCHEMA") && !line.contains("#")) {
+				coreSchemas = line.split("=")[1].trim();
+			}
+		}
 		establishDatabaseconnection();
-		String connectionStatus = establishTargetDatabaseconnection();		
+		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> nonCoreSchemaTablesInSource = new ArrayList<>();
 		List<String> nonCoreSchemaTablesInTarget = new ArrayList<>();
-		sourceQuery = query(prop.getProperty("get_non_core_schema_tables_source"));
+		sourceQuery = query(prop.getProperty("get_non_core_schema_tables_source")+coreSchemas);
 		while (sourceQuery.next()) {
 			nonCoreSchemaTablesInSource.add(sourceQuery.getObject(1).toString());
 		}
@@ -181,6 +235,7 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 		while (targetQuery.next()) {
 			nonCoreSchemaTablesInTarget.add(String.valueOf(targetQuery.getObject(1)));
 		}
+		session.disconnect();
 		dbConnection.close();
 		targetDBConnection.close();
 		Collections.sort(nonCoreSchemaTablesInTarget);
@@ -199,12 +254,28 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 	public static void tc08_verifyNonCoreSchemaTableStructureWithoutLoss() throws JSchException, SftpException, Exception {
 		log.info("TC 08 Verifying that the transfer of the entire non-core schema table structure as is migrated from source to the target with out any data loss or any modifications. Started.......");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP546_query.properties");
+		establishSshConnectionForSourceInstance();
+		InputStream stream = null;
+		String coreSchemas = null;
+		if(osUserInput.equalsIgnoreCase("linux")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		} else if(osUserInput.equalsIgnoreCase("windows")) {
+			stream = sftpChannel.get(fileProperties.getProperty("mysql_py_linux"));
+		}
+		BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+		String line;
+		while ((line = br.readLine()) != null) {
+			if(line.contains("CORE_SCHEMA") && !line.contains("#")) {
+				coreSchemas = line.split("=")[1].trim();
+			}
+		}
 		establishDatabaseconnection();
-		String connectionStatus = establishTargetDatabaseconnection();		
+		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> nonCoreSchemaTablesInSource = new ArrayList<>();
 		List<String> nonCoreSchemaTablesInTarget = new ArrayList<>();
-		sourceQuery = query(prop.getProperty("get_non_core_schema_tables_source"));
+		sourceQuery = query(prop.getProperty("get_non_core_schema_tables_source")+coreSchemas);
 		while (sourceQuery.next()) {
 			nonCoreSchemaTablesInSource.add(sourceQuery.getObject(1).toString());
 		}
@@ -215,6 +286,7 @@ public class MMP546_NonCoreTableStructureMigration extends Base {
 		}
 		dbConnection.close();
 		targetDBConnection.close();
+		session.disconnect();
 		Collections.sort(nonCoreSchemaTablesInTarget);
 		Collections.sort(nonCoreSchemaTablesInSource);
 		Assert.assertEquals(nonCoreSchemaTablesInTarget,nonCoreSchemaTablesInSource,"Non Core Schemas Migrated with Data Loss");

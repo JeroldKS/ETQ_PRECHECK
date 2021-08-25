@@ -21,8 +21,8 @@ public class MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule extend
 		log.info("TC 01 \"DISPLAY_IN_HOMEPAGE\" column is set to ZERO for employee training application validation started.......");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
-		getEnvID();
-		prop = loadQueryFile("\\src\\test\\resources\\migration\\queries\\MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule.properties");
+		//getEnvID();
+		prop = loadQueryFile("//src//test//resources//migration//queries//MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule.properties");
 		targetQuery = targetQuery(prop.getProperty("displayInHomePageColumn")+ envId + "';");
 		while (targetQuery.next()) {
 			Assert.assertEquals(String.valueOf(targetQuery.getObject(1)), "0");
@@ -40,7 +40,7 @@ public class MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule extend
 		log.info("TC 02 rest of records in application settings table are not updated validation started.......");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
-		prop = loadQueryFile("\\src\\test\\resources\\migration\\queries\\MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule.properties");
+		prop = loadQueryFile("//src//test//resources//migration//queries//MMP371_DataModificationCoreSchemaDisableLegacyTrainingModule.properties");
 		ArrayList<String> targetColumnNameList = new ArrayList<String>();
 		targetQuery = targetQuery(prop.getProperty("targetRecordInApplicationSettings")+ envId + "';");
 		int targetColumnCount = targetQuery.getMetaData().getColumnCount();

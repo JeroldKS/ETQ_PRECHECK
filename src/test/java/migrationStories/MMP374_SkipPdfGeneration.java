@@ -29,9 +29,10 @@ public class MMP374_SkipPdfGeneration extends Base {
 		Assert.assertEquals(connectionStatus, "Connection Success");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP374_query.properties");
 		List<String> dataCenterPdfGenerationTable = new ArrayList<>();
-		sourceQuery = query(prop.getProperty("datacenter_pdf_generation"));
-		while (sourceQuery.next()) {
-			dataCenterPdfGenerationTable.add(sourceQuery.getObject(0).toString());
+		String tarappendEnvId = envId+"'";
+		targetQuery = targetQuery(prop.getProperty("datacenter_pdf_generation")+tarappendEnvId);
+		while (targetQuery.next()) {
+			dataCenterPdfGenerationTable.add(String.valueOf(targetQuery.getObject(0)));
 		}
 		Assert.assertEquals(dataCenterPdfGenerationTable.size(),0);
 		log.info("TC 02 Verifying that the table \"datacenter.pdf_generation_messages\" has been skipped. Ended.......");

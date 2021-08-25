@@ -3,42 +3,50 @@
 		{
 			"schema": "engine",
 			"table": "datasource_settings",
-			"field": "STATEMENT"
+			"field": "STATEMENT",
+			"pk_name": "DATASOURCE_ID"
 		},
 		{
 			"schema": "engine",
 			"table": "field_settings",
-			"field": "LOOKUP_SQL_QUERY"
+			"field": "LOOKUP_SQL_QUERY",
+			"pk_name": "FIELD_ID"
 		},
 		{
 			"schema": "engine",
 			"table": "subform_settings",
-			"field": "LOOKUP_QUERY"
+			"field": "LOOKUP_QUERY",
+			"pk_name": "SUBFORM_ID"
 		},
 		{
 			"schema": "engine",
 			"table": "escalation_settings",
-			"field": "SELECTION_SQL"
+			"field": "SELECTION_SQL",
+			"pk_name": "ESCALATION_ID"
 		},
 		{
 			"schema": "engine",
 			"table": "form_settings",
-			"field": "LINK_DESCRIPTION_SQL"
+			"field": "LINK_DESCRIPTION_SQL",
+			"pk_name": "FORM_ID"
 		},
 		{
 			"schema": "engine",
 			"table": "datasource_settings",
-			"field": "DISPLAY_VALUES_QUERY"
+			"field": "DISPLAY_VALUES_QUERY",
+			"pk_name": "DATASOURCE_ID"
 		},
 		{
 			"schema": "engine",
 			"table": "form_settings",
-			"field": "TRAINING_REQUIREMENT_DESC"
+			"field": "TRAINING_REQUIREMENT_DESC",
+			"pk_name": "FORM_ID"
 		},
 		{
 			"schema": "rating",
 			"table": "SUB_CRITERIA_VARIABLES",
-			"field": "PERCENTAGE_QUERY"
+			"field": "PERCENTAGE_QUERY",
+			"pk_name": "SUB_CRITERIA_VARIABLES_ID"
 		}
 	]
 }

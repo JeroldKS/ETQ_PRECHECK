@@ -2,6 +2,7 @@ package migrationStories;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -78,7 +79,7 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			//CHECK FOR MT_TYPE = 0. Ended here
 			
 			
-			//CHECK FOR MT_TYPE = 1. Started
+			//CHECK FOR MT_TYPE = 2. Started
 			//Fetching MT_TYPE = 1 records from target without envId 
 			targetQuery = targetQuery("SELECT "+engineKeys.get("field")+" FROM "+engineKeys.get("schema")+"."+engineKeys.get("table")+
 					" where MT_TYPE = 1");
@@ -99,31 +100,14 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			//copyOfSourceValue Contains Matching elements between source and target with MT_TYPE = 1
 			copyOfSourceValue.retainAll(targetValueWithMT1);
 			
+			Collections.sort(targetValueWithMT2);
+			Collections.sort(copyOfSourceValue);
 			Assert.assertEquals(targetValueWithMT2, copyOfSourceValue, "This following table values are migrated against Bussiness Rules. "
 					+ "For the schema:: "+engineKeys.get("schema") +" and table:: "+engineKeys.get("table") + " For MT Type 2");
 			
+			//CHECK FOR MT_TYPE = 2. Ended here
 			
-			//Code to fetch Soruce and Target Column Names
-			ArrayList<String> targetColumnNameList = new ArrayList<String>();
-			targetQuery = targetQuery("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
-					+ " where ENVIRONMENT_UUID = '" + envId + "' limit 1");
-			int targetColumnCount = targetQuery.getMetaData().getColumnCount();
-			for (int i1 = 0; i1 < targetColumnCount; i1++) {
-				targetColumnNameList.add(targetQuery.getMetaData().getColumnName(i1 + 1));
-			}
-			List<String> sourceColumnNameList = new ArrayList<>();
-			sourceQuery = query(
-					"select * from " + engineKeys.get("schema") + "." + engineKeys.get("table") + " limit 1");
-			int sourceColumnCount = sourceQuery.getMetaData().getColumnCount();
-			for (int i1 = 0; i1 < sourceColumnCount; i1++) {
-				sourceColumnNameList.add(sourceQuery.getMetaData().getColumnName(i1 + 1));
-			}
-			ArrayList<String> copyTargetColumnNameList = new ArrayList<>();
-			copyTargetColumnNameList.addAll(targetColumnNameList);
-			copyTargetColumnNameList.removeAll(sourceColumnNameList);
-			targetColumnNameList.removeAll(copyTargetColumnNameList);
-			//CHECK FOR MT_TYPE = 1. Ended here
-			
+			//CHECK FOR MT_TYPE = 3. Started here
 			//Fetching MT_TYPE = 0,1,2 records from target without envId 
 			targetQuery = targetQuery("SELECT "+engineKeys.get("field")+" FROM "+engineKeys.get("schema")+"."+engineKeys.get("table")+
 					" where MT_TYPE IN (0,1,2)");
@@ -140,6 +124,8 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			
 			//sourceValue contains elements which is not in MT_TYPE = 0,1,2
 			sourceValue.removeAll(targetValueWithMT012);
+			Collections.sort(targetValueWithMT2);
+			Collections.sort(copyOfSourceValue);
 			Assert.assertEquals(targetValueWithMT3, sourceValue);
 			//CHECK FOR MT_TYPE = 3. Ended here
 		}
@@ -150,7 +136,7 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 	 * Verify the core Schemas Column Name and its corresponding Record are same from Source and Target
 	 * @throws Exception
 	 */
-	@Test(enabled = false)
+	@Test
 	public void tc02_verifyCoreSchemasColumnAndRecordAreSame() throws Exception {
 		log.info("TC 02 Verify the core Schemas Column Name and its corresponding Record are same from Source and Target. Started");
 		establishDatabaseconnection();
@@ -208,7 +194,7 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			//CHECK FOR MT_TYPE = 0. Ended here
 			
 			
-			//CHECK FOR MT_TYPE = 1. Started
+			//CHECK FOR MT_TYPE = 2. Started
 			//Fetching MT_TYPE = 1 records from target without envId 
 			targetQuery = targetQuery("SELECT "+engineKeys.get("field")+" FROM "+engineKeys.get("schema")+"."+engineKeys.get("table")+
 					" where MT_TYPE = 1");
@@ -229,9 +215,11 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			//copyOfSourceValue Contains Matching elements between source and target with MT_TYPE = 1
 			copyOfSourceValue.retainAll(targetValueWithMT1);
 			
+			Collections.sort(targetValueWithMT2);
+			Collections.sort(copyOfSourceValue);
 			Assert.assertEquals(targetValueWithMT2, copyOfSourceValue, "This following table values are migrated against Bussiness Rules. "
 					+ "For the schema:: "+engineKeys.get("schema") +"and table:: "+engineKeys.get("table") + "For MT Type 2");
-			
+			//CHECK FOR MT_TYPE = 2. Ended here
 			
 			//Code to fetch Soruce and Target Column Names
 			ArrayList<String> targetColumnNameList = new ArrayList<String>();
@@ -285,8 +273,9 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 				}
 				Assert.assertEquals(sourceColumndataList, targetColumndataList, "Data Mismatched for some records with MT_TYPE=1");
 			}
-			//CHECK FOR MT_TYPE = 1. Ended here
+			//CHECK FOR MT_TYPE = 2. Ended here
 			
+			//CHECK FOR MT_TYPE = 3. Started here
 			//Fetching MT_TYPE = 0,1,2 records from target without envId 
 			targetQuery = targetQuery("SELECT "+engineKeys.get("field")+" FROM "+engineKeys.get("schema")+"."+engineKeys.get("table")+
 					" where MT_TYPE IN (0,1,2)");
@@ -303,6 +292,8 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			
 			//sourceValue contains elements which is not in MT_TYPE = 0,1,2
 			sourceValue.removeAll(targetValueWithMT012);
+			Collections.sort(targetValueWithMT3);
+			Collections.sort(sourceValue);
 			Assert.assertEquals(targetValueWithMT3, sourceValue);
 
 
@@ -347,7 +338,7 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 	 * Verify the core Schemas Column and its corresponding Record are not migrated in other column from Source and Target
 	 * @throws Exception
 	 */
-	@Test(enabled = false)
+	@Test
 	public void tc03_verifyCoreSchemasColumnAndRecordAreSame() throws Exception {
 		log.info("TC 03 Verify the core Schemas Column and its corresponding Record are not migrated in other column from Source and Target. Started");
 		establishDatabaseconnection();
