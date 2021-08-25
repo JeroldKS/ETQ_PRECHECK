@@ -14,7 +14,7 @@ import precheck.Base;
 
 public class MMP369_MigrationDataCoreSchemaDisable extends Base {
  
-	static Logger log = Logger.getLogger(MMP369_MigrationDataCoreSchemaDisable.class.getName());
+	static Logger log = Logger.getLogger("GLOBAL");
 	
 	/**
 	 * Checking whether the engine schema is migrated or not

@@ -1,7 +1,9 @@
 package precheck;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,13 +12,18 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.RollingFileAppender;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -52,7 +59,7 @@ public class Base {
 	public static String osUserInput;
 	public static String databaseUserInput;
 	public static String envId = null;
-	static Logger log = Logger.getLogger(Base.class.getName());
+	static Logger log = Logger.getLogger("GLOBAL");
 
 	/**
 	 * add description about the method
@@ -444,7 +451,26 @@ public class Base {
 	public void log4j() throws Exception {
 		String log4jConfPath = System.getProperty("user.dir") + "//src//main//resources//properties//log4j.properties";
 		getEnvID();
-		PropertyConfigurator.configure("$C:\\Users\\Ideas2it\\Desktop\\ETQ_PRECHECK\\target\\"+envId+".log");
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
+        Date date = new Date();
+        String path="C:\\Users\\Ideas2it\\Desktop\\ETQ_PRECHECK\\target\\"+envId+"_" + dateFormat.format(date) +".log";
+        File yourFile = new File(path);
+        yourFile.createNewFile();
+        FileOutputStream oFile = new FileOutputStream(yourFile, false);
+		RollingFileAppender appender = new RollingFileAppender();
+        appender.setAppend(true);
+        appender.setMaxFileSize("1MB");
+        appender.setMaxBackupIndex(1);
+        appender.setFile(path);
+        appender.activateOptions();
+        PatternLayout layOut = new PatternLayout();
+        layOut.setConversionPattern("%d{yyyy-MM-dd HH:mm:ss} %p [%c{3}] [%M]: %m%n");
+        appender.setLayout(layOut);
+        log.addAppender(appender);
+		/*yourFile.createNewFile(); // if file already exists will do nothing 
+		//FileOutputStream oFile = new FileOutputStream(yourFile, false); 
+		PropertyConfigurator.configure("C:\\Users\\Ideas2it\\Desktop\\ETQ_PRECHECK\\target\\"+envId+".log");*/
 		PropertyConfigurator.configure(log4jConfPath);
 
 	}
