@@ -438,10 +438,13 @@ public class Base {
 
 	/**
 	 * This method is for Load the log4j(Log) file
+	 * @throws Exception 
 	 */
 	@BeforeSuite
-	public void log4j() {
+	public void log4j() throws Exception {
 		String log4jConfPath = System.getProperty("user.dir") + "//src//main//resources//properties//log4j.properties";
+		getEnvID();
+		PropertyConfigurator.configure("$C:\\Users\\Ideas2it\\Desktop\\ETQ_PRECHECK\\target\\"+envId+".log");
 		PropertyConfigurator.configure(log4jConfPath);
 
 	}

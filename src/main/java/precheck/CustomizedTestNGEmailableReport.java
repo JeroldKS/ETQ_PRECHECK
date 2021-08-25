@@ -356,6 +356,9 @@ package precheck;
 			writer.print("<div class=\"stacktrace\">");
 			writer.print(Utils.stackTrace(exception, true)[0]);
 			writer.println("</div>");
+			for (int j = 0; j < Utils.stackTrace(exception, true).length; j++) {
+				System.out.println(Utils.stackTrace(exception, true)[j]);
+				}
 		}
 
 		/**
