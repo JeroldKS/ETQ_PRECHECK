@@ -56,18 +56,18 @@ public class MMP391_ETQPythonScriptSQLQueries extends Base {
 	}
 
 	/**
-	 * This method is to validate item name captured as SQL Lookups Reference in
+	 * This method is to validate item name captured as Lookups Alias / Column Reference in ETQScript files in
 	 * report
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	public void tc10_IsItemNameCapturedAsSQLLookupsReference() throws Exception {
-		log.info("tc06_Is Item Name Captured As SQL Lookups Reference started....................");
+		log.info("tc06_Is Item Name Captured As Lookups Alias / Column Reference in ETQScript files started....................");
 		loadHighLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		text = xtext(xpathProperties.getProperty("itemReference"));
-		Assert.assertEquals(text, "SQL Lookups Reference");
+		Assert.assertEquals(text, "Lookups Alias / Column Reference in ETQScript files");
 		log.info("tc06_Is Item Name Captured As SQL Lookups Reference ended....................");
 	}
 

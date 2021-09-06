@@ -41,7 +41,7 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 			}
 			Assert.assertTrue(keywordCount >= 3, listOfText.get(i));
 		}
-		log.info("tc07 Report Query Path validation ended......................");
+		log.info("tc02_Is Identify Report Query Have 3 Or More UNION Keyword validation Ended......................");
 	}
 
 	/**
@@ -237,7 +237,7 @@ public class MMP388_EmbeddedSQLQueriesJavaSearch extends Base {
 					sourceQuery = query("select " + keywordOwnerSplit[2] + " from " + keywordOwnerSplit[0] + "."
 							+ keywordOwnerSplit[1] + " where " + keywordOwnerSplit[2] + " is not null and "
 							+ parseStep1.get("id") + " = '" + keywordOwnerSplit[3] + "'");
-					text = xtext("//*[contains(text(),'APPENDIX: Java Search SQL')]/following::tbody[1]/tr[" + (i + 1)
+					text = xtext("//*[contains(text(),'APPENDIX: SQL Statements causing Java Search')]/following::tbody[1]/tr[" + (i + 1)
 							+ "]/td[2]");
 					sourceQuery.next();
 					String perCellData = String.valueOf(sourceQuery.getObject(1));

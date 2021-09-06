@@ -110,7 +110,7 @@ public class MMP1205_IncompatibleIntegration extends Base{
 	 */
 	@Test
 	public static void tc03_checkCSVConnectionProfileRetrunsRow() throws JSchException, SftpException, Exception {
-		log.info("TC 01 Checking if CSV Connection Profile Return any rows. Started..............");
+		log.info("TC 03 Checking if CSV Connection Profile Return any rows. Started..............");
 		loadHighLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP1205_query.properties");
 		List<String> csvConnectionProfileListInDB = new ArrayList<>();
@@ -156,7 +156,7 @@ public class MMP1205_IncompatibleIntegration extends Base{
 	 */
 	@Test
 	public static void tc04_checkCSVConnectionProfileRetrunsEmptyRow() throws JSchException, SftpException, Exception {
-		log.info("TC 02 Checking if CSV Connection Profile Return empty row. Started..............");
+		log.info("TC 04 Checking if CSV Connection Profile Return empty row. Started..............");
 		loadHighLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP1205_query.properties");
 		List<String> csvConnectionProfileListInDB = new ArrayList<>();
@@ -181,7 +181,7 @@ public class MMP1205_IncompatibleIntegration extends Base{
 			log.info("This test case works only if CSV Connection profile return empty row");
 		}
 		dbConnection.close();
-		log.info("TC 02 Checking if CSV Connection Profile Return empty row. Ended..............");
+		log.info("TC 04 Checking if CSV Connection Profile Return empty row. Ended..............");
 	}
 	
 	/**
@@ -318,7 +318,7 @@ public class MMP1205_IncompatibleIntegration extends Base{
 					Collections.sort(wsRestfulProfileListInReport);
 					assertEquals(wsRestfulProfileListInReport, wsRestfulProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use Cognito authentication");
+					assertEquals(listDataList.get(0).getText(), "If the profiles are used and the end point in the client restful profile is pointing to the Reliance application, then reconfigure the endpoints to use Cognito authentication");
 				}
 			}
 		}
@@ -334,7 +334,7 @@ public class MMP1205_IncompatibleIntegration extends Base{
 	 */
 	@Test
 	public static void tc09_checkForWSRestfulProfileReturnseEmptyRow() throws JSchException, SftpException, Exception {
-		log.info("TC 08 Checking For WS Restful Profile returns empty row. started..............");
+		log.info("TC 09 Checking For WS Restful Profile returns empty row. started..............");
 		loadHighLevelReportInBrowser();
 		prop = loadQueryFile("//src//test//resources//precheck//queries//MMP387_query.properties");
 		List<String> wsRestfulProfileListInDB = new ArrayList<>();
@@ -359,7 +359,7 @@ public class MMP1205_IncompatibleIntegration extends Base{
 			log.info("This test case works only if WS Restful Profile returns empty row");
 		}
 		dbConnection.close();
-		log.info("TC 08 Checking For WS Restful Profile returns empty row. ended..............");
+		log.info("TC 09 Checking For WS Restful Profile returns empty row. ended..............");
 	}
 	
 	/**
@@ -400,7 +400,7 @@ public class MMP1205_IncompatibleIntegration extends Base{
 					Collections.sort(wsRestfulOperationProfileListInReport);
 					assertEquals(wsRestfulOperationProfileListInReport, wsRestfulOperationProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use Cognito authentication");
+					assertEquals(listDataList.get(0).getText(), "If the profiles are used and the end point in the client restful profile is pointing to the Reliance application, then reconfigure the endpoints to use Cognito authentication");
 				}
 			}
 		}

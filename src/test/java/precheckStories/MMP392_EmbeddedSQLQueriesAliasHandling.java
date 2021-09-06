@@ -100,9 +100,9 @@ public class MMP392_EmbeddedSQLQueriesAliasHandling extends Base {
 		loadHighLevelReportInBrowser();
 		xpathProperties = loadXpathFile();
 		text = xtext(xpathProperties.getProperty("appendixReference"));
-		Assert.assertEquals(text, "APPENDIX: SQL Query references to all Lookup Schema");
+		Assert.assertEquals(text, "APPENDIX: SQL Query references to old Lookups Schema");
 		text = xtext(xpathProperties.getProperty("sqlQueryReference"));
-		Assert.assertEquals(text, "SQL Query references to all Lookup Schema");
+		Assert.assertEquals(text, "SQL Query references to old Lookups Schema");
 		log.info("tc06_report Title captured as excepted validation ended................");
 	}
 

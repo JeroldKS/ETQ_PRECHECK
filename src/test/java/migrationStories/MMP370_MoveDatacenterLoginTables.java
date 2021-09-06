@@ -28,12 +28,13 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		log.info("TC 01 Verifying that login_tracker, login_related_groups and user_login_counters tables are created in the target DB with environment ID. Started.......");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP370_query.properties");
 		List<String> loginTablesInTarget = new ArrayList<>();
 		String loginTables = " ('login_tracker_"+envId+"','login_related_groups_"+envId+"','user_login_counters_"+envId+"')";
 		targetQuery = targetQuery(prop.getProperty("login_tables")+loginTables);
 		while (targetQuery.next()) {
-			loginTablesInTarget.add(targetQuery.getObject(3).toString());
+			loginTablesInTarget.add(String.valueOf(targetQuery.getObject(3)));
 		}
 		Collections.sort(loginTablesInTarget);
 		Assert.assertEquals(loginTablesInTarget.size(),3, "login_related_groups, login_tracker, user_login_counters"
@@ -60,11 +61,12 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP370_query.properties");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> loginTablesInTarget = new ArrayList<>();
 		String loginTables = " ('login_tracker_"+envId+"')";
 		targetQuery = targetQuery(prop.getProperty("login_tables")+loginTables);
 		while (targetQuery.next()) {
-			loginTablesInTarget.add(targetQuery.getObject(3).toString());
+			loginTablesInTarget.add(String.valueOf(targetQuery.getObject(3)));
 		}
 		Assert.assertEquals(loginTablesInTarget.size(),1, "login_tracker"
 				+ " table is not moved to target for the env Id: "+envId);
@@ -77,7 +79,7 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		int columnCount = sourceQuery.getMetaData().getColumnCount();
 		while (sourceQuery.next()) {
 			for (int i = 1; i <= columnCount; i++) {
-				loginTrackerInSource.add(sourceQuery.getObject(i).toString());
+				loginTrackerInSource.add(String.valueOf(sourceQuery.getObject(i)));
 			}
 		}
 		
@@ -87,7 +89,7 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		
 		while (targetQuery.next()) {
 			for (int i = 1; i <= columnCount; i++) {
-				loginTrackerInTarget.add(targetQuery.getObject(i).toString());
+				loginTrackerInTarget.add(String.valueOf(targetQuery.getObject(i)));
 			}
 		}
 		dbConnection.close();
@@ -111,11 +113,12 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> loginTablesInTarget = new ArrayList<>();
 		String loginTables = " ('login_related_groups_"+envId+"')";
 		targetQuery = targetQuery(prop.getProperty("login_tables")+loginTables);
 		while (targetQuery.next()) {
-			loginTablesInTarget.add(targetQuery.getObject(3).toString());
+			loginTablesInTarget.add(String.valueOf(targetQuery.getObject(3)));
 		}
 		Assert.assertEquals(loginTablesInTarget.size(),1, "login_related_groups"
 				+ " table is not moved to target for the env Id: "+envId);
@@ -128,7 +131,7 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		int columnCount = sourceQuery.getMetaData().getColumnCount();
 		while (sourceQuery.next()) {
 			for (int i = 1; i <= columnCount; i++) {
-				loginRelatedGroupsInSource.add(sourceQuery.getObject(i).toString());
+				loginRelatedGroupsInSource.add(String.valueOf(sourceQuery.getObject(i)));
 			}
 		}
 		dbConnection.close();
@@ -138,7 +141,7 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		
 		while (targetQuery.next()) {
 			for (int i = 1; i <= columnCount; i++) {
-				loginRelatedGroupsInTarget.add(targetQuery.getObject(i).toString());
+				loginRelatedGroupsInTarget.add(String.valueOf(targetQuery.getObject(i)));
 			}
 		}
 		targetDBConnection.close();
@@ -161,11 +164,12 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		List<String> loginTablesInTarget = new ArrayList<>();
 		String loginTables = " ('user_login_counters_"+envId+"')";
 		targetQuery = targetQuery(prop.getProperty("login_tables")+loginTables);
 		while (targetQuery.next()) {
-			loginTablesInTarget.add(targetQuery.getObject(3).toString());
+			loginTablesInTarget.add(String.valueOf(targetQuery.getObject(3)));
 		}
 		Assert.assertEquals(loginTablesInTarget.size(),1, "user_login_counters"
 				+ " table is not moved to target for the env Id: "+envId);
@@ -176,7 +180,7 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		String envIdToAppend = envId+"`;";
 		targetQuery = targetQuery(prop.getProperty("user_login_counters_data")+envIdToAppend);
 		while (targetQuery.next()) {
-			userLoginCountersData.add(targetQuery.getObject(1).toString());
+			userLoginCountersData.add(String.valueOf(targetQuery.getObject(1)));
 		}
 		Assert.assertEquals(userLoginCountersData.size(), 0);
 		targetDBConnection.close();
@@ -194,11 +198,13 @@ public class MMP370_MoveDatacenterLoginTables extends Base {
 		log.info("TC 05 Verifying that the \"datacenter.login_tracker\" and  \"datacenter.login_related_groups\" tables are not created in the target database. Started.......");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
+		envId = envId.replaceAll("-", "");
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP370_query.properties");
 		List<String> dataCenterLoginTablesInTarget = new ArrayList<>();
-		targetQuery = targetQuery(prop.getProperty("datacenter_login_tables"));
+		String loginTables = " ('login_tracker_"+envId+"','login_related_groups_"+envId+"')";
+		targetQuery = targetQuery(prop.getProperty("datacenter_login_tables")+loginTables);
 		while (targetQuery.next()) {
-			dataCenterLoginTablesInTarget.add(targetQuery.getObject(0).toString());
+			dataCenterLoginTablesInTarget.add(String.valueOf(targetQuery.getObject(1)));
 		}
 		Assert.assertEquals(dataCenterLoginTablesInTarget.size(),0);
 		targetDBConnection.close();

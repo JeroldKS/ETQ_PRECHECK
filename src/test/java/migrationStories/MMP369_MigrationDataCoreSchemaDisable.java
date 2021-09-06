@@ -56,7 +56,7 @@ public class MMP369_MigrationDataCoreSchemaDisable extends Base {
 		targetQuery = targetQuery(prop.getProperty("list_of_tasks")+tarappendEnvId);
 		while (targetQuery.next()) {
 			indexesInDB.add(String.valueOf(targetQuery.getObject(3)));
-			Assert.assertEquals(String.valueOf(targetQuery.getObject(3)), "0", "IS_ENABLED column is not set to 0 for the"
+			Assert.assertEquals(String.valueOf(targetQuery.getObject(3)), "0", "IS_ENABLED column is not set to 0 for the " 
 					+ "task name : "+String.valueOf(targetQuery.getObject(1)));
 		}
 		Assert.assertNotEquals(indexesInDB.size(), 0,  "Engine schema is not migrated for the Env Id: "+envId);

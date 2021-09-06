@@ -244,17 +244,49 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 					excludedFoldersinFile = line.split("=")[1].replaceAll("\"", "").replaceAll("[\\[\\]]", "").replaceAll(" ", "");
 				}
 			}
+			
+			stream = sftpChannel.get(fileProperties.getProperty("propertyToml_linux"));
+			br = new BufferedReader(new InputStreamReader(stream));
+			String webResourcePath = null;
+			String line1;
+			while ((line1 = br.readLine()) != null) {
+				if (line1.contains("web_resource_path") && !
+						line1.contains("#")) {
+					webResourcePath = line1.split("=")[1].replaceAll("\'", "").replaceAll("\"", "").trim();
+				}
+			}
+			String newLine = System.getProperty("line.separator");
+			String folders = null;
+			Channel channel = session.openChannel("exec");
+			String commandtoListFolders = "ls -d " + webResourcePath+"*";
+			((ChannelExec) channel).setCommand(commandtoListFolders);
+			InputStream inputStream = channel.getInputStream();
+			channel.connect();
+			try (Stream<String> lines = new BufferedReader(new InputStreamReader(inputStream)).lines()) {
+				folders = lines.collect(Collectors.joining(newLine));
+			}
+			channel.disconnect();
+			
+			
 			List<String> excluedFoldersListInFile = Arrays.asList(excludedFoldersinFile.split(","));
 			List<String> excluedFoldersListInReport = new ArrayList<String>();
+			
+			List<String> excluedFoldersListInFileFinal = new ArrayList<String>();
+			for(String exl : excluedFoldersListInFile) {
+				exl = exl.replaceAll("'", "").replaceAll("\"", "");
+				if(folders.contains(exl)) {
+					excluedFoldersListInFileFinal.add(exl);
+				}
+			}
 			
 			listOfWebElement = xtexts(xpathProperties.getProperty("excluded_folder_details"));
 			for (int i = 1; i < listOfWebElement.size(); i++) {
 				excluedFoldersListInReport.add(listOfWebElement.get(i).getText());
 			}
 			Collections.sort(excluedFoldersListInReport);
-			Collections.sort(excluedFoldersListInFile);
-			Assert.assertEquals(excluedFoldersListInReport.size(), excluedFoldersListInFile.size());
-			Assert.assertEquals(excluedFoldersListInReport, excluedFoldersListInFile);
+			Collections.sort(excluedFoldersListInFileFinal);
+			Assert.assertEquals(excluedFoldersListInReport.size(), excluedFoldersListInFileFinal.size());
+			Assert.assertEquals(excluedFoldersListInReport, excluedFoldersListInFileFinal);
 			sftpChannel.disconnect();
 	 		session.disconnect();
 			log.info("TC 03 Verify the ignored files are captured in Report. Ended.............");
@@ -495,7 +527,6 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 					webResourcePath = line.split("=")[1].replaceAll("\'", "").replaceAll("\"", "");
 				}
 			}
-			System.out.println("mountPath::"+mountPath);
 			String newLine = System.getProperty("line.separator");
 			String output = null;
 		    Channel channel = session.openChannel("exec");
@@ -522,7 +553,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 					}
 				}
 	 		} else {
-	 			Assert.assertEquals("Mount Directory exists", "Mount Directory not exists");
+	 			log.info("This test case works only if Given Mount Directory Path is wrong");
 	 		}
 	 		
 	 		channel = session.openChannel("exec");
@@ -591,7 +622,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 					}
 				}
 	 		} else {
-	 			Assert.assertEquals("Mount Directory exists", "Mount Directory not exists");
+	 			log.info("This test case works only if No Path is Given as Mount Directory");
 	 		}
 	 		if(webResourcePath.equals("")) {
 	 			text = xtext(xpathProperties.getProperty("web_resources_no_data"));
@@ -599,7 +630,7 @@ public class MMP386_LinuxFileSystemCheck extends Base{
 	 			text = xtext(xpathProperties.getProperty("folder_details_no_data"));
 	 			Assert.assertEquals(text, "Data not found");
 	 		} else {
-	 			Assert.assertEquals("Web Resource Directory exists", "Web Resource Directory not exists");
+	 			log.info("This test case works only if No Path is Given as Web Resource Directory");
 	 		}
 	 		sftpChannel.disconnect();
 	 		session.disconnect();

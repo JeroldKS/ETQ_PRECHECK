@@ -17,6 +17,11 @@
 		},
 		{
 			"schema": "engine",
+			"table": "datasource_settings",
+			"field": "DATASOURCE_NAME"
+		},
+		{
+			"schema": "engine",
 			"table": "db_view_settings",
 			"field": "DB_VIEW_NAME"
 		},
@@ -24,6 +29,16 @@
 			"schema": "engine",
 			"table": "escalation_settings",
 			"field": "ESCALATION_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "field_settings",
+			"field": "FIELD_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "form_settings",
+			"field": "FORM_NAME"
 		},
 		{
 			"schema": "engine",
@@ -44,6 +59,11 @@
 			"schema": "engine",
 			"table": "section_settings",
 			"field": "SECTION_NAME"
+		},
+		{
+			"schema": "engine",
+			"table": "subform_settings",
+			"field": "SUBFORM_NAME"
 		},
 		{
 			"schema": "engine",
@@ -71,54 +91,29 @@
 			"field": "WORKFLOW_NAME"
 		},
 		{
-			"schema": "engine",
-			"table": "datasource_settings",
-			"field": "DATASOURCE_NAME"
-		},
-		{
-			"schema": "engine",
-			"table": "field_settings",
-			"field": "FIELD_NAME"
-		},
-		{
-			"schema": "engine",
-			"table": "webresource_settings",
-			"field": "IGNORE TABLE"
-		},
-		{
-			"schema": "engine",
-			"table": "form_settings",
-			"field": "FORM_NAME"
-		},
-		{
-			"schema": "engine",
-			"table": "subform_settings",
-			"field": "SUBFORM_NAME"
-		},
-		{
 			"schema": "datacenter",
 			"table": "mail_profile",
 			"field": "MAIL_NAME"
 		},
 		{
 			"schema": "datacenter",
-			"table": "mail_profile",
-			"field": "MAIL_NAME"
+			"table": "master_keyword_list",
+			"field": "MASTER_KEYWORD_LIST_NAME"
 		},
 		{
 			"schema": "datacenter",
-			"table": "mail_profile",
-			"field": "MAIL_NAME"
+			"table": "master_template",
+			"field": "MASTER_TEMPLATE_NAME"
 		},
 		{
 			"schema": "datacenter",
-			"table": "mail_profile",
-			"field": "MAIL_NAME"
+			"table": "portal_profile",
+			"field": "PORTAL_PROFILE_NAME"
 		},
 		{
 			"schema": "datacenter",
-			"table": "mail_profile",
-			"field": "MAIL_NAME"
+			"table": "ws_restful_profile",
+			"field": "DESIGN_NAME"
 		}
 	]
 }

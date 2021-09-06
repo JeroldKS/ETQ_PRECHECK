@@ -325,7 +325,7 @@ public class MMP387_IntegrationCheck extends Base{
 					Collections.sort(wsRestfulProfileListInReport);
 					assertEquals(wsRestfulProfileListInReport, wsRestfulProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use Cognito authentication");
+					assertEquals(listDataList.get(0).getText(), "If the profiles are used and the end point in the client restful profile is pointing to the Reliance application, then reconfigure the endpoints to use Cognito authentication");
 				}
 			}
 		}
@@ -372,7 +372,7 @@ public class MMP387_IntegrationCheck extends Base{
 					Collections.sort(wsRestfulOperationProfileListInReport);
 					assertEquals(wsRestfulOperationProfileListInReport, wsRestfulOperationProfileListInDB);
 				} else if (i == 2) {
-					assertEquals(listDataList.get(0).getText(), "Reconfigure the endpoints to use Cognito authentication");
+					assertEquals(listDataList.get(0).getText(), "If the profiles are used and the end point in the client restful profile is pointing to the Reliance application, then reconfigure the endpoints to use Cognito authentication");
 				}
 			}
 		}
