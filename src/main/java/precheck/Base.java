@@ -36,6 +36,8 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
+import migrationStories.MMP369_MigrationDataCoreSchemaDisable;
+
 public class Base {
 	public static Properties loginProperties;
 	public static Connection dbConnection;
@@ -59,7 +61,7 @@ public class Base {
 	public static String osUserInput;
 	public static String databaseUserInput;
 	public static String envId = null;
-	static Logger log = Logger.getLogger("GLOBAL");
+	static Logger log = Logger.getLogger(Base.class.getName());
 
 	/**
 	 * add description about the method
@@ -437,7 +439,7 @@ public class Base {
 	public static Properties loadXpathFile() throws IOException {
 		xpathProperties = new Properties();
 		FileInputStream xpathFile = new FileInputStream(
-				System.getProperty("user.dir") + "//src//test//resources////precheck//xpath//xpath.properties");
+				System.getProperty("user.dir") + "//src//test//resources//precheck//xpath//xpath.properties");
 		xpathProperties.load(xpathFile);
 		return xpathProperties;
 
@@ -449,31 +451,12 @@ public class Base {
 	 */
 	@BeforeSuite
 	public void log4j() throws Exception {
-		String log4jConfPath = System.getProperty("user.dir") + "//src//main//resources//properties//log4j.properties";
-		getEnvID();
 		
-		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");
-        Date date = new Date();
-        String path="C:\\Users\\Ideas2it\\Desktop\\ETQ_PRECHECK\\target\\"+envId+"_" + dateFormat.format(date) +".log";
-        File yourFile = new File(path);
-        yourFile.createNewFile();
-        FileOutputStream oFile = new FileOutputStream(yourFile, false);
-		RollingFileAppender appender = new RollingFileAppender();
-        appender.setAppend(true);
-        appender.setMaxFileSize("1MB");
-        appender.setMaxBackupIndex(1);
-        appender.setFile(path);
-        appender.activateOptions();
-        PatternLayout layOut = new PatternLayout();
-        layOut.setConversionPattern("%d{yyyy-MM-dd HH:mm:ss} %p [%c{3}] [%M]: %m%n");
-        appender.setLayout(layOut);
-        log.addAppender(appender);
-		/*yourFile.createNewFile(); // if file already exists will do nothing 
-		//FileOutputStream oFile = new FileOutputStream(yourFile, false); 
-		PropertyConfigurator.configure("C:\\Users\\Ideas2it\\Desktop\\ETQ_PRECHECK\\target\\"+envId+".log");*/
+		String log4jConfPath = System.getProperty("user.dir") + "//src//main//resources//properties//log4j.properties";
 		PropertyConfigurator.configure(log4jConfPath);
 
 	}
+	
 
 	/**
 	 * This method is to generate random 'int' number
