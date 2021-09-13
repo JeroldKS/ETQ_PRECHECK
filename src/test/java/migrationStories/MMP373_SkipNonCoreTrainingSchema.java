@@ -1,11 +1,14 @@
 package migrationStories;
 
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -31,20 +34,36 @@ public class MMP373_SkipNonCoreTrainingSchema extends Base {
 	 */
 
 	@Test(enabled = false)
-	public static void tc01_VerifyNoncoreSchemaTRAININGNotMigrated() throws JSchException, SftpException, Exception {
+	public static void tc01_VerifyNoncoreSchemaNotMigrated() throws JSchException, SftpException, Exception {
 
-		log.info("TC 01 Checking whether Non core Schema TRAINING is not Migrated. Started.......");
+		log.info("TC 01 Checking whether Non core Schema is not Migrated. Started.......");
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
 
 		prop = loadQueryFile("//src//test//resources//migration//queries//MMP373_query.properties");
-		List<String> schemaCount = new ArrayList<>();
-		targetQuery = targetQuery(prop.getProperty("list_of_tasks") + "\'" + envId + "\'");
+		List<String> migratedSchema = new ArrayList<>();
+		targetQuery = targetQuery(prop.getProperty("Migrated_list_of_schema") + "\'" + envId + "\'");
 		while (targetQuery.next()) {
-			schemaCount.add(targetQuery.getObject(1).toString());
-			Assert.assertTrue(schemaCount.isEmpty());
-
+			migratedSchema.add(targetQuery.getObject(1).toString());
 		}
+			
+		String exclusionlist = toGetAnyValue("non_core_schema_exclusion");
+		exclusionlist.replaceAll("'", "");
+		String[] newExclusionList = exclusionlist.split(",");
+		
+		  for (String exclusion : newExclusionList) {
+			for (String target : migratedSchema) {
+				if(exclusion.equals(target)) {
+					Assert.fail();
+			}
+			
+			}
+		}
+			
+			
+//			Assert.assertTrue(schemaCount.isEmpty());
+
+		
 
 		log.info("TC 01 Checking whether Engine schema is successfully migrated. Ended.......");
 	}
@@ -58,27 +77,50 @@ public class MMP373_SkipNonCoreTrainingSchema extends Base {
 	 */
 
 	@Test(enabled = false)
-	public static void tc02_VerifyAllNoncoreSchemasExceptTRAININGMigrated()
+	public static void tc02_VerifyAllNoncoreSchemasExceptExclusionMigrated()
 			throws JSchException, SftpException, Exception {
 
 		log.info("TC 02 Verify All Non core Schemas Except TRAINING Migrated. Started.......");
+		
+		
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
-		prop = loadQueryFile("//src//test//resources//migration//queries//MMP373_query.properties");
-		List<String> target = new ArrayList<>();
-		targetQuery = targetQuery(prop.getProperty("tc02db1")+"\'" + envId + "\'");
-		while (targetQuery.next()) {
-			target.add(targetQuery.getObject(1).toString());
-		}
-		Assert.assertTrue(!target.isEmpty());
-		for (String schema : target) {
-			System.out.println(schema);
-			if (schema.startsWith("training")) {
-				System.out.println(schema);
-				Assert.fail("Error: Training schema migrated");
 
-			}
+		prop = loadQueryFile("//src//test//resources//migration//queries//MMP373_query.properties");
+		List<String> nonMigratedSchema = new ArrayList<>();
+		targetQuery = targetQuery(prop.getProperty("NonMigratedListOfSchema") + "\'" + envId + "\'");
+		while (targetQuery.next()) {
+			nonMigratedSchema.add(targetQuery.getObject(1).toString());
 		}
+			
+		String exclusionlist = toGetAnyValue("non_core_schema_exclusion");
+		exclusionlist.replaceAll("'", "");
+		String[] newExclusionList = exclusionlist.split(",");
+		List<String> finalExclusionList = new ArrayList<>();
+		for (String iteration : newExclusionList) {
+			finalExclusionList.add(iteration);
+		}
+		
+		Assert.assertTrue(nonMigratedSchema.containsAll(finalExclusionList));
+		 
+		  
+//		String connectionStatus = establishTargetDatabaseconnection();
+//		Assert.assertEquals(connectionStatus, "Connection Success");
+//		prop = loadQueryFile("//src//test//resources//migration//queries//MMP373_query.properties");
+//		List<String> target = new ArrayList<>();
+//		targetQuery = targetQuery(prop.getProperty("tc02db1")+"\'" + envId + "\'");
+//		while (targetQuery.next()) {
+//			target.add(targetQuery.getObject(1).toString());
+//		}
+//		Assert.assertTrue(!target.isEmpty());
+//		for (String schema : target) {
+//			System.out.println(schema);
+//			if (schema.startsWith("training")) {
+//				System.out.println(schema);
+//				Assert.fail("Error: Training schema migrated");
+//
+//			}
+//		}
 
 		log.info("TC 02 Verify All Non core Schemas Except TRAINING Migrated. Ended.......");
 
@@ -100,16 +142,15 @@ public class MMP373_SkipNonCoreTrainingSchema extends Base {
 
 		Assert.assertEquals(connectionStatus, "Connection Success");
 		String exclusionlist = toGetAnyValue("non_core_schema_exclusion");
-		Assert.assertEquals(exclusionlist, "[training]");
+		
+		Assert.assertNotEquals(exclusionlist, "Keynotpresent");
+//		Assert.assertNotEquals(exclusionlist, null);
+//		Assert.assertEquals(exclusionlist, "[training]");
 		log.info("TC 03 Verify if new config variable (non_core_schema_exclusion) is added to the non-core schema, along with the core schema exclusion list. Ended.......");
 	}
 
 	public static String toGetAnyValue(String Key) throws JSchException, SftpException, Exception {
-//		String connectionStatus = null;
-//		String host = null;
-//		String username = null;
-//		String password = null;
-//		String port = null;
+
 		String noncoreschemaexclusion = null;
 		List<String> targetDBCredentials = new ArrayList<String>();
 		establishSshConnectionForSourceInstance();
@@ -132,26 +173,13 @@ public class MMP373_SkipNonCoreTrainingSchema extends Base {
 				}
 				if (line.contains(Key) && !line.contains("#")) {
 					noncoreschemaexclusion = line.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
+				}else {
+					
+					noncoreschemaexclusion = "Keynotpresent";
+					
 				}
 			}
-//			for (String credentials : targetDBCredentials) {
-//				if (credentials.contains("host")) {
-//					host = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
-//				}
-//				if (credentials.contains("username")) {
-//					username = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
-//				}
-//				if (credentials.contains("password")) {
-//					password = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
-//				}
-//				if (credentials.contains("port")) {
-//					port = credentials.split("=")[1].replaceAll("\"", "").replaceAll("\'", "").trim();
-//				}
-//			}
-//			if (null != host && null != username && null != password && null != port && !host.isEmpty()
-//					&& !username.isEmpty() && !password.isEmpty() && !port.isEmpty()) {
-//				connectionStatus = establishDestinationDatabaseconnection(host, username, password, port);
-//			}
+
 		} catch (IOException io) {
 
 		}
