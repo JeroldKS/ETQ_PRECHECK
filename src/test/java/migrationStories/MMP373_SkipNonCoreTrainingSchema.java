@@ -82,7 +82,6 @@ public class MMP373_SkipNonCoreTrainingSchema extends Base {
 
 		log.info("TC 02 Verify All Non core Schemas Except TRAINING Migrated. Started.......");
 		
-		
 		String connectionStatus = establishTargetDatabaseconnection();
 		Assert.assertEquals(connectionStatus, "Connection Success");
 
