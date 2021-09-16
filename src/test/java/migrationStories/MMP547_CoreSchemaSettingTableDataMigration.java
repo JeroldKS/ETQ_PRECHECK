@@ -33,7 +33,6 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 		JSONObject jsonObject = (JSONObject) parse;
 		Object engineObject = jsonObject.get("settings");
 		JSONArray jsonArrayForEngine = (JSONArray) engineObject;
-		System.out.println(jsonArrayForEngine.size());
 		for (int i = 0; i < jsonArrayForEngine.size() ; i++) {
 			Object jsonArrayForEngineObject = jsonArrayForEngine.get(i);
 			JSONObject engineKeys = (JSONObject) jsonArrayForEngineObject;
@@ -75,7 +74,7 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			targetValueWithEnvId.retainAll(targetValueWithMT0);
 			
 			Assert.assertEquals(targetValueWithEnvId.size(), 0, "This following table values are migrated against Bussiness Rules. "
-					+ "For the schema:: "+engineKeys.get("schema") +"and table:: "+engineKeys.get("table") + "For MT Type 0");
+					+ "For the schema:: "+engineKeys.get("schema") +" and table:: "+engineKeys.get("table") + " For MT Type 0");
 			//CHECK FOR MT_TYPE = 0. Ended here
 			
 			
@@ -124,9 +123,10 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			
 			//sourceValue contains elements which is not in MT_TYPE = 0,1,2
 			sourceValue.removeAll(targetValueWithMT012);
-			Collections.sort(targetValueWithMT2);
-			Collections.sort(copyOfSourceValue);
-			Assert.assertEquals(targetValueWithMT3, sourceValue);
+			Collections.sort(targetValueWithMT3);
+			Collections.sort(sourceValue);
+			Assert.assertEquals(targetValueWithMT3, sourceValue, "This following table values are migrated against Bussiness Rules. "
+					+ "For the schema:: "+engineKeys.get("schema") +" and table:: "+engineKeys.get("table") + " For MT Type 3");
 			//CHECK FOR MT_TYPE = 3. Ended here
 		}
 		log.info("TC 01 Verify the core Schemas are migrated from Source to Target as per the Business rules. Started");
@@ -148,7 +148,6 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 		JSONObject jsonObject = (JSONObject) parse;
 		Object engineObject = jsonObject.get("settings");
 		JSONArray jsonArrayForEngine = (JSONArray) engineObject;
-		System.out.println(jsonArrayForEngine.size());
 		for (int i = 0; i < jsonArrayForEngine.size() ; i++) {
 			Object jsonArrayForEngineObject = jsonArrayForEngine.get(i);
 			JSONObject engineKeys = (JSONObject) jsonArrayForEngineObject;
@@ -241,37 +240,38 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			copyTargetColumnNameList.removeAll(sourceColumnNameList);
 			targetColumnNameList.removeAll(copyTargetColumnNameList);
 			
-			
 			//Data Check for MT_TYPE = 1 case
-			for (int j = 0; j < 5; j++) {
-				String dynamicColumnValue = copyOfSourceValue.get(generate(copyOfSourceValue.size() - 1));
-
-				targetQuery = targetQuery("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
-						+ " where " + engineKeys.get("field") + " = " + dynamicColumnValue + " and MT_TYPE = 2 and "
-						+ "ENVIRONMENT_UUID = '"+ envId + "'");
-				
-				sourceQuery = query("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
-						+ " where " + engineKeys.get("field") + " = " + dynamicColumnValue);
-
-				ArrayList<String> targetColumndataList = new ArrayList<>();
-				while (targetQuery.next()) {
-					String targetColumndata = "";
-					for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
-						targetColumndata = targetColumndata
-								+ String.valueOf(targetQuery.getObject(targetColumnNameList.get(i1))) + ".";
+			if(copyOfSourceValue.size() > 1) {
+				for (int j = 0; j < 5; j++) {
+					String dynamicColumnValue = copyOfSourceValue.get(generate(copyOfSourceValue.size() - 1));
+	
+					targetQuery = targetQuery("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
+							+ " where " + engineKeys.get("field") + " = '" + dynamicColumnValue + "' and MT_TYPE = 2 and "
+							+ "ENVIRONMENT_UUID = '"+ envId + "'");
+					
+					sourceQuery = query("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
+							+ " where " + engineKeys.get("field") + " = '" + dynamicColumnValue +"'");
+	
+					ArrayList<String> targetColumndataList = new ArrayList<>();
+					while (targetQuery.next()) {
+						String targetColumndata = "";
+						for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
+							targetColumndata = targetColumndata
+									+ String.valueOf(targetQuery.getObject(targetColumnNameList.get(i1))) + "--";
+						}
+						targetColumndataList.add(targetColumndata);
 					}
-					targetColumndataList.add(targetColumndata);
-				}
-				ArrayList<String> sourceColumndataList = new ArrayList<>();
-				while (sourceQuery.next()) {
-					String sourceColumndata = "";
-					for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
-						sourceColumndata = sourceColumndata
-								+ String.valueOf(sourceQuery.getObject(targetColumnNameList.get(i1))) + ".";
+					ArrayList<String> sourceColumndataList = new ArrayList<>();
+					while (sourceQuery.next()) {
+						String sourceColumndata = "";
+						for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
+							sourceColumndata = sourceColumndata
+									+ String.valueOf(sourceQuery.getObject(targetColumnNameList.get(i1))) + "--";
+						}
+						sourceColumndataList.add(sourceColumndata);
 					}
-					sourceColumndataList.add(sourceColumndata);
+					Assert.assertEquals(sourceColumndataList, targetColumndataList, "Data Mismatched for some records with MT_TYPE=1");
 				}
-				Assert.assertEquals(sourceColumndataList, targetColumndataList, "Data Mismatched for some records with MT_TYPE=1");
 			}
 			//CHECK FOR MT_TYPE = 2. Ended here
 			
@@ -297,37 +297,37 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 			Assert.assertEquals(targetValueWithMT3, sourceValue);
 
 
-			
-			for (int j = 0; j < 5; j++) {
-				System.out.println(generate(sourceValue.size() - 1));
-				String dynamicColumnValue = sourceValue.get(generate(sourceValue.size() - 1));
-
-				targetQuery = targetQuery("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
-						+ " where " + engineKeys.get("field") + " = " + dynamicColumnValue + " and MT_TYPE = 3"
-								+ "and ENVIRONMENT_UUID = '"+ envId + "'");
-				
-				sourceQuery = query("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
-						+ " where " + engineKeys.get("field") + " = " + dynamicColumnValue);
-
-				ArrayList<String> targetColumndataList = new ArrayList<>();
-				while (targetQuery.next()) {
-					String targetColumndata = "";
-					for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
-						targetColumndata = targetColumndata
-								+ String.valueOf(targetQuery.getObject(targetColumnNameList.get(i1))) + ".";
+			if(sourceValue.size() > 1) {
+				for (int j = 0; j < 5; j++) {
+					String dynamicColumnValue = sourceValue.get(generate(sourceValue.size() - 1));
+	
+					targetQuery = targetQuery("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
+							+ " where " + engineKeys.get("field") + " = '" + dynamicColumnValue + "' and MT_TYPE = 3 "
+									+ "and ENVIRONMENT_UUID = '"+ envId + "'");
+					
+					sourceQuery = query("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")
+							+ " where " + engineKeys.get("field") + " = '" + dynamicColumnValue + "'");
+	
+					ArrayList<String> targetColumndataList = new ArrayList<>();
+					while (targetQuery.next()) {
+						String targetColumndata = "";
+						for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
+							targetColumndata = targetColumndata
+									+ String.valueOf(targetQuery.getObject(targetColumnNameList.get(i1))) + "--";
+						}
+						targetColumndataList.add(targetColumndata);
 					}
-					targetColumndataList.add(targetColumndata);
-				}
-				ArrayList<String> sourceColumndataList = new ArrayList<>();
-				while (sourceQuery.next()) {
-					String sourceColumndata = "";
-					for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
-						sourceColumndata = sourceColumndata
-								+ String.valueOf(sourceQuery.getObject(targetColumnNameList.get(i1))) + ".";
+					ArrayList<String> sourceColumndataList = new ArrayList<>();
+					while (sourceQuery.next()) {
+						String sourceColumndata = "";
+						for (int i1 = 0; i1 < targetColumnNameList.size(); i1++) {
+							sourceColumndata = sourceColumndata
+									+ String.valueOf(sourceQuery.getObject(targetColumnNameList.get(i1))) + "--";
+						}
+						sourceColumndataList.add(sourceColumndata);
 					}
-					sourceColumndataList.add(sourceColumndata);
+					Assert.assertEquals(sourceColumndataList, targetColumndataList);
 				}
-				Assert.assertEquals(sourceColumndataList, targetColumndataList);
 			}
 			//CHECK FOR MT_TYPE = 3. Ended here
 		}
@@ -350,7 +350,6 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 		JSONObject jsonObject = (JSONObject) parse;
 		Object engineObject = jsonObject.get("settings");
 		JSONArray jsonArrayForEngine = (JSONArray) engineObject;
-		System.out.println(jsonArrayForEngine.size());
 		for (int i = 0; i < jsonArrayForEngine.size() ; i++) {
 			Object jsonArrayForEngineObject = jsonArrayForEngine.get(i);
 			JSONObject engineKeys = (JSONObject) jsonArrayForEngineObject;
@@ -496,7 +495,6 @@ public class MMP547_CoreSchemaSettingTableDataMigration extends Base {
 
 			
 			for (int j = 0; j < 5; j++) {
-				System.out.println(generate(sourceValue.size() - 1));
 				String dynamicColumnValue = sourceValue.get(generate(sourceValue.size() - 1));
 
 				targetQuery = targetQuery("select * from " + engineKeys.get("schema") + "." + engineKeys.get("table")

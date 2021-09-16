@@ -36,8 +36,6 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
-import migrationStories.MMP369_MigrationDataCoreSchemaDisable;
-
 public class Base {
 	public static Properties loginProperties;
 	public static Connection dbConnection;

@@ -35,7 +35,6 @@ public class MMP557_LookUpIdNameUpdate extends Base {
 		while (targetQuery.next()) {
 			Assert.assertEquals(String.valueOf(targetQuery.getObject(1)), "LOOKUP_ID");
 		}
-		dbConnection.close();
 		targetDBConnection.close();
 		log.info("TC 01 Verify if the listed queries are executed to update the Lookup_ID and Lookup_Name reference in the target environment after the Migration. Ended.......");
 	}
