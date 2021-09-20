@@ -18,6 +18,7 @@ import org.testng.annotations.Test;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 
+
 import precheck.Base;
 
 public class MMP373_SkipNonCoreTrainingSchema extends Base {
